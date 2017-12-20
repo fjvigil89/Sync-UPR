@@ -4,6 +4,12 @@ namespace Api\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Session;
+use Redirect;
+use Api\Reglas;
+use Api\Condicion;
+use Api\Estacion;
+use Api\Acciones;
 class ReglaController extends Controller
 {
     /**
@@ -14,6 +20,11 @@ class ReglaController extends Controller
     public function index()
     {
         //
+         $regla = Reglas::all();
+
+        return response()->json(
+            $regla
+            ); 
     }
 
     /**
@@ -35,6 +46,54 @@ class ReglaController extends Controller
     public function store(Request $request)
     {
         //
+        $regla = new Reglas;
+        $regla->nombre = $request->nombre;        
+        $regla->descripcion= $request->descripcion;     
+        $regla->activo= true;  
+        $regla->save();
+
+        $condicionescant= $request->condicionescant;
+        if ($condicionescant >0 ) {
+            for ($i=0; $i < $condicionescant ; $i++) { 
+
+                if ($request->Input('estacion'.$i)== 0) {
+                    //hacer un random
+                    
+                    $estacion=Estacion::find(random_int(1,5));
+                }
+                else
+                    $estacion=Estacion::find($request->Input('estacion'.$i));                                          
+                
+
+                $condicion=new Condicion;                
+                $condicion->nombre= $request->Input('condicion_estados'.$i);
+                $condicion->tipo= $request->Input('condicion_es'.$i);
+                $condicion->regla()->associate($regla);
+                $condicion->estacion()->associate($estacion);
+                $condicion->save();
+
+                
+               
+            }
+        }   
+
+        $accionescant= $request->accionescant;
+        if ($accionescant >0 ) {
+            for ($i=0; $i < $accionescant ; $i++) { 
+                $acicones=new Acciones;
+                $acicones->nombre= $request->Input('accion_nombre'.$i);
+                $acicones->asignacion= $request->Input('accion_asignacion'.$i);                
+                $acicones->regla()->associate($regla);
+
+                $acicones->save();
+
+            }
+        }
+
+        
+
+
+        return Redirect::to('sistema');
     }
 
     /**
@@ -56,7 +115,10 @@ class ReglaController extends Controller
      */
     public function edit($id)
     {
-        //
+         $regla = Reglas::find($id);
+        return response()->json(
+            $regla->toArray()
+            ); 
     }
 
     /**
@@ -69,6 +131,14 @@ class ReglaController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $regla = Reglas::find($id);
+        $regla->nombre = $request->nombre;        
+        $regla->descripcion= $request->descripcion;        
+
+        $regla->save();
+
+
+        return Redirect::to('sistema');
     }
 
     /**
@@ -80,5 +150,8 @@ class ReglaController extends Controller
     public function destroy($id)
     {
         //
+        $regla = Reglas::find($id);
+        $regla->delete();
+        return response()->json(['message'=>'borrado']);
     }
 }

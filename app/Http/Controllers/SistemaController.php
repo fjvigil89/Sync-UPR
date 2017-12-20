@@ -4,6 +4,13 @@ namespace Api\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Api\DocumentosSolicitar;
+use Api\Requisitos;
+use Api\Usuario;
+use Api\DocumentosAdjuntos;
+use Api\RespuestasDefinidas;
+use Api\Reglas;
+
 class SistemaController extends Controller
 {
     /**
@@ -14,6 +21,22 @@ class SistemaController extends Controller
     public function index()
     {
         //
+        $user   =Usuario::all();    
+        $documentoSolicitar =DocumentosSolicitar::all();    
+        $requisitos =Requisitos::all(); 
+        $documentosAdjuntos =DocumentosAdjuntos::all(); 
+        
+        $respuestas =RespuestasDefinidas::all();
+        $reglas=Reglas::all();  
+        
+        return view('resorttraffic.sistema',[
+            'users'=>$user,
+            'documentos_solicitar'=>$documentoSolicitar,
+            'requisitos'=>$requisitos,
+            'documentos_adjuntos'=>$documentosAdjuntos,
+            'respuestas_definidas'=>$respuestas,
+            'reglas'=>$reglas
+            ]);
     }
 
     /**

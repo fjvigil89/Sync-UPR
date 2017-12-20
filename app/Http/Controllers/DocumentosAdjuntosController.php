@@ -3,7 +3,9 @@
 namespace Api\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Session;
+use Redirect;
+use Api\DocumentosAdjuntos;
 class DocumentosAdjuntosController extends Controller
 {
     /**
@@ -14,6 +16,10 @@ class DocumentosAdjuntosController extends Controller
     public function index()
     {
         //
+        $doc= DocumentosAdjuntos::all();
+        return response()->json(
+            $doc
+            );
     }
 
     /**
@@ -35,6 +41,25 @@ class DocumentosAdjuntosController extends Controller
     public function store(Request $request)
     {
         //
+        $adjunto = new DocumentosAdjuntos;  
+
+        
+ 
+       //indicamos que queremos guardar un nuevo archivo en el disco local
+       
+        if(empty($request->input('nombre')))
+        {
+           $adjunto->nombre = $request->file('ruta')->getClientOriginalName();
+        }        
+        else
+            $adjunto->nombre =$request->nombre;                 
+
+        $adjunto->disponible= false;
+
+        \Storage::disk('local')->put($adjunto->nombre,  \File::get($request->file('ruta')));              
+
+        $adjunto->save();
+        return Redirect::to('sistema');
     }
 
     /**
@@ -79,6 +104,11 @@ class DocumentosAdjuntosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        /$doc = DocumentosAdjuntos::find($id);
+        \Storage::delete($doc->nombre);  
+        $doc->delete();
+                    
+
+        return response()->json(['message'=>'borrado']);
     }
 }

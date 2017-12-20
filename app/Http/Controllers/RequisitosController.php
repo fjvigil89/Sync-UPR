@@ -4,6 +4,10 @@ namespace Api\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Session;
+use Redirect;
+
+use Api\Requisitos;
 class RequisitosController extends Controller
 {
     /**
@@ -35,6 +39,15 @@ class RequisitosController extends Controller
     public function store(Request $request)
     {
         //
+         $requisito = new Requisitos;
+        $requisito->nombre=$request->input('nombre');
+        $requisito->descripcion =$request->input('descripcion');
+        $requisito->activo= false;
+
+        $requisito->save();
+
+        //Session::flash('message','Usuario creado exitosamente');
+        return Redirect::to('sistema');
     }
 
     /**
@@ -57,6 +70,10 @@ class RequisitosController extends Controller
     public function edit($id)
     {
         //
+        $req = Requisitos::find($id);
+        return response()->json(
+            $req->toArray()
+            );
     }
 
     /**
@@ -69,6 +86,12 @@ class RequisitosController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $req = Requisitos::find($id);
+        $req->nombre=$request->input('nombre');
+        $req->descripcion =$request->input('descripcion');        
+
+        $req->save();
+        return Redirect::to('sistema');
     }
 
     /**
@@ -80,5 +103,8 @@ class RequisitosController extends Controller
     public function destroy($id)
     {
         //
+        $requisito = Requisitos::find($id);
+        $requisito->delete();
+        return response()->json(['message'=>'borrado']);
     }
 }
