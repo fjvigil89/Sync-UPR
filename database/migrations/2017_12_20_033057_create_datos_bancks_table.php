@@ -19,7 +19,7 @@ class CreateDatosBancksTable extends Migration
             $table->string('resolucion');
             $table->string('cuenta');           
             $table->timestamp('fechaIngreso');
-            $table->timestamp('fechaTransaccion');
+            $table->timestamp('fechaTransaccion');            
             $table->timestamps();
         });
     }
