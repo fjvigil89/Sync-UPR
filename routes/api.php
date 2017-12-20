@@ -18,4 +18,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Rutas de la API de resorTraffic
+Route::resource('reserva', 'ReservaController');
+
+Route::resource('regla', 'ReglaController');
+
+Route::resource('respuestas_definidas', 'RespuestasDefinidasController');
+
+Route::resource('documentos_adjunto', 'DocumentosAdjuntosController');
+
+Route::resource('documentos_solicitar', 'DocumentoSolicitarController');
+
+Route::resource('requisitos', 'RequisitosController');
+
+Route::resource('usuario', 'UsuarioController');
+
 Route::resource("hoteles","HotelController");
+
+Route::resource("paquetes","PaquetesController");
+
+Route::resource('clientes', 'ClienteController');
+
+Route::resource('sistema', 'SistemaController');
+
+
+

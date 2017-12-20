@@ -104,7 +104,7 @@ class DocumentosAdjuntosController extends Controller
      */
     public function destroy($id)
     {
-        /$doc = DocumentosAdjuntos::find($id);
+        $doc = DocumentosAdjuntos::find($id);
         \Storage::delete($doc->nombre);  
         $doc->delete();
                     
