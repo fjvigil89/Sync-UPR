@@ -15,6 +15,13 @@ class CreateHotelsTable extends Migration
     {
         Schema::create('hotels', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("nombre",50);
+            $table->string("smallName",50);
+            $table->string("descripcion");
+            $table->integer("rating");          
+            $table->boolean("activo")->default(false);
+            $table->integer('direccion_id')->unsigned();
+            $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
             $table->timestamps();
         });
     }

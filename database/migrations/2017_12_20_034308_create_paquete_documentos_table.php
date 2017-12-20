@@ -15,6 +15,11 @@ class CreatePaqueteDocumentosTable extends Migration
     {
         Schema::create('paquete_documentos', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('activo')->default(true);
+            $table->integer('documentos_id')->unsigned();
+            $table->foreign('documentos_id')->references('id')->on('documentos_solicitars')->onDelete('cascade');
+            $table->integer('paquete_id')->unsigned();  
+            $table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');            
             $table->timestamps();
         });
     }

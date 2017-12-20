@@ -15,6 +15,11 @@ class CreateDatosBancksTable extends Migration
     {
         Schema::create('datos_bancks', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('metodoPago');
+            $table->string('resolucion');
+            $table->string('cuenta');           
+            $table->timestamp('fechaIngreso');
+            $table->timestamp('fechaTransaccion');
             $table->timestamps();
         });
     }

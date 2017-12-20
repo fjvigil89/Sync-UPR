@@ -15,6 +15,7 @@ class CreateEstacionsTable extends Migration
     {
         Schema::create('estacions', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre');   
             $table->timestamps();
         });
     }

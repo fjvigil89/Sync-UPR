@@ -15,6 +15,9 @@ class CreateReglasTable extends Migration
     {
         Schema::create('reglas', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre');
+            $table->string('descripcion');
+            $table->boolean('activo')->defaul(true);
             $table->timestamps();
         });
     }

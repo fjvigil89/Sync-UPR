@@ -15,6 +15,13 @@ class CreateRespuestasDefinidasTable extends Migration
     {
         Schema::create('respuestas_definidas', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre',50);
+            $table->string('asunto');
+            $table->string('descripcion');  
+            $table->string('contenido');
+            $table->integer('estacion_id')->unsigned();            
+            $table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

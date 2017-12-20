@@ -15,6 +15,10 @@ class CreateHotelPaquetesTable extends Migration
     {
         Schema::create('hotel_paquetes', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('hotel_id')->unsigned();
+            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
+            $table->integer('paquete_id')->unsigned();            
+            $table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');
             $table->timestamps();
         });
     }

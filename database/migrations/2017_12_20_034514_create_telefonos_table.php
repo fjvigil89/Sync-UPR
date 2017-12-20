@@ -15,6 +15,12 @@ class CreateTelefonosTable extends Migration
     {
         Schema::create('telefonos', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('tipo');
+            $table->string('pais');
+            $table->string('area');
+            $table->string('numero');
+            $table->integer('cliente_id')->unsigned();
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
             $table->timestamps();
         });
     }

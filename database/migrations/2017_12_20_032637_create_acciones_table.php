@@ -15,6 +15,10 @@ class CreateAccionesTable extends Migration
     {
         Schema::create('acciones', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre');
+            $table->string('asignacion');
+            $table->integer('regla_id')->unsigned()->nullable();    
+            $table->foreign('regla_id')->references('id')->on('reglas');
             $table->timestamps();
         });
     }

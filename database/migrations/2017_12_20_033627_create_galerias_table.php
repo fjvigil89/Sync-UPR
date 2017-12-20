@@ -15,6 +15,9 @@ class CreateGaleriasTable extends Migration
     {
         Schema::create('galerias', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('hotel_id')->unsigned();
+            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');            
+            $table->string('ruta');
             $table->timestamps();
         });
     }

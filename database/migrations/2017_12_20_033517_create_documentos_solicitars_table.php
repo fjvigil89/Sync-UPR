@@ -15,6 +15,9 @@ class CreateDocumentosSolicitarsTable extends Migration
     {
         Schema::create('documentos_solicitars', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('descripcion');
+            $table->string('nombre');                       
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }

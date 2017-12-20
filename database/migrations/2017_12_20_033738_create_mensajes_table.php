@@ -15,6 +15,15 @@ class CreateMensajesTable extends Migration
     {
         Schema::create('mensajes', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('de');
+            $table->string('para');
+            $table->string('asunto');
+            $table->string('cuerpo');
+            $table->timestamp('fecha');
+            $table->string('rutaPlantilla');
+            $table->string('rutaAdjunto');
+            $table->integer('cliente_id')->unsigned();
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
             $table->timestamps();
         });
     }
