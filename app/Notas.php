@@ -1,12 +1,15 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class Notas extends Model {
-
-	public function cliente()
+class Notas extends Model
+{
+    //
+    public function cliente()
     {
-        return $this->belongsTo('ResortTraffic\Cliente');
+        return $this->belongsTo('Api\Cliente');
     }
 
     protected $fillable = ['contenido', 'fecha', 'destacada'];
@@ -18,11 +21,9 @@ class Notas extends Model {
             'contenido'=>$this->contenido,                
             'fecha'=>$this->fecha,                
             'destacada'=>$this->destacada,
-
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),            
             'cliente'=>$this->cliente
                        
         ];
     } 
-
 }

@@ -3,8 +3,8 @@
 namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
-
-class PaqueteRequisito extends Model
+use Carbon\Carbon;
+class ClienteUsuario extends Model
 {
     //
 }

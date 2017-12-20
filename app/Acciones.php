@@ -1,14 +1,14 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Acciones extends Model {
-
-	
-	public function regla()
+class Acciones extends Model
+{
+    public function regla()
     {
-        return $this->belongsTo('ResortTraffic\Reglas');
+        return $this->belongsTo('Api\Reglas');
     }
 
      /**
@@ -21,6 +21,7 @@ class Acciones extends Model {
     public function toArray()
     {
         return [
+            'id'=>$this->id,  
             'nombre'=>$this->nombre,                
             'asignacion'=>$this->asignacion,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),

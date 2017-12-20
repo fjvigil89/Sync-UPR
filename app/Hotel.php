@@ -1,30 +1,31 @@
 <?php
 
-namespace ResortTraffic;
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 class Hotel extends Model
 {
-	public function servicios()
+    //
+    public function servicios()
     {
-    	return $this->belongsToMany('ResortTraffic\Servicio','hotel_servicios')->withPivot('destacado');
+    	return $this->belongsToMany('Api\Servicio','hotel_servicios')->withPivot('destacado');
 	}
 
     public function galeria()
     {
-        return $this->hasMany('ResortTraffic\Galeria');
+        return $this->hasMany('Api\Galeria');
 
     }
 
     public function direccion()
     {
-        return $this->belongsTo('ResortTraffic\Direccion');
+        return $this->belongsTo('Api\Direccion');
     }
 
     public function paquetes()
     {
-        return $this->belongsToMany('ResortTraffic\Paquete','hotel_paquetes')->withTimestamps();
+        return $this->belongsToMany('Api\Paquete','hotel_paquetes')->withTimestamps();
                     
     }
 
@@ -78,5 +79,4 @@ class Hotel extends Model
         //eliminamos al usuario
         return parent::delete();
     }
-
 }

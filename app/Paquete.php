@@ -1,29 +1,30 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Paquete extends Model {
-
-	
+class Paquete extends Model
+{
+    //
     public function requisitos()
     {
-        return $this->belongsToMany('ResortTraffic\Requisitos','paquete_requisitos','paquete_id','requisito_id')->withTimestamps();
+        return $this->belongsToMany('Api\Requisitos','paquete_requisitos','paquete_id','requisito_id')->withTimestamps();
     }
     public function documentosSolicitar()
     {
-        return $this->belongsToMany('ResortTraffic\DocumentosSolicitar','paquete_documentos','paquete_id','documentos_id')->withTimestamps();
+        return $this->belongsToMany('Api\DocumentosSolicitar','paquete_documentos','paquete_id','documentos_id')->withTimestamps();
     }
 
     //un paquete puede pertenecer a muchos hoteles, muchos a muchos con hotel
     public function hoteles()
     {
-        return $this->belongsToMany("ResortTraffic\Hotel",'hotel_paquetes')->withTimestamps();
+        return $this->belongsToMany("Api\Hotel",'hotel_paquetes')->withTimestamps();
     }
 
     public function cliente()
     {
-        return $this->belongsToMany('ResortTraffic\Cliente','reservas','paquete_id','cliente_id');
+        return $this->belongsToMany('Api\Cliente','reservas','paquete_id','cliente_id');
     }
 
     /**
@@ -32,7 +33,7 @@ class Paquete extends Model {
      * @var array
      */
 
-    protected $fillable = ['id','nombre', 'tipo', 'precio', 'moneda','maximoAdulto','maximoNino','cantidadDias','cantidadNoches','costoAdicional','costosPersonaAdicional','costosXcancelacion','costosXaplazar','costosXaplaza2','costosXaplaza3','destacado','activo','disponible'];
+    protected $fillable = ['nombre', 'tipo', 'precio', 'moneda','maximoAdulto','maximoNino','cantidadDias','cantidadNoches','costoAdicional','costosPersonaAdicional','costosXcancelacion','costosXaplazar','costosXaplaza2','costosXaplaza3','destacado','activo','disponible'];
 
 
     public function toArray()
@@ -84,5 +85,5 @@ class Paquete extends Model {
         }
         //eliminamos al usuario
         return parent::delete();
-    }   
+    } 
 }

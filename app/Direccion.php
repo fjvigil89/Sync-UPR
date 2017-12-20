@@ -1,19 +1,22 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class Direccion extends Model {
-
-	//una direccion pertenece a un Hotel
+class Direccion extends Model
+{
+    //
+    //una direccion pertenece a un Hotel
 	public function hotel() 
 	{ 
-		return $this->hasOne('ResortTraffic\Hotel'); 
+		return $this->hasOne('Api\Hotel'); 
 	}
 
 	//una direccion pertenece a un usuario
 	public function cliente() 
 	{ 
-		return $this->hasOne('ResortTraffic\Cliente'); 
+		return $this->hasOne('Api\Cliente'); 
 	}
 
     protected $fillable = ['pais', 'ciudad', 'codigoPostal', 'idPais', 'calle','longitud','latitud', 'estado', 'municipio', 'colonia', 'numeroEx', 'numeroInt'];
@@ -21,6 +24,7 @@ class Direccion extends Model {
     public function toArray()
     {
         return [
+            'id'=>$this->id,  
             'pais'=>$this->pais,                
             'ciudad'=>$this->ciudad,
             'codigoPostal'=>$this->codigoPostal,                
@@ -39,5 +43,4 @@ class Direccion extends Model {
             
         ];
     }
-
 }

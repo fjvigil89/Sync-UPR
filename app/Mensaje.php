@@ -1,19 +1,20 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Mensaje extends Model {
-
-	
-	public function cliente()
+class Mensaje extends Model
+{
+    //
+    public function cliente()
     {
-        return $this->belongsTo('ResortTraffic\Cliente');
+        return $this->belongsTo('Api\Cliente');
     }
 
     public function respuetasDefinidas()
     {
-        return $this->hasMany('ResortTraffic\RespuestasDefinidas');
+        return $this->hasMany('Api\RespuestasDefinidas');
     }
 
     protected $fillable = ['de', 'para', 'asunto', 'cuerpo', 'fecha', 'rutaPlantilla', 'rutaAdjunto'];

@@ -1,46 +1,48 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Cliente extends Model {
-
-   public function direccion()
+class Cliente extends Model
+{
+    //
+    public function direccion()
     {
-        return $this->belongsTo('ResortTraffic\Direccion');
+        return $this->belongsTo('Api\Direccion');
     }
     public function mensajes()
     {
-        return $this->hasMany('ResortTraffic\Mensaje');
+        return $this->hasMany('Api\Mensaje');
     }
 
     public function notas()
     {
-        return $this->hasMany('ResortTraffic\Notas');
+        return $this->hasMany('Api\Notas');
     }
 
     public function telefono()
     {
-        return $this->hasMany('ResortTraffic\Telefono');
+        return $this->hasMany('Api\Telefono');
     }
 
     public function user()
     {
-    	return $this->belongsToMany('ResortTraffic\Usuario','cliente_usuarios','cliente_id','usuario_id');
+    	return $this->belongsToMany('Api\Usuario','cliente_usuarios','cliente_id','usuario_id');
 	}
 
    public function datosbanck()
     {
-        return $this->belongsTo('ResortTraffic\DatosBanck');
+        return $this->belongsTo('Api\DatosBanck');
     }
 
     public function paquete()
     {
-        return $this->belongsToMany('ResortTraffic\Paquete','reservas','cliente_id', 'paquete_id')->withPivot('fechaLlegada','created_at','id','fechaSalida','cantAdulto','cantidadMenores');
+        return $this->belongsToMany('Api\Paquete','reservas','cliente_id', 'paquete_id')->withPivot('fechaLlegada','created_at','id','fechaSalida','cantAdulto','cantidadMenores');
     }
     public function estadooperativo()
     {
-        return $this->belongsTo('ResortTraffic\EstadoOperativo');
+        return $this->belongsTo('Api\EstadoOperativo');
     }
 
     protected $fillable = ['nombre', 'apellido1', 'apellido2', 'genero', 'email'];
@@ -72,7 +74,3 @@ class Cliente extends Model {
 
     }
 }
-//Información de Cliente en la linea 1025 del blade.
-//Operaciones en curso lineas 202
-//1414 agregar oferta
-

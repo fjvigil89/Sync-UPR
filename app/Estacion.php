@@ -1,13 +1,15 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Estacion extends Model {
-
-	public function condicion()
+class Estacion extends Model
+{
+    //
+    public function condicion()
     {
-        return $this->hasOne('ResortTraffic\Condicion');
+        return $this->hasOne('Api\Condicion');
 
     }
 
@@ -29,5 +31,4 @@ class Estacion extends Model {
             
         ];
     }
-
 }

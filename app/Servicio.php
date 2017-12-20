@@ -1,16 +1,19 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Servicio extends Model {
-
-	//un servicio puede pertenecer a muchos hoteles, muchos a muchos con hotel
+use Carbon\Carbon;
+class Servicio extends Model
+{
+    //
+    //un servicio puede pertenecer a muchos hoteles, muchos a muchos con hotel
 	public function hoteles()
 	{
-		return $this->belongsToMany("ResortTraffic\Hotel");
+		return $this->belongsToMany("Api\Hotel");
 	}	
 
-	protected $fillable = ['id','nombre', 'logo', 'disponible'];
+	protected $fillable = ['nombre', 'logo', 'disponible'];
 
 	public function toArray()
     {
@@ -18,9 +21,9 @@ class Servicio extends Model {
         	'id'=> $this->id,
             'nombre' => $this->nombre,
             'logo'=> $this->logo,
-            'disponible'=> $this->disponible
+            'disponible'=> $this->disponible,
+            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             
         ];
     }
-
 }

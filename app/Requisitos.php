@@ -1,13 +1,16 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class Requisitos extends Model {
-
+class Requisitos extends Model
+{
+    //
     //un Documento puede pertenecer a muchos paquete, muchos a muchos con paquete
     public function paquetes()
     {
-        return $this->belongsToMany("ResortTraffic\Paquete",'paquete_requisitos','paquete_id','requisito_id' )->withTimestamps();
+        return $this->belongsToMany("Api\Paquete",'paquete_requisitos','paquete_id','requisito_id' )->withTimestamps();
     }
 
      /**
@@ -15,7 +18,7 @@ class Requisitos extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id','nombre', 'descripcion','activo'];
+    protected $fillable = ['nombre', 'descripcion','activo'];
     
     public function toArray()
     {
@@ -43,5 +46,5 @@ class Requisitos extends Model {
   
         //eliminamos al usuario
         return parent::delete();
-    } 
+    }
 }

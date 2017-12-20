@@ -1,19 +1,33 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon;
-class DocumentosAdjuntos extends Model {
-
-	protected $fillable=['nombre', 'disponible'];
+use Carbon\Carbon;
+class DocumentosAdjuntos extends Model
+{
+    //
+    protected $fillable=['nombre', 'disponible'];
 
 	public function respuestasDefinidas()
     {
         
-        return $this->belongsToMany('ResortTraffic\RespuestasDefinidas','respuesta_adjuntos','documentosadjuntos_id','respuestasdefinidas_id')
+        return $this->belongsToMany('Api\RespuestasDefinidas','respuesta_adjuntos','documentosadjuntos_id','respuestasdefinidas_id')
                     ->withTimestamps();   	
          
 	}
 
+ 	public function toArray()
+    {
+        return [
+            'id'=>$this->id,                
+            'nombre'=>$this->nombre,
+            'disponible'=>$this->disponible,                           
+            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
+
+            
+        ];
+    }
 
 	public function delete()
     {
@@ -28,5 +42,4 @@ class DocumentosAdjuntos extends Model {
         //eliminamos al usuario
         return parent::delete();
     } 
-
 }

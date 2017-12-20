@@ -1,13 +1,15 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class Telefono extends Model {
-
+class Telefono extends Model
+{
+    //
     public function cliente()
     {
-        return $this->belongsTo('ResortTraffic\Cliente');
+        return $this->belongsTo('Api\Cliente');
     }
 	protected $fillable = ['tipo', 'pais', 'area', 'numero'];
 
@@ -23,6 +25,5 @@ class Telefono extends Model {
             //'cliente'=>$this->cliente
                        
         ];
-    }   
-
+    }
 }

@@ -1,13 +1,16 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class DocumentosSolicitar extends Model {
-
+class DocumentosSolicitar extends Model
+{
+    //
     //un Documento puede pertenecer a muchos paquete, muchos a muchos con paquete
     public function paquetes()
     {
-        return $this->belongsToMany("ResortTraffic\Paquete",'paquete_documentos','paquete_id','documentos_id')->withTimestamps();
+        return $this->belongsToMany("Api\Paquete",'paquete_documentos','paquete_id','documentos_id')->withTimestamps();
     }
 
      /**

@@ -1,20 +1,20 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
-class RespuestasDefinidas extends Model {
-
-
-
-	public function documentosAdjuntos()    {
+class RespuestasDefinidas extends Model
+{
+    //
+    public function documentosAdjuntos()    {
     	
-        return $this->belongsToMany('ResortTraffic\DocumentosAdjuntos','respuesta_adjuntos','respuestasdefinidas_id','documentosadjuntos_id');
+        return $this->belongsToMany('Api\DocumentosAdjuntos','respuesta_adjuntos','respuestasdefinidas_id','documentosadjuntos_id');
 	}
 
     public function estacion()
     {
-        return $this->belongsTo('ResortTraffic\Estacion');
+        return $this->belongsTo('Api\Estacion');
     }
 
     /**
@@ -27,6 +27,7 @@ class RespuestasDefinidas extends Model {
     public function toArray()
     {
         return [
+        	'id'=>$this->id,
             'nombre'=>$this->nombre,                
             'asunto'=>$this->asunto,
             'descripcion'=>$this->descripcion,                
@@ -53,5 +54,5 @@ class RespuestasDefinidas extends Model {
   
         //eliminamos al usuario
         return parent::delete();
-    } 
+    }
 }

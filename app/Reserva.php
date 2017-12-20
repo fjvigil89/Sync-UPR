@@ -1,12 +1,15 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class Reserva extends Model {
-
-	public function estacion()
+class Reserva extends Model
+{
+    //
+    public function estacion()
     {
-        return $this->belongsTo('ResortTraffic\Estacion');
+        return $this->belongsTo('Api\Estacion');
     }
 
     /**
@@ -19,6 +22,7 @@ class Reserva extends Model {
     public function toArray()
     {
         return [
+        	'id'=>$this->id,
             'cantAdulto'=>$this->cantAdulto,                
             'cantidadMenores'=>$this->cantidadMenores,
             'fechaLlegada'=>$this->fechaLlegada,                
@@ -30,5 +34,4 @@ class Reserva extends Model {
             
         ];
     }
-
 }

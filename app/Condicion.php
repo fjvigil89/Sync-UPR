@@ -1,18 +1,20 @@
-<?php namespace ResortTraffic;
-use Carbon\Carbon;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Condicion extends Model {
-
-	public function estacion()
+use Carbon\Carbon;
+class Condicion extends Model
+{
+    //
+    public function estacion()
     {
-        return $this->belongsTo('ResortTraffic\Estacion');
+        return $this->belongsTo('Api\Estacion');
     }
 
 	public function regla()
     {
-        return $this->belongsTo('ResortTraffic\Reglas');
+        return $this->belongsTo('Api\Reglas');
     }
 
           /**
@@ -25,6 +27,7 @@ class Condicion extends Model {
     public function toArray()
     {
         return [
+            'id'=>$this->id,  
             'nombre'=>$this->nombre,                
             'tipo'=>$this->tipo,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
@@ -34,5 +37,4 @@ class Condicion extends Model {
             
         ];
     }
-
 }

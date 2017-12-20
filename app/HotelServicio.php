@@ -1,10 +1,10 @@
 <?php
 
-namespace ResortTraffic;
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 
 class HotelServicio extends Model
 {
-	
+    //
 }

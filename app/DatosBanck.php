@@ -1,12 +1,15 @@
-<?php namespace ResortTraffic;
+<?php
+
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-class DatosBanck extends Model {
-
+class DatosBanck extends Model
+{
+    //
     public function cliente()
     {
-        return $this->belongsTo('ResortTraffic\Cliente');
+        return $this->belongsTo('Api\Cliente');
     }
 
 	protected $fillable = ['metodoPago', 'resolucion', 'cuenta', 'fechaIngreso', 'fechaTransaccion'];

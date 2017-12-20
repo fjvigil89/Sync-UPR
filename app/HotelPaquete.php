@@ -1,6 +1,6 @@
 <?php
 
-namespace ResortTraffic;
+namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 
