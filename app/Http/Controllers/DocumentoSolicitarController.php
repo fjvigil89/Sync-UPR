@@ -2,6 +2,7 @@
 
 namespace Api\Http\Controllers;
 
+use Illuminate\Support\facades\Log as Log; 
 use Illuminate\Http\Request;
 use Session;
 use Redirect;
@@ -40,13 +41,16 @@ class DocumentoSolicitarController extends Controller
     public function store(Request $request)
     {
         //
-        $doc = new DocumentosSolicitar;
-        $doc->nombre=$request->input('nombre');
-        $doc->descripcion =$request->input('descripcion');
-        $doc->activo= false;
-
-        $doc->save();
-        return Redirect::to('sistema');
+        try{
+            $doc = DocumentosSolicitar::create($request->all());           
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar un Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
