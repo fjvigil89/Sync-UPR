@@ -58,9 +58,6 @@ Route::resource('clientes', 'ClienteController',['only'=>[
 	'index','store','show','update','destroy'
 	]]);
 
-Route::resource('sistema', 'SistemaController',['only'=>[
-	'index','store','show','update','destroy'
-	]]);
 
 
 
