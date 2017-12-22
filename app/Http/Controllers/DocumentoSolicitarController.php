@@ -2,7 +2,7 @@
 
 namespace Api\Http\Controllers;
 
-use Illuminate\Support\facades\Log as Log; 
+use Log; 
 use Illuminate\Http\Request;
 use Session;
 use Redirect;
@@ -22,15 +22,7 @@ class DocumentoSolicitarController extends Controller
         return $doc;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   
 
     /**
      * Store a newly created resource in storage.
@@ -40,9 +32,9 @@ class DocumentoSolicitarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
         try{
-            $doc = DocumentosSolicitar::create($request->all());           
+            DocumentosSolicitar::create($request->all());           
             
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
@@ -61,23 +53,21 @@ class DocumentoSolicitarController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $doc = DocumentosSolicitar::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            }            
+            return response()->json($doc, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $doc = DocumentosSolicitar::find($id);
-        return redirect()->json(
-            $doc->toArray()
-            );
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -88,13 +78,24 @@ class DocumentoSolicitarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $doc = DocumentosSolicitar::find($id);
-        $doc->nombre=$request->input('nombre');
-        $doc->descripcion =$request->input('descripcion');        
-
-        $doc->save();
-        return Redirect::to('sistema');
+        
+        try{
+            $doc = DocumentosSolicitar::find($id);
+            
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            } 
+            
+            $doc->fill($request->all());            
+            $doc->save();            
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede actualizar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -105,9 +106,21 @@ class DocumentoSolicitarController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $doc = DocumentosSolicitar::find($id);
-        $doc->delete();
-        return response()->json(['message'=>'borrado']);
+        
+        try{
+            $doc = DocumentosSolicitar::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            } 
+            $doc->delete();                       
+            return response("El documento ha sido Eliminado", 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
+        
     }
 }

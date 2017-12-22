@@ -18,27 +18,49 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //Rutas de la API de resorTraffic
-Route::resource('reserva', 'ReservaController');
+Route::resource('reserva', 'ReservaController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('regla', 'ReglaController');
+Route::resource('regla', 'ReglaController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('respuestas_definidas', 'RespuestasDefinidasController');
+Route::resource('respuestas_definidas', 'RespuestasDefinidasController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('documentos_adjunto', 'DocumentosAdjuntosController');
+Route::resource('documentos_adjunto', 'DocumentosAdjuntosController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('documentos_solicitar', 'DocumentoSolicitarController');
+Route::resource('documentos_solicitar', 'DocumentoSolicitarController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('requisitos', 'RequisitosController');
+Route::resource('requisitos', 'RequisitosController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('usuario', 'UsuarioController');
+Route::resource('usuario', 'UsuarioController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource("hoteles","HotelController");
+Route::resource("hoteles","HotelController",['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource("paquetes","PaquetesController");
+Route::resource("paquetes","PaquetesController",['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('clientes', 'ClienteController');
+Route::resource('clientes', 'ClienteController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
-Route::resource('sistema', 'SistemaController');
+Route::resource('sistema', 'SistemaController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
 
 
 

@@ -45,7 +45,7 @@ class Cliente extends Model
         return $this->belongsTo('Api\EstadoOperativo');
     }
 
-    protected $fillable = ['nombre', 'apellido1', 'apellido2', 'genero', 'email'];
+    protected $fillable = ['nombre', 'apellido1', 'apellido2', 'genero', 'email','ultimaConexion','ip'];
 
     public function toArray()
     {
