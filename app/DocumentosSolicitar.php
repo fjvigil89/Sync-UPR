@@ -18,7 +18,7 @@ class DocumentosSolicitar extends Model
      *
      * @var array
      */
-    protected $fillable = ['id','nombre', 'descripcion','activo'];
+    protected $fillable = ['nombre', 'descripcion','activo'];
     
     public function toArray()
     {
@@ -28,9 +28,7 @@ class DocumentosSolicitar extends Model
             'descripcion'=>$this->descripcion,
             'activo'=>$this->activo,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
-            
-
-            
+                        
         ];
     }
 
