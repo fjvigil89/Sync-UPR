@@ -15,11 +15,10 @@ class DocumentoSolicitarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index()    {
         //
         $doc= DocumentosSolicitar::all();
-        return $doc;
+        return response()->json($doc,200);
     }
 
    
@@ -78,7 +77,7 @@ class DocumentoSolicitarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+                
         try{
             $doc = DocumentosSolicitar::find($id);
             
@@ -113,7 +112,7 @@ class DocumentoSolicitarController extends Controller
                 return response("No existe el Documento", 404);
             } 
             $doc->delete();                       
-            return response("El documento ha sido Eliminado", 200);
+            return response()->json($doc, 200);
         }
         catch(\Exception $e)
         {
