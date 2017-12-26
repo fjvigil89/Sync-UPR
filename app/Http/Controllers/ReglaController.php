@@ -10,6 +10,7 @@ use Api\Reglas;
 use Api\Condicion;
 use Api\Estacion;
 use Api\Acciones;
+use Log;
 class ReglaController extends Controller
 {
     /**
@@ -21,21 +22,10 @@ class ReglaController extends Controller
     {
         //
          $regla = Reglas::all();
-
-        return response()->json(
-            $regla
-            ); 
+        return response()->json($regla,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -46,54 +36,51 @@ class ReglaController extends Controller
     public function store(Request $request)
     {
         //
-        $regla = new Reglas;
-        $regla->nombre = $request->nombre;        
-        $regla->descripcion= $request->descripcion;     
-        $regla->activo= true;  
-        $regla->save();
+        try{
+            $regla = Reglas::create($request->all());           
+            
+            $condicionescant= $request->condicionescant;
+            if ($condicionescant >0 ) {
+                for ($i=0; $i < $condicionescant ; $i++) { 
 
-        $condicionescant= $request->condicionescant;
-        if ($condicionescant >0 ) {
-            for ($i=0; $i < $condicionescant ; $i++) { 
-
-                if ($request->Input('estacion'.$i)== 0) {
-                    //hacer un random
+                    if ($request->Input('estacion'.$i)== 0) {
+                        //hacer un random
+                        
+                        $estacion=Estacion::find(random_int(1,5));
+                    }
+                    else
+                        $estacion=Estacion::find($request->Input('estacion'.$i));                                          
                     
-                    $estacion=Estacion::find(random_int(1,5));
+
+                    $condicion=new Condicion;                
+                    $condicion->nombre= $request->Input('condicion_estados'.$i);
+                    $condicion->tipo= $request->Input('condicion_es'.$i);
+                    $condicion->regla()->associate($regla);
+                    $condicion->estacion()->associate($estacion);
+                    $condicion->save();                    
+                   
                 }
-                else
-                    $estacion=Estacion::find($request->Input('estacion'.$i));                                          
-                
+            } 
 
-                $condicion=new Condicion;                
-                $condicion->nombre= $request->Input('condicion_estados'.$i);
-                $condicion->tipo= $request->Input('condicion_es'.$i);
-                $condicion->regla()->associate($regla);
-                $condicion->estacion()->associate($estacion);
-                $condicion->save();
-
-                
-               
+            $accionescant= $request->accionescant;
+            if ($accionescant >0 ) {
+                for ($i=0; $i < $accionescant ; $i++) { 
+                    $acicones=new Acciones;
+                    $acicones->nombre= $request->Input('accion_nombre'.$i);
+                    $acicones->asignacion= $request->Input('accion_asignacion'.$i);                
+                    $acicones->regla()->associate($regla);
+                    $acicones->save();
+                }
             }
-        }   
 
-        $accionescant= $request->accionescant;
-        if ($accionescant >0 ) {
-            for ($i=0; $i < $accionescant ; $i++) { 
-                $acicones=new Acciones;
-                $acicones->nombre= $request->Input('accion_nombre'.$i);
-                $acicones->asignacion= $request->Input('accion_asignacion'.$i);                
-                $acicones->regla()->associate($regla);
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
 
-                $acicones->save();
-
-            }
         }
-
-        
-
-
-        return Redirect::to('sistema');
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar una Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -104,22 +91,20 @@ class ReglaController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $regla = Reglas::find($id);
+            if (!$regla) {
+                return response("No existe la regla", 404);
+            }            
+            return response()->json($regla, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede mostrar la Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        } 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-         $regla = Reglas::find($id);
-        return response()->json(
-            $regla->toArray()
-            ); 
-    }
 
     /**
      * Update the specified resource in storage.
@@ -130,15 +115,52 @@ class ReglaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $regla = Reglas::find($id);
-        $regla->nombre = $request->nombre;        
-        $regla->descripcion= $request->descripcion;        
+        try{
+            $regla = Reglas::find($id);           
+            $regla->fill($request->all());  
+            
+            $condicionescant= $request->condicionescant;
+            if ($condicionescant >0 ) {
+                for ($i=0; $i < $condicionescant ; $i++) { 
 
-        $regla->save();
+                    if ($request->Input('estacion'.$i)== 0) {
+                        //hacer un random
+                        
+                        $estacion=Estacion::find(random_int(1,5));
+                    }
+                    else
+                        $estacion=Estacion::find($request->Input('estacion'.$i));                                          
+                    
 
+                    $condicion=new Condicion;                
+                    $condicion->nombre= $request->Input('condicion_estados'.$i);
+                    $condicion->tipo= $request->Input('condicion_es'.$i);
+                    $condicion->regla()->associate($regla);
+                    $condicion->estacion()->associate($estacion);
+                    $condicion->save();                    
+                   
+                }
+            } 
 
-        return Redirect::to('sistema');
+            $accionescant= $request->accionescant;
+            if ($accionescant >0 ) {
+                for ($i=0; $i < $accionescant ; $i++) { 
+                    $acicones=new Acciones;
+                    $acicones->nombre= $request->Input('accion_nombre'.$i);
+                    $acicones->asignacion= $request->Input('accion_asignacion'.$i);                
+                    $acicones->regla()->associate($regla);
+                    $acicones->save();
+                }
+            }
+
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar una Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -149,9 +171,19 @@ class ReglaController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $regla = Reglas::find($id);
-        $regla->delete();
-        return response()->json(['message'=>'borrado']);
+       
+        try{
+            $regla = Reglas::find($id);
+            if (!$regla) {
+                return response("No existe la regla", 404);
+            } 
+            $regla->delete();                       
+            return response("La Regla ha sido Eliminado", 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar la Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use Api\DocumentosAdjuntos;
+use Log; 
 class DocumentosAdjuntosController extends Controller
 {
     /**
@@ -15,22 +16,10 @@ class DocumentosAdjuntosController extends Controller
      */
     public function index()
     {
-        //
+        //        
         $doc= DocumentosAdjuntos::all();
-        return response()->json(
-            $doc
-            );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        return response()->json($doc,200);
+    }   
 
     /**
      * Store a newly created resource in storage.
@@ -40,26 +29,18 @@ class DocumentosAdjuntosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $adjunto = new DocumentosAdjuntos;  
-
         
- 
-       //indicamos que queremos guardar un nuevo archivo en el disco local
-       
-        if(empty($request->input('nombre')))
+        try{
+            DocumentosAdjuntos::create($request->all());  
+            \Storage::disk('local')->put($adjunto->nombre,  \File::get($request->file('ruta')));         
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
         {
-           $adjunto->nombre = $request->file('ruta')->getClientOriginalName();
-        }        
-        else
-            $adjunto->nombre =$request->nombre;                 
-
-        $adjunto->disponible= false;
-
-        \Storage::disk('local')->put($adjunto->nombre,  \File::get($request->file('ruta')));              
-
-        $adjunto->save();
-        return Redirect::to('sistema');
+            Log::critical("No se puede agregar un Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -70,19 +51,20 @@ class DocumentosAdjuntosController extends Controller
      */
     public function show($id)
     {
-        //
+        try{
+            $doc = DocumentosAdjuntos::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            }            
+            return response()->json($doc, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -93,7 +75,23 @@ class DocumentosAdjuntosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $doc = DocumentosAdjuntos::find($id);
+            
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            } 
+            
+            $doc->fill($request->all());            
+            $doc->save();            
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede actualizar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -104,11 +102,18 @@ class DocumentosAdjuntosController extends Controller
      */
     public function destroy($id)
     {
-        $doc = DocumentosAdjuntos::find($id);
-        \Storage::delete($doc->nombre);  
-        $doc->delete();
-                    
-
-        return response()->json(['message'=>'borrado']);
+        try{
+            $doc = DocumentosAdjuntos::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            } 
+            $doc->delete();                       
+            return response()->json($doc, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }
