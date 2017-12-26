@@ -31,7 +31,7 @@ class DocumentosAdjuntosController extends Controller
     {
         
         try{
-            DocumentosAdjuntos::create($request->all());  
+            $adjunto = DocumentosAdjuntos::create($request->all());  
             \Storage::disk('local')->put($adjunto->nombre,  \File::get($request->file('ruta')));         
             
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);

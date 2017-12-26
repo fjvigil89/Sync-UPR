@@ -7,6 +7,7 @@ use Session;
 use Redirect;
 use Api\Paquete;
 use Api\PaqueteRequisito;
+use Log;
 class PaquetesController extends Controller
 {
     /**
@@ -18,21 +19,10 @@ class PaquetesController extends Controller
     {
         //
         $paq= Paquete::all();
-        return response()->json(
-            $paq
-            );
+        return response()->json($paq,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -42,74 +32,76 @@ class PaquetesController extends Controller
     public function store(Request $request)
     {
         //
-        if($request->has('hotel')){
-            $paquete=new Paquete;
-            $paquete->nombre=$request->nombre;
-            $paquete->tipo=$request->tipo;
-            $paquete->precio=$request->precio;
-            $paquete->moneda=$request->moneda;
-            $paquete->maximoAdulto=$request->maxAdulto;
-            $paquete->maximoNino=$request->maxNino;
-            $paquete->cantidadDias=$request->dias;
-            $paquete->cantidadNoches=$request->noches;
-            $paquete->costoAdicional=$request->diaAdd;
-            $paquete->costosPersonaAdicional=$request->personAdd;
-            $paquete->costosXcancelacion=$request->costoCancelacion;
-            if ($request->has('costo_aplazo_1')) {
-                $paquete->costosXaplazar=$request->costo_aplazo_1;    
-            }
-            else{
-                $paquete->costosXaplazar=0;
-            }
-            if ($request->has('costo_aplazo_2')) {
-                $paquete->costosXaplaza2=$request->costo_aplazo_2;    
-            }
-            else{
-                $paquete->costosXaplaza2=0;
-            }
-            if ($request->has('costo_aplazo_3')) {
-                $paquete->costosXaplaza3=$request->costo_aplazo_3;    
-            }
-            else{
-                $paquete->costosXaplaza3=0;
-            }
-                 
-            $paquete->rating=3;
-            $paquete->activo=0;
-            //dd("'".$request->disp_paq_new."'");
+       
 
-            $paquete->disponible=$request->disp_paq_new;
-            $paquete->save();
-            $paquete->hoteles()->attach($request->hotel);
-            
+        try{              
+                $paquete=new Paquete;
+                $paquete->nombre=$request->nombre;
+                $paquete->tipo=$request->tipo;
+                $paquete->precio=$request->precio;
+                $paquete->moneda=$request->moneda;
+                $paquete->maximoAdulto=$request->maxAdulto;
+                $paquete->maximoNino=$request->maxNino;
+                $paquete->cantidadDias=$request->dias;
+                $paquete->cantidadNoches=$request->noches;
+                $paquete->costoAdicional=$request->diaAdd;
+                $paquete->costosPersonaAdicional=$request->personAdd;
+                $paquete->costosXcancelacion=$request->costoCancelacion;
+                if ($request->has('costo_aplazo_1')) {
+                    $paquete->costosXaplazar=$request->costo_aplazo_1;    
+                }
+                else{
+                    $paquete->costosXaplazar=0;
+                }
+                if ($request->has('costo_aplazo_2')) {
+                    $paquete->costosXaplaza2=$request->costo_aplazo_2;    
+                }
+                else{
+                    $paquete->costosXaplaza2=0;
+                }
+                if ($request->has('costo_aplazo_3')) {
+                    $paquete->costosXaplaza3=$request->costo_aplazo_3;    
+                }
+                else{
+                    $paquete->costosXaplaza3=0;
+                }
+                     
+                $paquete->rating=3;
+                $paquete->activo=0;
+                //dd("'".$request->disp_paq_new."'");
 
-            //relacion con requisitos
-            $requisito= $this->multiexplode(array(","),$request->paquete_requisito);
+                $paquete->disponible=$request->disp_paq_new;
+                $paquete->save();
+                $paquete->hoteles()->attach($request->hotel);
+                
 
-            for ($i=0; $i <count($requisito)-1 ; $i++) { 
-                # code...
-                if($requisito[$i]!= ""){                
-                    $paquete->requisitos()->attach($requisito[$i]);                
+                //relacion con requisitos
+                $requisito= $this->multiexplode(array(","),$request->paquete_requisito);
+
+                for ($i=0; $i <count($requisito)-1 ; $i++) { 
+                    # code...
+                    if($requisito[$i]!= ""){                
+                        $paquete->requisitos()->attach($requisito[$i]);                
+                    }
+
                 }
 
-            }
+                //relacion con documnetos solicitadoc
+                $documento= $this->multiexplode(array(","),$request->paquete_documentos);
+                for ($i=0; $i <count($documento)-1 ; $i++) { 
+                    # code...
+                    if($documento[$i]!= "")
+                        $paquete->documentosSolicitar()->attach($documento[$i]);
 
-            //relacion con documnetos solicitadoc
-            $documento= $this->multiexplode(array(","),$request->paquete_documentos);
-            for ($i=0; $i <count($documento)-1 ; $i++) { 
-                # code...
-                if($documento[$i]!= "")
-                    $paquete->documentosSolicitar()->attach($documento[$i]);
-
-            }
-
-
-         Session::flash('messageok','El paquete ha sido creado correctamente'); 
+                }
+             
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
-        else
-            Session::flash('messageerror','El paquete NO ha sido creado');
-
-        return Redirect::to('hoteles');
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar un Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     public function multiexplode ($delimiters,$string) 
@@ -127,24 +119,19 @@ class PaquetesController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $paquete=Paquete::find($id);
-        
-        return response()->json(
-            $paquete->toArray()
-                        ); 
-    }
+         try{
+            $paquete=Paquete::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            }            
+            return response()->json($paquete, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+    } 
 
     /**
      * Update the specified resource in storage.
@@ -156,7 +143,9 @@ class PaquetesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if($request->has('hotel')){
+        
+        try{
+            
             $paquete=Paquete::find($id);
             $paquete->nombre=$request->nombre;
             $paquete->tipo=$request->tipo;
@@ -202,19 +191,16 @@ class PaquetesController extends Controller
                 {
                     var_dump($docArray,$documento[$i]);
                 }
-                    
-                
 
             }
             $paquete->documentosSolicitar()->sync([$docArray]);
-
-
-         Session::flash('messageok','El paquete ha sido creado correctamente'); 
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
-        else
-            Session::flash('messageerror','El paquete NO ha sido creado');
-
-         return Redirect::to('hoteles');
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede actualizar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }         
     }
 
     /**
@@ -226,5 +212,19 @@ class PaquetesController extends Controller
     public function destroy($id)
     {
         //
+        try{
+            $paquete=Paquete::find($id);
+            if (!$doc) {
+                return response("No existe el Documento", 404);
+            }            
+            $paquete->delete();
+            return response()->json($paquete, 200);           
+            
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }
