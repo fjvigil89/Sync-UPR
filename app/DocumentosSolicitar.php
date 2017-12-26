@@ -18,6 +18,7 @@ class DocumentosSolicitar extends Model
      *
      * @var array
      */
+    protected $table = 'documentos_solicitars';
     protected $fillable = ['nombre', 'descripcion','activo'];
     
     public function toArray()
