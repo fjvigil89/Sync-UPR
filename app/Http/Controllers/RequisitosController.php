@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Session;
 use Redirect;
-
+use Log; 
 use Api\Requisitos;
 class RequisitosController extends Controller
 {
@@ -17,20 +17,11 @@ class RequisitosController extends Controller
      */
     public function index()
     {
-        //
+        $doc= Requisitos::all();
+        return response()->json($doc,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
+   /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -38,16 +29,17 @@ class RequisitosController extends Controller
      */
     public function store(Request $request)
     {
-        //
-         $requisito = new Requisitos;
-        $requisito->nombre=$request->input('nombre');
-        $requisito->descripcion =$request->input('descripcion');
-        $requisito->activo= false;
-
-        $requisito->save();
-
-        //Session::flash('message','Usuario creado exitosamente');
-        return Redirect::to('sistema');
+      
+       try{
+            Requisitos::create($request->all());           
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar un Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -59,22 +51,21 @@ class RequisitosController extends Controller
     public function show($id)
     {
         //
+        try{
+            $requisitos = Requisitos::find($id);
+            if (!$requisitos) {
+                return response("No existe el Documento", 404);
+            }            
+            return response()->json($requisitos, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $req = Requisitos::find($id);
-        return response()->json(
-            $req->toArray()
-            );
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -85,13 +76,24 @@ class RequisitosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $req = Requisitos::find($id);
-        $req->nombre=$request->input('nombre');
-        $req->descripcion =$request->input('descripcion');        
-
-        $req->save();
-        return Redirect::to('sistema');
+        
+        try{
+            $req = Requisitos::find($id);
+            
+            if (!$req) {
+                return response("No existe el Documento", 404);
+            } 
+            
+            $req->fill($request->all());            
+            $req->save();            
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede actualizar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -102,9 +104,19 @@ class RequisitosController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $requisito = Requisitos::find($id);
-        $requisito->delete();
-        return response()->json(['message'=>'borrado']);
+       
+        try{
+            $req = Requisitos::find($id);
+            if (!$req) {
+                return response("No existe el Documento", 404);
+            } 
+            $req->delete();                       
+            return response()->json($req, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }

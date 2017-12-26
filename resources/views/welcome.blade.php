@@ -5,11 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Api-ResorTraffic</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
+        <link rel="stylesheet" type="text/css" href="/css/app.css">
         <!-- Styles -->
         <style>
             html, body {
@@ -56,7 +56,7 @@
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
-                text-transform: uppercase;
+                text-transform: lowercase;
             }
 
             .m-b-md {
@@ -77,18 +77,85 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+           <div class="col col-12 bb-1c" id="documentos-a-solicitar">
+                    <div class="col col-6 pad-b2">
+                        <h2 class="color-1">Api ResorTraffic</h2>
+                    </div>
+                
+                
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/documentos_solicitar')}}">{{url('api/documentos_solicitar')}}</a>
+                    </div>
+                </div>                      
+
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/requisitos')}}">{{url('api/requisitos')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                       <a href="{{url('api/regla')}}">{{url('api/regla')}}</a>
+                    </div>
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/respuestas_definidas')}}">{{url('api/respuestas_definidas')}}</a>
+                    </div>
+                </div>    
+                    
+                 <div class="panel panel-default">                
+                    <div class="panel-body">
+                       <a href="{{url('api/usuario')}}">{{url('api/usuario')}}</a>
+                    </div>
                 </div>
+
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/documentos_adjunto')}}">{{url('api/documentos_adjunto')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/clientes')}}">{{url('api/clientes')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/hoteles')}}">{{url('api/hoteles')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/paquetes')}}">{{url('api/paquetes')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/reserva')}}">{{url('api/reserva')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/sistema')}}">{{url('api/sistema')}}</a>
+                    </div>
+                </div>
+                
+                <div class="panel panel-default">                
+                    <div class="panel-body">
+                        <a href="{{url('api/user')}}">{{url('api/user')}}</a>
+                    </div>
+                </div>                    
+                
             </div>
         </div>
     </body>
