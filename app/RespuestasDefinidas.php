@@ -34,6 +34,7 @@ class RespuestasDefinidas extends Model
             'contenido'=>$this->contenido,
             'activo'=>$this->activo,
             'estacion'=>$this->estacion->toArray(),
+            'documentosAdjuntos'=>$this->documentosAdjuntos->toArray(),
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             
             
@@ -56,3 +57,4 @@ class RespuestasDefinidas extends Model
         return parent::delete();
     }
 }
+
