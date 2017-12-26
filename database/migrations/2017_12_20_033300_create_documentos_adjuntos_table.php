@@ -16,7 +16,8 @@ class CreateDocumentosAdjuntosTable extends Migration
         Schema::create('documentos_adjuntos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->boolean('disponible')->default(true);           
+            $table->string('descripcion');
+            $table->boolean('activo')->default(true);   
             $table->timestamps();
         });
     }

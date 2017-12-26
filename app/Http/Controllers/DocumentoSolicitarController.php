@@ -36,11 +36,14 @@ class DocumentoSolicitarController extends Controller
             DocumentosSolicitar::create($request->all());           
             
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+
+            Session::flash('messageok','Documento agregado correctamente'); 
         }
         catch(\Exception $e)
         {
             Log::critical("No se puede agregar un Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return response("Alguna cosa esta mal", 500);
+            Session::flash('messageerror','El Documento a Solicitar NO ha sido creado');
+            return response("El Documento a Solicitar NO ha sido creado", 500);
         }
     }
 
@@ -86,7 +89,8 @@ class DocumentoSolicitarController extends Controller
             } 
             
             $doc->fill($request->all());            
-            $doc->save();            
+            $doc->save();    
+            Session::flash('messageok','Documento a Solicitar agregado correctamente');        
             
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }

@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class DocumentosAdjuntos extends Model
 {
     //
-    protected $fillable=['nombre', 'disponible'];
+    protected $fillable=['nombre', 'activo','descripcion'];
 
 	public function respuestasDefinidas()
     {
@@ -22,7 +22,8 @@ class DocumentosAdjuntos extends Model
         return [
             'id'=>$this->id,                
             'nombre'=>$this->nombre,
-            'disponible'=>$this->disponible,                           
+            'activo'=>$this->activo,   
+            'descripcion'=>$this->descripcion,                        
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
 
             
