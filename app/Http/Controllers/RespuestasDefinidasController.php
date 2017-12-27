@@ -38,7 +38,7 @@ class RespuestasDefinidasController extends Controller
     {
         
         try{
-            $estacion = Estacion::find($request->disponible);
+            $estacion = Estacion::find($request->disponible);            
             $respuestasDefinidas = RespuestasDefinidas::create($request->all());           
             $respuestasDefinidas->estacion()->associate($estacion);
 
@@ -51,7 +51,7 @@ class RespuestasDefinidasController extends Controller
                     $respuestasDefinidas->documentosAdjuntos()->attach($aux[$i]);
 
             }
-
+            $respuestasDefinidas->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
@@ -103,8 +103,17 @@ class RespuestasDefinidasController extends Controller
     public function update(Request $request, $id)
     {
         //
+
                    
         try{
+            if ($request->isMethod('patch')) 
+            {
+
+                $respuestasDefinidas = RespuestasDefinidas::find($id); 
+                $respuestasDefinidas->activo= $request->activo;
+                $respuestasDefinidas->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }
             $estacion = Estacion::find($request->disponible);            
             
             $respuestasDefinidas = RespuestasDefinidas::find($id);           
@@ -116,7 +125,7 @@ class RespuestasDefinidasController extends Controller
             $respuestasDefinidas->fill($request->all());  
             $respuestasDefinidas->estacion()->associate($estacion); 
 
-            $respuestasDefinidas->save();
+            
 
             $aux= $this->multiexplode(array(","),$request->adjuntos);
 
@@ -131,7 +140,8 @@ class RespuestasDefinidasController extends Controller
             if (!empty($arraAdjuno)) {
                 $respuestasDefinidas->documentosAdjuntos()->sync([$aux[$i]]);
             }            
-            
+
+            $respuestasDefinidas->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
