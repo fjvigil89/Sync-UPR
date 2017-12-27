@@ -22,7 +22,7 @@ class RespuestasDefinidas extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'asunto','descripcion', 'contenido', 'activo'];
+    protected $fillable = ['nombre', 'asunto','descripcion', 'contenido', 'activo','encabezado','pie'];
 
     public function toArray()
     {
@@ -33,6 +33,8 @@ class RespuestasDefinidas extends Model
             'descripcion'=>$this->descripcion,                
             'contenido'=>$this->contenido,
             'activo'=>$this->activo,
+            'encabezado'=>$this->encabezado,
+            'pie'=>$this->pie,
             'estacion'=>$this->estacion->toArray(),
             'documentosAdjuntos'=>$this->documentosAdjuntos->toArray(),
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
