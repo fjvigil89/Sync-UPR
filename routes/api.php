@@ -58,6 +58,10 @@ Route::resource('clientes', 'ClienteController',['only'=>[
 	'index','store','show','update','destroy'
 	]]);
 
+Route::resource('servicio', 'ServicioController',['only'=>[
+	'index'
+	]]);
+
 //Otras rutas.........................................................
 
 

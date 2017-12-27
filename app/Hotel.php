@@ -34,7 +34,7 @@ class Hotel extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['nombre', 'smallName', 'descripcion', 'rating'];
+	protected $fillable = ['nombre', 'smallName', 'descripcion', 'rating','activo'];
 
     public function toArray()
     {
@@ -44,6 +44,7 @@ class Hotel extends Model
             'smallName'=> $this->smallName,
             'descripcion' => $this->descripcion,
             'rating'=> $this->rating,
+            'activo'=>$this->activo,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             "direccion" => $this->direccion,            
             "servicios" => $this->servicios,

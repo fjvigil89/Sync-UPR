@@ -22,7 +22,7 @@ class Servicio extends Model
             'nombre' => $this->nombre,
             'logo'=> $this->logo,
             'disponible'=> $this->disponible,
-            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
+            //"created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             
         ];
     }
