@@ -130,15 +130,18 @@ class RespuestasDefinidasController extends Controller
             $aux= $this->multiexplode(array(","),$request->adjuntos);
 
 
-            $arraAdjuno=Array();
+            
+            $arraux = Array();
             for ($i=0; $i <count($aux)-1 ; $i++) { 
                 # code...
-                if($aux[$i]!= "")
-                    var_dump($arraAdjuno,$aux[$i]);                    
+                if($aux[$i]!= ""){
+                   
+                    array_push($arraux, $aux[$i]);                    
+                }
 
             }
-            if (!empty($arraAdjuno)) {
-                $respuestasDefinidas->documentosAdjuntos()->sync([$aux[$i]]);
+            if (!empty($arraux)) 
+                $respuestasDefinidas->documentosAdjuntos()->sync($arraux);
             }            
 
             $respuestasDefinidas->save();

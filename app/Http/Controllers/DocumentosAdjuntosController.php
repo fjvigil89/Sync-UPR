@@ -76,6 +76,14 @@ class DocumentosAdjuntosController extends Controller
     public function update(Request $request, $id)
     {
         try{
+            if ($request->isMethod('patch')) 
+            {
+
+                $doc = DocumentosAdjuntos::find($id);
+                $doc->activo= $request->activo;
+                $doc->save();
+                return response()->json(['status'=>true, 'message'=>'Switch ejecutado correctamente'], 200);
+            }
             $doc = DocumentosAdjuntos::find($id);
             
             if (!$doc) {
