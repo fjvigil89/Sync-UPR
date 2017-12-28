@@ -112,7 +112,7 @@ class RespuestasDefinidasController extends Controller
                 $respuestasDefinidas = RespuestasDefinidas::find($id); 
                 $respuestasDefinidas->activo= $request->activo;
                 $respuestasDefinidas->save();
-                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+                return response()->json(['status'=>true, 'message'=>'Switch ejecutado correctamente'], 200);
             }
             $estacion = Estacion::find($request->disponible);            
             
