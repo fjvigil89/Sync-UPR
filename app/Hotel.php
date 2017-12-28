@@ -48,7 +48,9 @@ class Hotel extends Model
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             "direccion" => $this->direccion,            
             "servicios" => $this->servicios,
-            "galeria" =>$this->galeria
+            "galeria" =>$this->galeria,
+            'paquetes'=>$this->paquetes
+
         ];
     }
     public function delete()

@@ -67,11 +67,11 @@ class PaquetesController extends Controller
                 }
                      
                 $paquete->rating=3;
-                $paquete->activo=0;
-                //dd("'".$request->disp_paq_new."'");
+                $paquete->activo=0;                
 
                 $paquete->disponible=$request->disp_paq_new;
                 $paquete->save();
+
                 $paquete->hoteles()->attach($request->hotel);
                 
 
@@ -94,7 +94,7 @@ class PaquetesController extends Controller
                         $paquete->documentosSolicitar()->attach($documento[$i]);
 
                 }
-             
+             $paquete->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
@@ -144,8 +144,16 @@ class PaquetesController extends Controller
     {
         //
         
-        try{
-            
+        try{   
+            if ($request->isMethod('patch')) 
+            {
+
+                $paquete=Paquete::find($id); 
+                $paquete->activo= $request->activo;
+                $paquete->destacado= $request->destacado;
+                $paquete->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }         
             $paquete=Paquete::find($id);
             $paquete->nombre=$request->nombre;
             $paquete->tipo=$request->tipo;
@@ -194,6 +202,8 @@ class PaquetesController extends Controller
 
             }
             $paquete->documentosSolicitar()->sync([$docArray]);
+
+            $paquete->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
