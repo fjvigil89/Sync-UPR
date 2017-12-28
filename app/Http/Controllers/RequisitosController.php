@@ -78,6 +78,14 @@ class RequisitosController extends Controller
     {
         
         try{
+            if ($request->isMethod('patch')) 
+            {
+
+                $req = Requisitos::find($id);
+                $req->activo= $request->activo;
+                $req->save();
+                return response()->json(['status'=>true, 'message'=>'Switch ejecutado correctamente'], 200);
+            }
             $req = Requisitos::find($id);
             
             if (!$req) {

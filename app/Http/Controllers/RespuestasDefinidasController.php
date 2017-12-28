@@ -112,7 +112,7 @@ class RespuestasDefinidasController extends Controller
                 $respuestasDefinidas = RespuestasDefinidas::find($id); 
                 $respuestasDefinidas->activo= $request->activo;
                 $respuestasDefinidas->save();
-                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+                return response()->json(['status'=>true, 'message'=>'Switch ejecutado correctamente'], 200);
             }
             $estacion = Estacion::find($request->disponible);            
             
@@ -130,15 +130,18 @@ class RespuestasDefinidasController extends Controller
             $aux= $this->multiexplode(array(","),$request->adjuntos);
 
 
-            $arraAdjuno=Array();
+            
+            $arraux = Array();
             for ($i=0; $i <count($aux)-1 ; $i++) { 
                 # code...
-                if($aux[$i]!= "")
-                    var_dump($arraAdjuno,$aux[$i]);                    
+                if($aux[$i]!= ""){
+                   
+                    array_push($arraux, $aux[$i]);                    
+                }
 
             }
-            if (!empty($arraAdjuno)) {
-                $respuestasDefinidas->documentosAdjuntos()->sync([$aux[$i]]);
+            if (!empty($arraux)) 
+                $respuestasDefinidas->documentosAdjuntos()->sync($arraux);
             }            
 
             $respuestasDefinidas->save();
