@@ -141,7 +141,9 @@ class RespuestasDefinidasController extends Controller
 
             }
             if (!empty($arraux)) 
+            {
                 $respuestasDefinidas->documentosAdjuntos()->sync($arraux);
+            
             }            
 
             $respuestasDefinidas->save();
