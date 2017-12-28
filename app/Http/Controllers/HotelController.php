@@ -43,9 +43,9 @@ class HotelController extends Controller
         try{
                 
                 $direccion= Direccion::create($request->all());                    
-                $hotel = Hotel::create($request->all());                                
-
-                
+                $hotel = Hotel::create($request->all()); 
+                $hotel->direccion()->associate($direccion);
+                return $request->file('ruta');
                 if($request->hasFile('ruta'))
                 {
                     
@@ -55,12 +55,9 @@ class HotelController extends Controller
                             $galeria->ruta = $media->getClientOriginalName();
                             $galeria->hotel()->associate($hotel);
                             \Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
-                            $galeria->save();
-                    
+                            $galeria->save();                   
                         
                     }
-
-
                     
                 }
                 
@@ -103,7 +100,7 @@ class HotelController extends Controller
                 }
         
 
-
+            $hotel->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
@@ -152,9 +149,16 @@ class HotelController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $id=$request->idhotel;  
+            if ($request->isMethod('patch')) 
+            {
+                $id=$request->idhotel;  
+                $hotel = Hotel::find($id);
+                $hotel->activo= $request->activo;                
+                $hotel->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }              
             $hotel = Hotel::find($id);
-            $direccion= Direccion::find($hotel->direccion_id);
+            $direccion= Direccion::find($hotel->direccion->id);
 
             $direccion->fill($request->all()); 
             $hotel->fill($request->all()); 
@@ -174,10 +178,11 @@ class HotelController extends Controller
                     }           
                 }
         
+              
 
             $disponible= $this->multiexplode(array(","),$request->servicios_disponibles);
             $destacado= $this->multiexplode(array(","),$request->servicios_destacados);  
-        
+            
         
             $igual=true;         
             for ($i=0; $i < count($disponible)-1 ; $i++) {         
@@ -211,8 +216,8 @@ class HotelController extends Controller
                     $hotel->servicios()->sync([$destacado[$i],['destacado' => true, 'disponible'=>false]]);
                 }            
             }
-        
-
+            $direccion->save();
+            $hotel->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
 
         }

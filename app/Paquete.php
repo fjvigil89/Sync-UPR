@@ -61,7 +61,7 @@ class Paquete extends Model
             'requisitos'=>$this->requisitos,       
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),            
             'documentosSolicitar' =>$this->documentosSolicitar,
-            'hoteles'=> $this->hoteles
+            //'hoteles'=> $this->hoteles
            
            
         ];

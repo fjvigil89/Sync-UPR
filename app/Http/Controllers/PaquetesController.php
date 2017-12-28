@@ -67,11 +67,11 @@ class PaquetesController extends Controller
                 }
                      
                 $paquete->rating=3;
-                $paquete->activo=0;
-                //dd("'".$request->disp_paq_new."'");
+                $paquete->activo=0;                
 
                 $paquete->disponible=$request->disp_paq_new;
                 $paquete->save();
+
                 $paquete->hoteles()->attach($request->hotel);
                 
 
@@ -94,7 +94,7 @@ class PaquetesController extends Controller
                         $paquete->documentosSolicitar()->attach($documento[$i]);
 
                 }
-             
+             $paquete->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
@@ -142,10 +142,19 @@ class PaquetesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //r
+
         
-        try{
-            
+        try{   
+            if ($request->isMethod('patch')) 
+            {
+
+                $paquete=Paquete::find($id); 
+                $paquete->activo= $request->activo;
+                $paquete->destacado= $request->destacado;
+                $paquete->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }         
             $paquete=Paquete::find($id);
             $paquete->nombre=$request->nombre;
             $paquete->tipo=$request->tipo;
@@ -161,39 +170,52 @@ class PaquetesController extends Controller
             $paquete->costosXaplazar=$request->costo_aplazo_1;
             $paquete->costosXaplaza2=$request->costo_aplazo_2;
             $paquete->costosXaplaza3=$request->costo_aplazo_3;                
-            $paquete->rating=3;
-            $paquete->activo=0;
-            //dd("'".$request->disp_paq_new."'");
+            $paquete->rating=3;           
+            
 
             $paquete->disponible=$request->disp_paq_new;
             $paquete->save();
+
+
             $paquete->hoteles()->sync([$request->hotel]);
             
-
+            
             //relacion con requisitos
-            $requisito= $this->multiexplode(array(","),$request->paquete_requisito);
-            $requArray-Array();
-            for ($i=0; $i <count($requisito)-1 ; $i++) { 
+            if ($request->has('paquete_requisito')) {
                 # code...
-                if($requisito[$i]!= ""){                
-                    var_dump($requArray,$requisito[$i]);
+                
+                $requisito= $this->multiexplode(array(","),$request->paquete_requisito);
+
+                $requArray-Array();
+                for ($i=0; $i <count($requisito)-1 ; $i++) { 
+                    # code...
+                    if($requisito[$i]!= ""){                
+                        var_dump($requArray,$requisito[$i]);
+                    }
+
                 }
+                $paquete->requisitos()->sync([$requArray]);                
 
             }
-            $paquete->requisitos()->sync([$requArray]);                
-
             //relacion con documnetos solicitadoc
-            $documento= $this->multiexplode(array(","),$request->paquete_documentos);
-            $docArray-Array();
-            for ($i=0; $i <count($documento)-1 ; $i++) { 
+            if ($request->has('paquete_documentos')) {
                 # code...
-                if($documento[$i]!= "")
-                {
-                    var_dump($docArray,$documento[$i]);
-                }
+            
+                $documento= $this->multiexplode(array(","),$request->paquete_documentos);
+                $docArray-Array();
+                for ($i=0; $i <count($documento)-1 ; $i++) { 
+                    # code...
+                    if($documento[$i]!= "")
+                    {
+                        var_dump($docArray,$documento[$i]);
+                    }
 
+                }
+                $paquete->documentosSolicitar()->sync([$docArray]);
             }
-            $paquete->documentosSolicitar()->sync([$docArray]);
+            
+            $paquete->save();
+
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
