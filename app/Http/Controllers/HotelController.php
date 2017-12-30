@@ -55,7 +55,7 @@ class HotelController extends Controller
                             $galeria=new Galeria;
                             $galeria->ruta = $media->getClientOriginalName();
                             $galeria->hotel()->associate($hotel);
-                            \Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
+                            //\Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
                             $galeria->save();                   
                         
                     }
@@ -172,7 +172,7 @@ class HotelController extends Controller
                             $galeria=new Galeria;
                             $galeria->ruta = $media->getClientOriginalName();
                             $galeria->hotel()->associate($hotel);
-                            \Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
+                            //\Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
                             $galeria->save();
                     
                         
@@ -246,7 +246,7 @@ class HotelController extends Controller
 
            foreach ($hotel->galeria as $galeria) {        
             $galeria->delete();
-            \Storage::delete($galeria->ruta);              
+            //\Storage::delete($galeria->ruta);              
             }   
 
             return response("El Hotel ha sido Eliminado", 200);
@@ -256,5 +256,54 @@ class HotelController extends Controller
             Log::critical("No se puede eliminar el Hotel:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return response("Alguna cosa esta mal", 500);
         }
+    }
+
+    public function hotelall($id)
+    {
+        $hotel = Hotel::find($id);
+        $servicios = $hotel->servicios;
+        $serviciostodos = Servicio::all();
+
+        
+
+        $info = array();
+
+        foreach ($servicios as $ser) {
+            $arr = array();
+            array_push($arr,$hotel->descripcion);
+            array_push($arr,$hotel->galeria);
+            array_push($arr,$ser->id);
+            array_push($arr, $ser->pivot->destacado);
+            array_push($arr,$ser->nombre);
+            array_push($arr,$serviciostodos);
+            
+            array_push($info,$arr);
+        }
+
+
+        return response()->json($info,200);
+
+
+    }
+
+        /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function hotelAllPaquete($id)
+    {
+        
+        $paquete = HotelPaquete::where('hotel_id','=',$id)->get();
+        $arrayPaquete = array();
+        foreach ($paquete as $paq) {
+            array_push($arrayPaquete, Paquete::find($paq->paquete_id));
+        }
+        
+
+        return response()->json(
+            $arrayPaquete
+            ); 
     }
 }

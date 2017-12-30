@@ -10,10 +10,10 @@ class Servicio extends Model
     //un servicio puede pertenecer a muchos hoteles, muchos a muchos con hotel
 	public function hoteles()
 	{
-		return $this->belongsToMany("Api\Hotel");
+		return $this->belongsToMany("Api\Hotel")->withPivot('destacado')->withTimestamps();
 	}	
 
-	protected $fillable = ['nombre', 'logo', 'disponible'];
+	protected $fillable = ['nombre', 'logo'];
 
 	public function toArray()
     {
@@ -21,7 +21,7 @@ class Servicio extends Model
         	'id'=> $this->id,
             'nombre' => $this->nombre,
             'logo'=> $this->logo,
-            'disponible'=> $this->disponible,
+            
             //"created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             
         ];

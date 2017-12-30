@@ -50,6 +50,10 @@ Route::resource("hoteles","HotelController",['only'=>[
 	'index','store','show','update','destroy'
 	]]);
 
+Route::get("informacion/{id}/hoteles","HotelController@hotelall");
+
+Route::get("informacion/{id}/paquete","HotelController@hotelAllPaquete");
+
 Route::resource("paquetes","PaquetesController",['only'=>[
 	'index','store','show','update','destroy'
 	]]);
