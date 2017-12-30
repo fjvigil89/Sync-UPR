@@ -9,7 +9,7 @@ class Hotel extends Model
     //
     public function servicios()
     {
-    	return $this->belongsToMany('Api\Servicio','hotel_servicios')->withPivot('destacado');
+    	return $this->belongsToMany('Api\Servicio','hotel_servicios')->withPivot('destacado','disponible');
 	}
 
     public function galeria()
@@ -43,6 +43,18 @@ class Hotel extends Model
 
     public function toArray()
     {
+        $seraux = $this->servicios;
+
+        $arraux = array();
+
+        foreach ($seraux as  $value) {
+            /*/$arr = array{'id','nombre','destacado'};
+            array_push($arr, $value->id);
+            array_push($arr, $value->nombre);
+            array_push($arr, $value->pivot->destacado);*/
+
+            array_push($arraux, ["id"=>$value->id,"nombre"=>$value->nombre,"destacado"=>$value->pivot->destacado,"disponible"=>$value->pivot->disponible]);
+        }
         return [
             'id'=> $this->id,
             'nombre' => $this->nombre,
@@ -52,7 +64,7 @@ class Hotel extends Model
             'activo'=>$this->activo,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             "direccion" => $this->direccion,            
-            "servicios" => $this->servicios,
+            "servicios" => $arraux,
             "galeria" =>$this->galeria,
             'paquetes'=>$this->paquetes,
             'marca'=>$this->marca

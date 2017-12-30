@@ -24,9 +24,7 @@ class Acciones extends Model
             'id'=>$this->id,  
             'nombre'=>$this->nombre,                
             'asignacion'=>$this->asignacion,
-            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
-
-            
+            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),            
         ];
     }
 }

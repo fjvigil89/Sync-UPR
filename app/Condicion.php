@@ -7,11 +7,7 @@ use Carbon\Carbon;
 class Condicion extends Model
 {
     //
-    public function estacion()
-    {
-        return $this->belongsTo('Api\Estacion');
-    }
-
+    
 	public function regla()
     {
         return $this->belongsTo('Api\Reglas');
@@ -22,7 +18,7 @@ class Condicion extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'tipo'];
+    protected $fillable = ['nombre', 'tipo','cumple'];
 
     public function toArray()
     {
@@ -30,11 +26,10 @@ class Condicion extends Model
             'id'=>$this->id,  
             'nombre'=>$this->nombre,                
             'tipo'=>$this->tipo,
-            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
-            'estacion'=>$this->estacion,
-            //'regla'=>$this->regla
-
+            'cumple'=>$this->cumple,
+            "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
             
+                      
         ];
     }
 }

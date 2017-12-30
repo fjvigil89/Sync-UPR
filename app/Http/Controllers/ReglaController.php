@@ -43,20 +43,10 @@ class ReglaController extends Controller
             if ($condicionescant >0 ) {
                 for ($i=0; $i < $condicionescant ; $i++) { 
 
-                    if ($request->Input('estacion'.$i)== 0) {
-                        //hacer un random
-                        
-                        $estacion=Estacion::find(random_int(1,5));
-                    }
-                    else
-                        $estacion=Estacion::find($request->Input('estacion'.$i));                                          
-                    
-
                     $condicion=new Condicion;                
                     $condicion->nombre= $request->Input('condicion_estados'.$i);
                     $condicion->tipo= $request->Input('condicion_es'.$i);
                     $condicion->regla()->associate($regla);
-                    $condicion->estacion()->associate($estacion);
                     $condicion->save();                    
                    
                 }
@@ -73,7 +63,7 @@ class ReglaController extends Controller
                 }
             }
 
-            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            return response()->json(['status'=>true, 'message'=>'Regla agregada correctamente'], 200);
 
         }
         catch(\Exception $e)
