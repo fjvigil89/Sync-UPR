@@ -22,6 +22,8 @@ class CreateHotelsTable extends Migration
             $table->boolean("activo")->default(false);
             $table->integer('direccion_id')->unsigned();
             $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
+            $table->integer('marca_id')->unsigned();
+            $table->foreign('marca_id')->references('id')->on('marcas')->onDelete('cascade');
             $table->timestamps();
         });
     }

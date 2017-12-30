@@ -23,6 +23,11 @@ class Hotel extends Model
         return $this->belongsTo('Api\Direccion');
     }
 
+    public function marca()
+    {
+        return $this->belongsTo('Api\Marca');
+    }
+
     public function paquetes()
     {
         return $this->belongsToMany('Api\Paquete','hotel_paquetes')->withTimestamps();
@@ -49,7 +54,8 @@ class Hotel extends Model
             "direccion" => $this->direccion,            
             "servicios" => $this->servicios,
             "galeria" =>$this->galeria,
-            'paquetes'=>$this->paquetes
+            'paquetes'=>$this->paquetes,
+            'marca'=>$this->marca
 
         ];
     }

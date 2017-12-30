@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 27-12-2017 a las 18:18:41
--- Versión del servidor: 10.1.16-MariaDB
--- Versión de PHP: 7.0.9
+-- Host: localhost
+-- Generation Time: Dec 29, 2017 at 10:25 PM
+-- Server version: 5.5.54-0ubuntu0.14.04.1
+-- PHP Version: 7.0.1-2+deb.sury.org~trusty+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `api`
+-- Database: `api`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `acciones`
+-- Table structure for table `acciones`
 --
 
 CREATE TABLE `acciones` (
@@ -38,7 +38,7 @@ CREATE TABLE `acciones` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `clientes`
+-- Table structure for table `clientes`
 --
 
 CREATE TABLE `clientes` (
@@ -59,7 +59,7 @@ CREATE TABLE `clientes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cliente_usuarios`
+-- Table structure for table `cliente_usuarios`
 --
 
 CREATE TABLE `cliente_usuarios` (
@@ -73,7 +73,7 @@ CREATE TABLE `cliente_usuarios` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `condicions`
+-- Table structure for table `condicions`
 --
 
 CREATE TABLE `condicions` (
@@ -89,7 +89,7 @@ CREATE TABLE `condicions` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `datos_bancks`
+-- Table structure for table `datos_bancks`
 --
 
 CREATE TABLE `datos_bancks` (
@@ -106,7 +106,7 @@ CREATE TABLE `datos_bancks` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `direccions`
+-- Table structure for table `direccions`
 --
 
 CREATE TABLE `direccions` (
@@ -130,30 +130,22 @@ CREATE TABLE `direccions` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `documentos_adjuntos`
+-- Table structure for table `documentos_adjuntos`
 --
 
 CREATE TABLE `documentos_adjuntos` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `documentos_adjuntos`
---
-
-INSERT INTO `documentos_adjuntos` (`id`, `nombre`, `descripcion`, `activo`, `created_at`, `updated_at`) VALUES
-(11, 'bbbbbbb', 'bbbbbbbbbbbbbb', 1, '2017-12-27 12:20:20', '2017-12-27 12:50:01'),
-(12, 'ccccc', 'cccccccccccccccccccccccccccccccccccccccccc', 1, '2017-12-27 12:21:31', '2017-12-27 12:50:02');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `documentos_solicitars`
+-- Table structure for table `documentos_solicitars`
 --
 
 CREATE TABLE `documentos_solicitars` (
@@ -165,19 +157,10 @@ CREATE TABLE `documentos_solicitars` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `documentos_solicitars`
---
-
-INSERT INTO `documentos_solicitars` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
-(12, 'Descripcion Doc 1', 'Doc 1111', 1, '2017-12-27 09:25:11', '2017-12-27 09:48:42'),
-(13, 'Descripcion Doc 2', 'Doc 22222', 1, '2017-12-27 09:36:56', '2017-12-27 10:08:04'),
-(14, 'Descripción Doc 333333', 'Doc 3', 1, '2017-12-27 09:37:39', '2017-12-27 10:08:15');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `estacions`
+-- Table structure for table `estacions`
 --
 
 CREATE TABLE `estacions` (
@@ -188,20 +171,20 @@ CREATE TABLE `estacions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `estacions`
+-- Dumping data for table `estacions`
 --
 
 INSERT INTO `estacions` (`id`, `nombre`, `created_at`, `updated_at`) VALUES
-(1, 'Registro', '2017-12-26 06:00:00', '2017-12-26 06:00:00'),
-(2, 'Oferta', '2017-12-26 06:00:00', '2017-12-26 06:00:00'),
-(3, 'Cobranza', '2017-12-26 06:00:00', '2017-12-26 06:00:00'),
-(4, 'Verificacion', '2017-12-26 06:00:00', '2017-12-26 06:00:00'),
-(5, 'Reconciliación', '2017-12-26 06:00:00', '2017-12-26 06:00:00');
+(1, 'Registro', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'Oferta', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'Cobranza', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'Verificacion', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'Reconciliacion', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `galerias`
+-- Table structure for table `galerias`
 --
 
 CREATE TABLE `galerias` (
@@ -215,7 +198,7 @@ CREATE TABLE `galerias` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `hotels`
+-- Table structure for table `hotels`
 --
 
 CREATE TABLE `hotels` (
@@ -226,6 +209,7 @@ CREATE TABLE `hotels` (
   `rating` int(11) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   `direccion_id` int(10) UNSIGNED NOT NULL,
+  `marca_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -233,7 +217,7 @@ CREATE TABLE `hotels` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `hotel_paquetes`
+-- Table structure for table `hotel_paquetes`
 --
 
 CREATE TABLE `hotel_paquetes` (
@@ -247,7 +231,7 @@ CREATE TABLE `hotel_paquetes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `hotel_servicios`
+-- Table structure for table `hotel_servicios`
 --
 
 CREATE TABLE `hotel_servicios` (
@@ -263,7 +247,22 @@ CREATE TABLE `hotel_servicios` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `mensajes`
+-- Table structure for table `marcas`
+--
+
+CREATE TABLE `marcas` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mensajes`
 --
 
 CREATE TABLE `mensajes` (
@@ -283,7 +282,7 @@ CREATE TABLE `mensajes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -293,7 +292,7 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Volcado de datos para la tabla `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -325,12 +324,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (26, '2017_12_20_034450_create_respuestas_definidas_table', 1),
 (27, '2017_12_20_034503_create_servicios_table', 1),
 (28, '2017_12_20_034514_create_telefonos_table', 1),
-(29, '2017_12_20_040644_create_usuarios_table', 1);
+(29, '2017_12_20_040644_create_usuarios_table', 1),
+(30, '2017_12_30_030043_create_marcas_table', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `notas`
+-- Table structure for table `notas`
 --
 
 CREATE TABLE `notas` (
@@ -347,7 +347,7 @@ CREATE TABLE `notas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `ofertas`
+-- Table structure for table `ofertas`
 --
 
 CREATE TABLE `ofertas` (
@@ -359,7 +359,7 @@ CREATE TABLE `ofertas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `paquetes`
+-- Table structure for table `paquetes`
 --
 
 CREATE TABLE `paquetes` (
@@ -389,7 +389,7 @@ CREATE TABLE `paquetes` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `paquete_documentos`
+-- Table structure for table `paquete_documentos`
 --
 
 CREATE TABLE `paquete_documentos` (
@@ -404,7 +404,7 @@ CREATE TABLE `paquete_documentos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `paquete_requisitos`
+-- Table structure for table `paquete_requisitos`
 --
 
 CREATE TABLE `paquete_requisitos` (
@@ -419,7 +419,7 @@ CREATE TABLE `paquete_requisitos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `password_resets`
+-- Table structure for table `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -431,7 +431,7 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reglas`
+-- Table structure for table `reglas`
 --
 
 CREATE TABLE `reglas` (
@@ -446,7 +446,7 @@ CREATE TABLE `reglas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `requisitos`
+-- Table structure for table `requisitos`
 --
 
 CREATE TABLE `requisitos` (
@@ -458,19 +458,10 @@ CREATE TABLE `requisitos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `requisitos`
---
-
-INSERT INTO `requisitos` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
-(7, 'Descripcion del Test 3', 'Test 3', 1, '2017-12-27 09:59:28', '2017-12-27 10:21:28'),
-(8, 'Descripcion R1', 'R1', 1, '2017-12-27 10:20:06', '2017-12-27 10:21:25'),
-(9, 'Descripción R22222', 'R222222', 1, '2017-12-27 10:20:32', '2017-12-27 10:21:26');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `reservas`
+-- Table structure for table `reservas`
 --
 
 CREATE TABLE `reservas` (
@@ -490,7 +481,7 @@ CREATE TABLE `reservas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `respuestas_definidas`
+-- Table structure for table `respuestas_definidas`
 --
 
 CREATE TABLE `respuestas_definidas` (
@@ -499,27 +490,16 @@ CREATE TABLE `respuestas_definidas` (
   `asunto` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contenido` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `encabezado` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pie` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
   `estacion_id` int(10) UNSIGNED NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `respuestas_definidas`
---
-
-INSERT INTO `respuestas_definidas` (`id`, `nombre`, `asunto`, `descripcion`, `contenido`, `encabezado`, `pie`, `estacion_id`, `activo`, `created_at`, `updated_at`) VALUES
-(3, 'Res1', 'Asunto R1', 'Desssss1', 'dfgsdgsdgdsfg fdgdfgdf fdg dgdfgdfgdfg dfg dfgdfg', 'sdgdgdgsd', 'sqwerwerwwer', 1, 1, '2017-12-27 14:42:18', '2017-12-27 22:11:17'),
-(5, 'dsfsdfsfsdfsadf', 'sdfsdfasfsaf', 'sdfxvxcvxcvzzxvxzvxzczv', 'xvzxvcxzvzxv', 'zxvzxvxzv', 'zxvzxvxcvcxbcvxbcvb', 3, 1, '2017-12-27 14:59:24', '2017-12-27 22:11:25'),
-(6, 'Otra prueba', 'aaaaaaaasasdsadfdsgdfhf', 'gdfhfghfghfgh', 'fghdfghfdhfghfghfh', 'fhdfhdfghdfgh', 'fghfhfhfghfghfgh', 3, 0, '2017-12-27 22:17:37', '2017-12-27 22:17:37');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `respuesta_adjuntos`
+-- Table structure for table `respuesta_adjuntos`
 --
 
 CREATE TABLE `respuesta_adjuntos` (
@@ -531,20 +511,10 @@ CREATE TABLE `respuesta_adjuntos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `respuesta_adjuntos`
---
-
-INSERT INTO `respuesta_adjuntos` (`id`, `activo`, `respuestasdefinidas_id`, `documentosadjuntos_id`, `created_at`, `updated_at`) VALUES
-(5, 1, 3, 12, NULL, NULL),
-(8, 1, 5, 11, NULL, NULL),
-(9, 1, 6, 11, NULL, NULL),
-(10, 1, 6, 12, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `servicios`
+-- Table structure for table `servicios`
 --
 
 CREATE TABLE `servicios` (
@@ -555,10 +525,23 @@ CREATE TABLE `servicios` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `servicios`
+--
+
+INSERT INTO `servicios` (`id`, `nombre`, `logo`, `created_at`, `updated_at`) VALUES
+(1, 'Wifi gratis', 'wifi.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'Alberca exterior', 'alberca-w.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 'TV por cable', 'alberca.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 'Servicio a cuarto', 'desayuno-w.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'Estacionamiento', 'desayuno.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(6, 'Lavandería y tintorería', 'wifi-w.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(7, 'Área infantil', 'wifi.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `telefonos`
+-- Table structure for table `telefonos`
 --
 
 CREATE TABLE `telefonos` (
@@ -575,7 +558,7 @@ CREATE TABLE `telefonos` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -583,23 +566,15 @@ CREATE TABLE `users` (
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `api_token` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `api_token`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Julia Zieme', 'apadberg@example.net', '$2y$10$AnKlRSpMhyD/P7RcPbNJHuIJgq4oQ4BoK7NdLybDPSkpGVaFmqCda', 'KUv1MpCXkY15wSQzEoTcyiasBAJUSXonmiOWiWhVg1lr7KfGPzfbVovjTjU2', 'ns2j4aF0id', '2017-12-24 03:30:27', '2017-12-24 03:30:27');
-
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Table structure for table `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -614,339 +589,348 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `acciones`
+-- Indexes for table `acciones`
 --
 ALTER TABLE `acciones`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `clientes`
+-- Indexes for table `clientes`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `clientes_email_unique` (`email`);
 
 --
--- Indices de la tabla `cliente_usuarios`
+-- Indexes for table `cliente_usuarios`
 --
 ALTER TABLE `cliente_usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `condicions`
+-- Indexes for table `condicions`
 --
 ALTER TABLE `condicions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `datos_bancks`
+-- Indexes for table `datos_bancks`
 --
 ALTER TABLE `datos_bancks`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `direccions`
+-- Indexes for table `direccions`
 --
 ALTER TABLE `direccions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `documentos_adjuntos`
+-- Indexes for table `documentos_adjuntos`
 --
 ALTER TABLE `documentos_adjuntos`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `descripcion` (`descripcion`(191));
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `documentos_solicitars`
+-- Indexes for table `documentos_solicitars`
 --
 ALTER TABLE `documentos_solicitars`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `estacions`
+-- Indexes for table `estacions`
 --
 ALTER TABLE `estacions`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `galerias`
+-- Indexes for table `galerias`
 --
 ALTER TABLE `galerias`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `hotels`
+-- Indexes for table `hotels`
 --
 ALTER TABLE `hotels`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `hotel_paquetes`
+-- Indexes for table `hotel_paquetes`
 --
 ALTER TABLE `hotel_paquetes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `hotel_servicios`
+-- Indexes for table `hotel_servicios`
 --
 ALTER TABLE `hotel_servicios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `mensajes`
+-- Indexes for table `marcas`
+--
+ALTER TABLE `marcas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `mensajes`
 --
 ALTER TABLE `mensajes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `notas`
+-- Indexes for table `notas`
 --
 ALTER TABLE `notas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `ofertas`
+-- Indexes for table `ofertas`
 --
 ALTER TABLE `ofertas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `paquetes`
+-- Indexes for table `paquetes`
 --
 ALTER TABLE `paquetes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `paquete_documentos`
+-- Indexes for table `paquete_documentos`
 --
 ALTER TABLE `paquete_documentos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `paquete_requisitos`
+-- Indexes for table `paquete_requisitos`
 --
 ALTER TABLE `paquete_requisitos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `password_resets`
+-- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Indices de la tabla `reglas`
+-- Indexes for table `reglas`
 --
 ALTER TABLE `reglas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `requisitos`
+-- Indexes for table `requisitos`
 --
 ALTER TABLE `requisitos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `reservas`
+-- Indexes for table `reservas`
 --
 ALTER TABLE `reservas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `respuestas_definidas`
+-- Indexes for table `respuestas_definidas`
 --
 ALTER TABLE `respuestas_definidas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `respuesta_adjuntos`
+-- Indexes for table `respuesta_adjuntos`
 --
 ALTER TABLE `respuesta_adjuntos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `servicios`
+-- Indexes for table `servicios`
 --
 ALTER TABLE `servicios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `telefonos`
+-- Indexes for table `telefonos`
 --
 ALTER TABLE `telefonos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`),
-  ADD UNIQUE KEY `users_api_token_unique` (`api_token`);
+  ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Indices de la tabla `usuarios`
+-- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `acciones`
+-- AUTO_INCREMENT for table `acciones`
 --
 ALTER TABLE `acciones`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `clientes`
+-- AUTO_INCREMENT for table `clientes`
 --
 ALTER TABLE `clientes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `cliente_usuarios`
+-- AUTO_INCREMENT for table `cliente_usuarios`
 --
 ALTER TABLE `cliente_usuarios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `condicions`
+-- AUTO_INCREMENT for table `condicions`
 --
 ALTER TABLE `condicions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `datos_bancks`
+-- AUTO_INCREMENT for table `datos_bancks`
 --
 ALTER TABLE `datos_bancks`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `direccions`
+-- AUTO_INCREMENT for table `direccions`
 --
 ALTER TABLE `direccions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `documentos_adjuntos`
+-- AUTO_INCREMENT for table `documentos_adjuntos`
 --
 ALTER TABLE `documentos_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `documentos_solicitars`
+-- AUTO_INCREMENT for table `documentos_solicitars`
 --
 ALTER TABLE `documentos_solicitars`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `estacions`
+-- AUTO_INCREMENT for table `estacions`
 --
 ALTER TABLE `estacions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
--- AUTO_INCREMENT de la tabla `galerias`
+-- AUTO_INCREMENT for table `galerias`
 --
 ALTER TABLE `galerias`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `hotels`
+-- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `hotel_paquetes`
+-- AUTO_INCREMENT for table `hotel_paquetes`
 --
 ALTER TABLE `hotel_paquetes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `hotel_servicios`
+-- AUTO_INCREMENT for table `hotel_servicios`
 --
 ALTER TABLE `hotel_servicios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `mensajes`
+-- AUTO_INCREMENT for table `marcas`
+--
+ALTER TABLE `marcas`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `mensajes`
 --
 ALTER TABLE `mensajes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `migrations`
+-- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
--- AUTO_INCREMENT de la tabla `notas`
+-- AUTO_INCREMENT for table `notas`
 --
 ALTER TABLE `notas`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `ofertas`
+-- AUTO_INCREMENT for table `ofertas`
 --
 ALTER TABLE `ofertas`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `paquetes`
+-- AUTO_INCREMENT for table `paquetes`
 --
 ALTER TABLE `paquetes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `paquete_documentos`
+-- AUTO_INCREMENT for table `paquete_documentos`
 --
 ALTER TABLE `paquete_documentos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `paquete_requisitos`
+-- AUTO_INCREMENT for table `paquete_requisitos`
 --
 ALTER TABLE `paquete_requisitos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `reglas`
+-- AUTO_INCREMENT for table `reglas`
 --
 ALTER TABLE `reglas`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `requisitos`
+-- AUTO_INCREMENT for table `requisitos`
 --
 ALTER TABLE `requisitos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `reservas`
+-- AUTO_INCREMENT for table `reservas`
 --
 ALTER TABLE `reservas`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `respuestas_definidas`
+-- AUTO_INCREMENT for table `respuestas_definidas`
 --
 ALTER TABLE `respuestas_definidas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- AUTO_INCREMENT de la tabla `respuesta_adjuntos`
---
-ALTER TABLE `respuesta_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT de la tabla `servicios`
---
-ALTER TABLE `servicios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `telefonos`
+-- AUTO_INCREMENT for table `respuesta_adjuntos`
+--
+ALTER TABLE `respuesta_adjuntos`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `servicios`
+--
+ALTER TABLE `servicios`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `telefonos`
 --
 ALTER TABLE `telefonos`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `usuarios`
+-- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
