@@ -62,6 +62,10 @@ Route::resource('servicio', 'ServicioController',['only'=>[
 	'index'
 	]]);
 
+Route::resource("marcas","MarcasController",['only'=>[
+	'index','store','show','update','destroy'
+	]]);
+
 //Otras rutas.........................................................
 
 
