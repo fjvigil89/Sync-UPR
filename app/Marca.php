@@ -9,7 +9,7 @@ class Marca extends Model
 	public function hotel(){
 		return $this->hasMany('Api\Hotel');
 	}
-    //
+    
     /**
 	 * The attributes that are mass assignable.
 	 *

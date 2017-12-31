@@ -121,10 +121,12 @@ class PaquetesController extends Controller
     {
          try{
             $paquete=Paquete::find($id);
-            if (!$doc) {
+            if (!$paquete) {
                 return response("No existe el Documento", 404);
             }            
-            return response()->json($paquete, 200);
+            return response()->json(
+                $paquete->toArray()
+                        ); 
         }
         catch(\Exception $e)
         {

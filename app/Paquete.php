@@ -4,6 +4,9 @@ namespace Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Api\Hotel;
+use Api\HotelPaquete;
+use Api\Paquete;
 class Paquete extends Model
 {
     //
@@ -19,6 +22,7 @@ class Paquete extends Model
     //un paquete puede pertenecer a muchos hoteles, muchos a muchos con hotel
     public function hoteles()
     {
+        
         return $this->belongsToMany("Api\Hotel",'hotel_paquetes')->withTimestamps();
     }
 
@@ -61,7 +65,7 @@ class Paquete extends Model
             'requisitos'=>$this->requisitos,       
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),            
             'documentosSolicitar' =>$this->documentosSolicitar,
-            //'hoteles'=> $this->hoteles
+            
            
            
         ];

@@ -48,6 +48,7 @@ class Hotel extends Model
         $arraux = array();
 
         foreach ($seraux as  $value) {
+
             array_push($arraux, ["id"=>$value->id,"nombre"=>$value->nombre,"destacado"=>$value->pivot->destacado,"disponible"=>$value->pivot->disponible]);
         }
         return [
