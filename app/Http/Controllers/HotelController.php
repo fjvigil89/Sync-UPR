@@ -152,7 +152,7 @@ class HotelController extends Controller
         try{
             if ($request->isMethod('patch')) 
             {
-                $id=$request->idhotel;  
+                  
                 $hotel = Hotel::find($id);
                 $hotel->activo= $request->activo;                
                 $hotel->save();
