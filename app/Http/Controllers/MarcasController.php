@@ -3,7 +3,10 @@
 namespace Api\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Log;
+use Session;
+use Redirect;
+use Api\Marca;
 class MarcasController extends Controller
 {
     /**
@@ -14,18 +17,11 @@ class MarcasController extends Controller
     public function index()
     {
         //
+        $marcas=Marca::all();        
+        return response()->json($marcas,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
+  
     /**
      * Store a newly created resource in storage.
      *
@@ -35,6 +31,19 @@ class MarcasController extends Controller
     public function store(Request $request)
     {
         //
+        try{
+                
+                $marca= Marca::create($request->all());                                                    
+                $marca->save();
+
+
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar la Marca:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -46,18 +55,22 @@ class MarcasController extends Controller
     public function show($id)
     {
         //
+        try{
+            
+             $marca= Marca::find($id);
+            if (!$marca) {
+                return response("No existe la marca", 404);
+            }            
+            return response()->json($marca, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede mostrar la marca :{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        } 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -69,6 +82,19 @@ class MarcasController extends Controller
     public function update(Request $request, $id)
     {
         //
+        try{                
+                $marca= Marca::find($id);                                                    
+                $marca->fill($request->all()); 
+                $marca->save();
+
+
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar la Marca:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -80,5 +106,19 @@ class MarcasController extends Controller
     public function destroy($id)
     {
         //
+        try{
+            $marca= Marca::find($id);
+            if (!$marca) {
+                return response("No existe la marca", 404);
+            }
+            $marca->delete();            
+
+            return response("La Marca ha sido Eliminado", 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar la Marca:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }

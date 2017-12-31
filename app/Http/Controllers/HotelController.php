@@ -46,6 +46,7 @@ class HotelController extends Controller
                 $hotel = Hotel::create($request->all()); 
                 
                 $hotel->direccion_id=$direccion->id;
+                $hotel->marca()->associate($request->idmarca);
                 
                 if($request->hasFile('ruta'))
                 {
@@ -159,7 +160,7 @@ class HotelController extends Controller
                 return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
             }              
             $hotel = Hotel::find($id);
-            $direccion= Direccion::find($hotel->direccion->id);
+            $direccion= Direccion::find($hotel->direccion->id);           
 
             $direccion->fill($request->all()); 
             $hotel->fill($request->all()); 
