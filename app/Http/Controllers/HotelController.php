@@ -46,17 +46,15 @@ class HotelController extends Controller
                 $hotel = Hotel::create($request->all()); 
                 
                 $hotel->direccion_id=$direccion->id;
-                $hotel->marca()->associate($request->idmarca);
-                
-                if($request->hasFile('ruta'))
+                $hotel->marca()->associate($request->idmarca);                
+                if($request->has('ruta'))
                 {
                     
-                    foreach($request->file('ruta') as $media)
+                    foreach($request->ruta as $media)
                     {
                             $galeria=new Galeria;
-                            $galeria->ruta = $media->getClientOriginalName();
-                            $galeria->hotel()->associate($hotel);
-                            //\Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
+                            $galeria->ruta = $media;
+                            $galeria->hotel()->associate($hotel->id);                            
                             $galeria->save();                   
                         
                     }
@@ -166,22 +164,19 @@ class HotelController extends Controller
             
             $hotel->fill($request->all()); 
         
-                if($request->hasFile('ruta'))
+              if($request->has('ruta'))
                 {
                     
-                    foreach($request->file('ruta') as $media)
+                    foreach($request->ruta as $media)
                     {
                             $galeria=new Galeria;
-                            $galeria->ruta = $media->getClientOriginalName();
-                            $galeria->hotel()->associate($hotel);
-                            //\Storage::disk('local_galeria')->put($galeria->ruta,  \File::get($media));              
-                            $galeria->save();
-                    
+                            $galeria->ruta = $media;
+                            $galeria->hotel()->associate($hotel->id);                            
+                            $galeria->save();                   
                         
-                    }           
+                    }
+                    
                 }
-        
-              
 
             $disponible= $this->multiexplode(array(","),$request->servicios_disponibles);
             $destacado= $this->multiexplode(array(","),$request->servicios_destacados);  
@@ -262,10 +257,12 @@ class HotelController extends Controller
 
     public function hotelall($id)
     {
+
         $hotel = Hotel::find($id);
         $servicios = $hotel->servicios;
         $serviciostodos = Servicio::all();
 
+        
         
 
         $info = array();
@@ -278,6 +275,8 @@ class HotelController extends Controller
             array_push($arr, $ser->pivot->destacado);
             array_push($arr,$ser->nombre);
             array_push($arr,$serviciostodos);
+            array_push($arr,$hotel->direccion->latitud);
+            array_push($arr,$hotel->direccion->longitud);
             
             array_push($info,$arr);
         }

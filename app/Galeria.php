@@ -13,7 +13,7 @@ class Galeria extends Model
 		return $this->belongsTo('Api\Hotel'); 
 	}
 
-	protected $fillable = ['hotel_id', 'ruta'];
+	protected $fillable = ['ruta'];
 
 	public function toArray()
     {

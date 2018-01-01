@@ -9,7 +9,7 @@ class Hotel extends Model
     //
     public function servicios()
     {
-    	return $this->belongsToMany('Api\Servicio','hotel_servicios')->withPivot('destacado','disponible');
+    	return $this->belongsToMany('Api\Servicio','hotel_servicios')->withTimestamps()->withPivot('destacado','disponible');
 	}
 
     public function galeria()
