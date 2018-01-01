@@ -163,6 +163,7 @@ class HotelController extends Controller
             $direccion= Direccion::find($hotel->direccion->id);           
 
             $direccion->fill($request->all()); 
+            
             $hotel->fill($request->all()); 
         
                 if($request->hasFile('ruta'))
