@@ -7,6 +7,7 @@ use Session;
 use Redirect;
 use Api\Paquete;
 use Api\PaqueteRequisito;
+use Api\HotelPaquete;
 use Log;
 class PaquetesController extends Controller
 {
@@ -238,7 +239,7 @@ class PaquetesController extends Controller
         //
         try{
             $paquete=Paquete::find($id);
-            if (!$doc) {
+            if (!$$paquete) {
                 return response("No existe el Documento", 404);
             }            
             $paquete->delete();
@@ -250,5 +251,35 @@ class PaquetesController extends Controller
             Log::critical("No se puede eliminar el Documneto:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return response("Alguna cosa esta mal", 500);
         }
+    }
+    public function activate($id)
+    {
+
+        $paquete=Paquete::find($id);
+
+        $activo = true;
+
+        if($paquete->activo)
+        {
+            $paquete->activo = 0;
+        }
+        else
+        {
+            
+            $hotel = HotelPaquete::where('paquete_id','=',$id)->get();
+
+            if($hotel['activo']){
+                $paquete->activo = 1;
+            }
+            else
+            {
+                $activo = false;
+            }
+            
+        }
+         
+        $paquete->save();
+
+        return response()->json(["activo"=>$activo],200);
     }
 }
