@@ -22,7 +22,7 @@ class ReglaController extends Controller
     {
         //
          $regla = Reglas::all();
-        return response()->json($regla,200);
+         return response()->json($regla,200);
     }
 
 
@@ -106,6 +106,15 @@ class ReglaController extends Controller
     public function update(Request $request, $id)
     {
         try{
+
+            if ($request->isMethod('patch')) 
+            {
+
+                $regla = Reglas::find($id); 
+                $regla->activo= $request->activo;                
+                $regla->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }  
             $regla = Reglas::find($id);           
             $regla->fill($request->all());  
             
@@ -168,7 +177,7 @@ class ReglaController extends Controller
                 return response("No existe la regla", 404);
             } 
             $regla->delete();                       
-            return response("La Regla ha sido Eliminado", 200);
+            return response("La Regla ha sido Eliminada", 200);
         }
         catch(\Exception $e)
         {

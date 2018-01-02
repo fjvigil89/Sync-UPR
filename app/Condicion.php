@@ -8,7 +8,7 @@ class Condicion extends Model
 {
     //
     
-	public function regla()
+	  public function regla()
     {
         return $this->belongsTo('Api\Reglas');
     }
@@ -32,4 +32,9 @@ class Condicion extends Model
                       
         ];
     }
+    public function delete()
+    {
+        
+        return parent::delete();
+    } 
 }
