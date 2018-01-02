@@ -27,4 +27,9 @@ class Acciones extends Model
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),            
         ];
     }
+    public function delete()
+    {
+        
+        return parent::delete();
+    } 
 }

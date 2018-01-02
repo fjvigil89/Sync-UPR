@@ -22,7 +22,7 @@ class ReglaController extends Controller
     {
         //
          $regla = Reglas::all();
-        return response()->json($regla,200);
+         return response()->json($regla,200);
     }
 
 
@@ -39,19 +39,20 @@ class ReglaController extends Controller
         try{
             $regla = Reglas::create($request->all());           
             
-            $condicionescant= $request->condicionescant;
+            /*$condicionescant= $request->condicionescant;
             if ($condicionescant >0 ) {
                 for ($i=0; $i < $condicionescant ; $i++) { 
 
                     $condicion=new Condicion;                
-                    $condicion->nombre= $request->Input('condicion_estados'.$i);
-                    $condicion->tipo= $request->Input('condicion_es'.$i);
+                    $condicion->nombre= $request->Input('condiciones'.$i);
+                    $condicion->tipo= $request->Input('tipo'.$i);
+                    $condicion->cumple= $request->Input('asignacion0');
                     $condicion->regla()->associate($regla);
                     $condicion->save();                    
                    
                 }
-            } 
-
+            } */
+/*
             $accionescant= $request->accionescant;
             if ($accionescant >0 ) {
                 for ($i=0; $i < $accionescant ; $i++) { 
@@ -61,7 +62,7 @@ class ReglaController extends Controller
                     $acicones->regla()->associate($regla);
                     $acicones->save();
                 }
-            }
+            }*/
 
             return response()->json(['status'=>true, 'message'=>'Regla agregada correctamente'], 200);
 
@@ -106,6 +107,15 @@ class ReglaController extends Controller
     public function update(Request $request, $id)
     {
         try{
+
+            if ($request->isMethod('patch')) 
+            {
+
+                $regla = Reglas::find($id); 
+                $regla->activo= $request->activo;                
+                $regla->save();
+                return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+            }  
             $regla = Reglas::find($id);           
             $regla->fill($request->all());  
             
@@ -168,7 +178,7 @@ class ReglaController extends Controller
                 return response("No existe la regla", 404);
             } 
             $regla->delete();                       
-            return response("La Regla ha sido Eliminado", 200);
+            return response("La Regla ha sido Eliminada", 200);
         }
         catch(\Exception $e)
         {

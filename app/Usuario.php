@@ -23,8 +23,10 @@ class Usuario extends Model
     {
         return [
         	'id'=>$this->id,
-            'username'=>$this->username,                
+            'username'=>$this->username,  
+            'name'=>$this->user->name,              
             'apellidos'=>$this->apellidos,
+            'email'=>$this->user->email, 
             'rol'=>$this->rol,                
             'activo'=>$this->activo,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
