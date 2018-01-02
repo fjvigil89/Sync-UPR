@@ -282,4 +282,34 @@ class PaquetesController extends Controller
 
         return response()->json(["activo"=>$activo],200);
     }
+     public function updaterequisito($paquete_requisito, $id){
+        
+        $paquete = Paquete::find($id);
+         //relacion con requisitos
+        $requisito= $this->multiexplode(array(","),$paquete_requisito);
+
+        $array = Array();
+
+
+        for ($i=0; $i <count($requisito)-1 ; $i++) { 
+        
+            if($requisito[$i]!= "")
+            {  
+                array_push($array, $requisito[$i]);                              
+            }
+
+        }
+
+        $paquete->requisitos()->sync($array);   
+
+    }
+    public function updatecalendario($paquete_calendario, $id)
+    {
+
+        $paquete = Paquete::find($id);
+        $disponible = $paquete_calendario;
+        $disponible = str_replace("-","/",$disponible);
+        $paquete->disponible =  $disponible;
+        $paquete->save();
+    }
 }

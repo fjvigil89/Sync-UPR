@@ -54,6 +54,8 @@ Route::get("informacion/{id}/hoteles","HotelController@hotelall");
 
 Route::get("informacion/{id}/paquete","HotelController@hotelAllPaquete");
 Route::get("paquete/{id}/active","PaquetesController@activate");
+Route::get("paquete/{req}/actualizar/{id}","PaquetesController@updaterequisito");
+Route::get("paquete/{disponible}/actualizarcalendario/{id}","PaquetesController@updatecalendario");
 
 Route::resource("paquetes","PaquetesController",['only'=>[
 	'index','store','show','update','destroy'

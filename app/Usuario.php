@@ -23,7 +23,8 @@ class Usuario extends Model
     {
         return [
         	'id'=>$this->id,
-            'username'=>$this->username,                
+            'username'=>$this->username,  
+            'name'=>$this->user->name,              
             'apellidos'=>$this->apellidos,
             'rol'=>$this->rol,                
             'activo'=>$this->activo,

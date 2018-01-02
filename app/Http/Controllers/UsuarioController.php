@@ -32,7 +32,10 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        //
+        $usuario = Usuario::all();
+        return response()->json(
+            $usuario
+            );
     }
 
     /**
@@ -71,7 +74,10 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //
+        $usuario = Usuario::find($id);
+        return response()->json(
+            $usuario->toArray()
+            );
     }
 
     /**
