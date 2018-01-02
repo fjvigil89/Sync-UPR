@@ -39,19 +39,20 @@ class ReglaController extends Controller
         try{
             $regla = Reglas::create($request->all());           
             
-            $condicionescant= $request->condicionescant;
+            /*$condicionescant= $request->condicionescant;
             if ($condicionescant >0 ) {
                 for ($i=0; $i < $condicionescant ; $i++) { 
 
                     $condicion=new Condicion;                
-                    $condicion->nombre= $request->Input('condicion_estados'.$i);
-                    $condicion->tipo= $request->Input('condicion_es'.$i);
+                    $condicion->nombre= $request->Input('condiciones'.$i);
+                    $condicion->tipo= $request->Input('tipo'.$i);
+                    $condicion->cumple= $request->Input('asignacion0');
                     $condicion->regla()->associate($regla);
                     $condicion->save();                    
                    
                 }
-            } 
-
+            } */
+/*
             $accionescant= $request->accionescant;
             if ($accionescant >0 ) {
                 for ($i=0; $i < $accionescant ; $i++) { 
@@ -61,7 +62,7 @@ class ReglaController extends Controller
                     $acicones->regla()->associate($regla);
                     $acicones->save();
                 }
-            }
+            }*/
 
             return response()->json(['status'=>true, 'message'=>'Regla agregada correctamente'], 200);
 
