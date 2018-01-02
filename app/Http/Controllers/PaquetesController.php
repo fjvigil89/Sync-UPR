@@ -173,7 +173,7 @@ class PaquetesController extends Controller
             $paquete->costosXaplazar=$request->costo_aplazo_1;
             $paquete->costosXaplaza2=$request->costo_aplazo_2;
             $paquete->costosXaplaza3=$request->costo_aplazo_3;                
-            $paquete->rating=3;           
+                     
             
 
             $paquete->disponible=$request->disp_paq_new;
@@ -218,6 +218,7 @@ class PaquetesController extends Controller
             }
             
             $paquete->save();
+            
 
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }

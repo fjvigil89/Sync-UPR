@@ -181,8 +181,10 @@ class HotelController extends Controller
             $disponible= $this->multiexplode(array(","),$request->servicios_disponibles);
             $destacado= $this->multiexplode(array(","),$request->servicios_destacados);  
             
-        
-            $igual=true;         
+            
+            $igual=true;
+            $aux2 = array();  
+            $aux = array();       
             for ($i=0; $i < count($disponible)-1 ; $i++) {         
                 for ($j=0; $j < count($destacado)-1 ; $j++) { 
                     if($disponible[$i]==$destacado[$j] )
@@ -193,14 +195,27 @@ class HotelController extends Controller
                 }
                 if(!$igual)
                 {
-                  $hotel->servicios()->sync([$disponible[$i],['destacado' => true, 'disponible'=>true]]);
+                  
+                  array_push($aux, $disponible[$i]); 
+                  
                 }
                 else{
-                  $hotel->servicios()->sync([$disponible[$i],['destacado' => false, 'disponible'=>true]]);
+                    
+                    array_push($aux2, $disponible[$i]);                   
                 }
-                
+                         
             }
+
+            if(!$igual)
+                {
+                    $hotel->servicios()->sync([$aux,['destacado' => true, 'disponible'=>true]]);
+                }
+            else{
+                    $hotel->servicios()->sync([$aux2,['destacado' => false, 'disponible'=>true]]);
+                } 
+
             $diff=true;
+            $aux3 = array();
             for ($i=0; $i < count($destacado)-1 ; $i++) {         
                 for ($j=0; $j < count($disponible)-1 ; $j++) { 
                     if($destacado[$i]==$disponible[$j] )
@@ -210,10 +225,17 @@ class HotelController extends Controller
                     }               
                 }
                 if($diff)
-                {
-                    $hotel->servicios()->sync([$destacado[$i],['destacado' => true, 'disponible'=>false]]);
-                }            
+                {   
+                    
+                    array_push($aux3, $destacado[$i]);                     
+                }
+                  
             }
+
+            if($diff)        
+                {
+                    $hotel->servicios()->sync([$aux3,['destacado' => true, 'disponible'=>false]]);
+                } 
             $direccion->save();
             $hotel->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
