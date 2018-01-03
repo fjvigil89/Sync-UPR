@@ -18,7 +18,9 @@ class CreateRespuestasDefinidasTable extends Migration
             $table->string('nombre',50);
             $table->string('asunto');
             $table->string('descripcion');  
+            $table->string('encabezado');
             $table->string('contenido');
+            $table->string('pie');
             $table->integer('estacion_id')->unsigned();            
             $table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
             $table->boolean('activo')->default(true);

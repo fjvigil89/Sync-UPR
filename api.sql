@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 29, 2017 at 10:25 PM
+-- Generation Time: Jan 02, 2018 at 07:52 PM
 -- Server version: 5.5.54-0ubuntu0.14.04.1
 -- PHP Version: 7.0.1-2+deb.sury.org~trusty+1
 
@@ -127,6 +127,14 @@ CREATE TABLE `direccions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `direccions`
+--
+
+INSERT INTO `direccions` (`id`, `pais`, `ciudad`, `codigoPostal`, `idPais`, `calle`, `longitud`, `latitud`, `estado`, `municipio`, `colonia`, `numeroEx`, `numeroInt`, `created_at`, `updated_at`) VALUES
+(1, 'Cuba', 'Pinar Del Río', 10400, 'CU', 'Marti final', '-82.3830400', '23.1330200', '', '', '', '', '', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(2, 'Cuba', 'Pinar Del Río', 10400, 'CU', 'Marti final', '-82.3830400', '23.1330200', '', '', '', '', '', '2018-01-03 05:20:51', '2018-01-03 05:20:51');
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +150,13 @@ CREATE TABLE `documentos_adjuntos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `documentos_adjuntos`
+--
+
+INSERT INTO `documentos_adjuntos` (`id`, `nombre`, `descripcion`, `activo`, `created_at`, `updated_at`) VALUES
+(1, '10906266_10153023712304729_4584394282862906461_n.jpg', 'rfrfrfr', 1, '2018-01-03 05:18:30', '2018-01-03 05:18:35');
+
 -- --------------------------------------------------------
 
 --
@@ -156,6 +171,13 @@ CREATE TABLE `documentos_solicitars` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `documentos_solicitars`
+--
+
+INSERT INTO `documentos_solicitars` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
+(1, 'edede', 'eeded', 1, '2018-01-03 05:19:08', '2018-01-03 05:19:22');
 
 -- --------------------------------------------------------
 
@@ -195,6 +217,22 @@ CREATE TABLE `galerias` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `galerias`
+--
+
+INSERT INTO `galerias` (`id`, `hotel_id`, `ruta`, `created_at`, `updated_at`) VALUES
+(1, 1, '10906266_10153023712304729_4584394282862906461_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(2, 1, '12122649_1054114641276546_2455959803988004142_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(3, 1, '12439089_607240012763346_7874849225862132478_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(4, 1, '14449752_259137121154260_7624987266665868834_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(5, 1, '14495237_259137021154270_3486446012215726724_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
+(6, 2, '10906266_10153023712304729_4584394282862906461_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(7, 2, '12122649_1054114641276546_2455959803988004142_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(8, 2, '12439089_607240012763346_7874849225862132478_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(9, 2, '14449752_259137121154260_7624987266665868834_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(10, 2, '14495237_259137021154270_3486446012215726724_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51');
+
 -- --------------------------------------------------------
 
 --
@@ -214,6 +252,14 @@ CREATE TABLE `hotels` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `hotels`
+--
+
+INSERT INTO `hotels` (`id`, `nombre`, `smallName`, `descripcion`, `rating`, `activo`, `direccion_id`, `marca_id`, `created_at`, `updated_at`) VALUES
+(1, 'Hermitasss', 'Piragua', 'hotel de la ciudad de pinar del r\'io', 2, 1, 1, 3, '2018-01-03 05:20:29', '2018-01-03 05:45:24'),
+(2, 'Hermita', 'Piragua', 'hotel de la ciudad de pinar del r\'io', 2, 1, 2, 3, '2018-01-03 05:20:51', '2018-01-03 05:21:26');
+
 -- --------------------------------------------------------
 
 --
@@ -227,6 +273,13 @@ CREATE TABLE `hotel_paquetes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `hotel_paquetes`
+--
+
+INSERT INTO `hotel_paquetes` (`id`, `hotel_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2018-01-03 05:21:56', '2018-01-03 05:21:56');
 
 -- --------------------------------------------------------
 
@@ -244,6 +297,20 @@ CREATE TABLE `hotel_servicios` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `hotel_servicios`
+--
+
+INSERT INTO `hotel_servicios` (`id`, `hotel_id`, `servicio_id`, `destacado`, `disponible`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
+(2, 1, 1, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
+(3, 1, 2, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
+(4, 1, 2, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
+(5, 2, 1, 1, 1, '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(6, 2, 1, 1, 1, '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
+(7, 2, 2, 1, 1, '2018-01-03 05:20:52', '2018-01-03 05:20:52'),
+(8, 2, 2, 1, 1, '2018-01-03 05:20:52', '2018-01-03 05:20:52');
+
 -- --------------------------------------------------------
 
 --
@@ -258,6 +325,17 @@ CREATE TABLE `marcas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `marcas`
+--
+
+INSERT INTO `marcas` (`id`, `nombre`, `url`, `logo`, `created_at`, `updated_at`) VALUES
+(1, 'Vacaciones Hoy', 'vacacioneshoy.com', 'vacaciones-hoy.jpg', '2017-12-11 10:00:00', '2017-12-27 10:00:00'),
+(2, 'Viaje Seguro', 'viajeseguro.com', 'viaje-seguro.jpg', '2017-12-04 10:00:00', '2017-12-27 10:00:00'),
+(3, 'Viájale', 'www.viajale.com', 'viajale.png', '2017-12-11 10:00:00', '2017-12-18 10:00:00'),
+(4, 'Cuba', 'http://back.resortraffic.com/viajale', 'viajale-2.png', '2017-12-31 16:13:12', '2017-12-31 16:13:12'),
+(5, 'vigil', 'http://www.vigil.mx', '10906266_10153023712304729_4584394282862906461_n.jpg', '2017-12-31 16:16:09', '2017-12-31 16:16:09');
 
 -- --------------------------------------------------------
 
@@ -386,6 +464,13 @@ CREATE TABLE `paquetes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `paquetes`
+--
+
+INSERT INTO `paquetes` (`id`, `nombre`, `tipo`, `precio`, `moneda`, `maximoAdulto`, `maximoNino`, `cantidadDias`, `cantidadNoches`, `costoAdicional`, `costosPersonaAdicional`, `costosXcancelacion`, `costosXaplazar`, `costosXaplaza2`, `costosXaplaza3`, `rating`, `destacado`, `activo`, `disponible`, `created_at`, `updated_at`) VALUES
+(1, 'paquetesssss', 'Económico Plus', 0, 'USD', 2, 2, 4, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, '01/24/2018, 01/30/2018, 01/31/2018', '2018-01-03 05:21:56', '2018-01-03 05:48:51');
+
 -- --------------------------------------------------------
 
 --
@@ -401,6 +486,13 @@ CREATE TABLE `paquete_documentos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `paquete_documentos`
+--
+
+INSERT INTO `paquete_documentos` (`id`, `activo`, `documentos_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, '2018-01-03 05:21:57', '2018-01-03 05:21:57');
+
 -- --------------------------------------------------------
 
 --
@@ -415,6 +507,13 @@ CREATE TABLE `paquete_requisitos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `paquete_requisitos`
+--
+
+INSERT INTO `paquete_requisitos` (`id`, `activo`, `requisito_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, '2018-01-03 05:21:56', '2018-01-03 05:21:56');
 
 -- --------------------------------------------------------
 
@@ -458,6 +557,13 @@ CREATE TABLE `requisitos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `requisitos`
+--
+
+INSERT INTO `requisitos` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
+(1, 'cece', 'cece', 1, '2018-01-03 05:19:16', '2018-01-03 05:19:21');
+
 -- --------------------------------------------------------
 
 --
@@ -489,12 +595,21 @@ CREATE TABLE `respuestas_definidas` (
   `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `asunto` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `encabezado` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `contenido` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pie` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `estacion_id` int(10) UNSIGNED NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `respuestas_definidas`
+--
+
+INSERT INTO `respuestas_definidas` (`id`, `nombre`, `asunto`, `descripcion`, `encabezado`, `contenido`, `pie`, `estacion_id`, `activo`, `created_at`, `updated_at`) VALUES
+(1, 'rfrfrfr', 'rcrcr', 'rcrc', 'rcrc', 'rcrc', 'rcrcr', 2, 0, '2018-01-03 05:18:47', '2018-01-03 05:18:47');
 
 -- --------------------------------------------------------
 
@@ -510,6 +625,13 @@ CREATE TABLE `respuesta_adjuntos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `respuesta_adjuntos`
+--
+
+INSERT INTO `respuesta_adjuntos` (`id`, `activo`, `respuestasdefinidas_id`, `documentosadjuntos_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -813,17 +935,17 @@ ALTER TABLE `datos_bancks`
 -- AUTO_INCREMENT for table `direccions`
 --
 ALTER TABLE `direccions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `documentos_adjuntos`
 --
 ALTER TABLE `documentos_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `documentos_solicitars`
 --
 ALTER TABLE `documentos_solicitars`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `estacions`
 --
@@ -833,27 +955,27 @@ ALTER TABLE `estacions`
 -- AUTO_INCREMENT for table `galerias`
 --
 ALTER TABLE `galerias`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `hotel_paquetes`
 --
 ALTER TABLE `hotel_paquetes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `hotel_servicios`
 --
 ALTER TABLE `hotel_servicios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `marcas`
 --
 ALTER TABLE `marcas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `mensajes`
 --
@@ -878,17 +1000,17 @@ ALTER TABLE `ofertas`
 -- AUTO_INCREMENT for table `paquetes`
 --
 ALTER TABLE `paquetes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `paquete_documentos`
 --
 ALTER TABLE `paquete_documentos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `paquete_requisitos`
 --
 ALTER TABLE `paquete_requisitos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `reglas`
 --
@@ -898,7 +1020,7 @@ ALTER TABLE `reglas`
 -- AUTO_INCREMENT for table `requisitos`
 --
 ALTER TABLE `requisitos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `reservas`
 --
@@ -908,12 +1030,12 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT for table `respuestas_definidas`
 --
 ALTER TABLE `respuestas_definidas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `respuesta_adjuntos`
 --
 ALTER TABLE `respuesta_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `servicios`
 --

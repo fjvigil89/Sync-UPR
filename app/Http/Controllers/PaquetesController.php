@@ -184,38 +184,42 @@ class PaquetesController extends Controller
             
             
             //relacion con requisitos
-            if ($request->has('paquete_requisito')) {
+            //if ($request->has('paquete_requisito')) {
                 # code...
                 
-                $requisito= $this->multiexplode(array(","),$request->paquete_requisito);
+                $requisito= $request->paquete_requisito;
 
-                $requArray-Array();
+                
+
+                $requArray=Array();
                 for ($i=0; $i <count($requisito)-1 ; $i++) { 
                     # code...
                     if($requisito[$i]!= ""){                
-                        var_dump($requArray,$requisito[$i]);
+                        array_push($requArray,(int)$requisito[$i]);
                     }
 
                 }
-                $paquete->requisitos()->sync([$requArray]);                
+                
+                $paquete->requisitos()->sync($requArray);                
 
-            }
+            //}
+
             //relacion con documnetos solicitadoc
-            if ($request->has('paquete_documentos')) {
+            //if ($request->has('paquete_documentos')) {
                 # code...
             
-                $documento= $this->multiexplode(array(","),$request->paquete_documentos);
-                $docArray-Array();
+                $documento= $request->paquete_documentos;
+                $docArray=Array();
                 for ($i=0; $i <count($documento)-1 ; $i++) { 
                     # code...
                     if($documento[$i]!= "")
                     {
-                        var_dump($docArray,$documento[$i]);
+                        array_push($docArray,(int)$documento[$i]);
                     }
 
                 }
-                $paquete->documentosSolicitar()->sync([$docArray]);
-            }
+                $paquete->documentosSolicitar()->sync($docArray);
+            //}
             
             $paquete->save();
             

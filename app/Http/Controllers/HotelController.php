@@ -148,6 +148,7 @@ class HotelController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         try{
             if ($request->isMethod('patch')) 
             {
@@ -163,7 +164,7 @@ class HotelController extends Controller
             $direccion->fill($request->all()); 
             
             $hotel->fill($request->all()); 
-        
+            
               if($request->has('ruta'))
                 {
                     
@@ -178,8 +179,8 @@ class HotelController extends Controller
                     
                 }
 
-            $disponible= $this->multiexplode(array(","),$request->servicios_disponibles);
-            $destacado= $this->multiexplode(array(","),$request->servicios_destacados);  
+            $disponible=$request->servicios_disponibles;
+            $destacado= $request->servicios_destacados;  
             
             
             $igual=true;
@@ -196,22 +197,34 @@ class HotelController extends Controller
                 if(!$igual)
                 {
                   
-                  array_push($aux, $disponible[$i]); 
+                  array_push($aux, (int)$disponible[$i]); 
                   
                 }
                 else{
                     
-                    array_push($aux2, $disponible[$i]);                   
+                    array_push($aux2, (int)$disponible[$i]);                   
                 }
                          
             }
 
+
+
             if(!$igual)
                 {
-                    $hotel->servicios()->sync([$aux,['destacado' => true, 'disponible'=>true]]);
+                    $a1=[];
+                    foreach ($aux as $key) {
+                        $a1[$key]=['destacado' => true, 'disponible'=>true];
+                    }
+                    $hotel->servicios()->sync($a1);
                 }
-            else{
-                    $hotel->servicios()->sync([$aux2,['destacado' => false, 'disponible'=>true]]);
+            else{                   
+                    $a2=[];
+                    foreach ($aux2 as $key) {
+                        $a2[$key]=['destacado' => false, 'disponible'=>true];
+                    }
+                    
+                    $hotel->servicios()->sync($a2);
+                    
                 } 
 
             $diff=true;
@@ -227,14 +240,19 @@ class HotelController extends Controller
                 if($diff)
                 {   
                     
-                    array_push($aux3, $destacado[$i]);                     
+                    array_push($aux3, (int)$destacado[$i]);                     
                 }
                   
             }
 
             if($diff)        
                 {
-                    $hotel->servicios()->sync([$aux3,['destacado' => true, 'disponible'=>false]]);
+                    $a3=[];
+                    foreach ($aux3 as $key) {
+                        $a3[$key]=['destacado' => true, 'disponible'=>false];
+                    }
+                    $hotel->servicios()->sync($a3);
+                    
                 } 
             $direccion->save();
             $hotel->save();

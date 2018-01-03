@@ -39,7 +39,7 @@ class Hotel extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['nombre', 'smallName', 'descripcion', 'rating','activo'];
+	protected $fillable = ['nombre', 'smallName', 'descripcion', 'rating'];
 
     public function toArray()
     {
