@@ -107,6 +107,7 @@ class DepartamentoController extends Controller
     public function update(Request $request, $id)
     {
         //
+
         try{
 
             if ($request->isMethod('patch')) 
@@ -135,12 +136,13 @@ class DepartamentoController extends Controller
 
                         }
 
-                    $nouser== $request->usuario_datach;
+                    $nouser = $request->usuario_datach;
+                    
                     if($nouser != "")
                     {
                         
-                        $user = Usuario::find((int)$nouser);
-                        $user->departamento_id=null;
+                        $user = Usuario::find($nouser);
+                        $user->departamento_id= 0;
                         $user->save(); 
                     }
 
@@ -191,12 +193,28 @@ class DepartamentoController extends Controller
     {
         //
          try{
-            $departamento = Departamento::find($id);
-            if (!$departamento) {
-                return response("No existe el Departamento", 404);
-            }            
-            $departamento->delete();
-            return response()->json($departamento, 200);   
+
+
+                $departamento = Departamento::find($id);
+                return $departamento;
+                if (!$departamento) {
+                    return response("No existe el Departamento", 404);
+                }
+                else
+                {
+
+                    if(count($departamento->usuarios)>=1)
+                    {
+                        foreach ($departamento->usuarios as $variable) {
+                           
+                            $variable->departamento_id= 0;
+                            $variable->save(); 
+                        }
+                    }
+                    $departamento->delete();
+                    return response()->json($departamento, 200); 
+                }            
+                  
         }
         catch(\Exception $e)
         {
