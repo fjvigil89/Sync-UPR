@@ -9,12 +9,12 @@ class Reglas extends Model
     //
     public function accion()
     {
-        return $this->belongsTo('Api\Acciones','id','regla_id');
+        return $this->hasMany('Api\Acciones','regla_id');
     }
 
     public function condiciones()
     {
-        return $this->belongsTo('Api\Condicion','id','regla_id');
+        return $this->hasMany('Api\Condicion','regla_id');
     }
 
     /**
@@ -34,7 +34,9 @@ class Reglas extends Model
             'cumple'=>$this->cumple,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             'accion'=>$this->accion,
-            'condiciones' =>$this->condiciones           
+            'condiciones' =>$this->condiciones
+
+            
         ];
     }
     public function delete()
@@ -43,6 +45,8 @@ class Reglas extends Model
         
         //eliminamos la información de la tabla hotel_paquete con detach
         //que hace referencia al usuario
+        return parent::delete();
+
         if(count($this->accion) > 0){
             foreach($this->accion as $post)
             {
@@ -56,8 +60,7 @@ class Reglas extends Model
             }
             
         }  
-        //eliminamos al usuario
-        return parent::delete();
+       
     }
     
 }

@@ -9,6 +9,7 @@ use Api\Usuario;
 use Session;
 use Redirect;
 use Hash;
+use Log; 
 class UsuarioController extends Controller
 {
     /**
@@ -137,7 +138,7 @@ class UsuarioController extends Controller
             }
             User::destroy($usuario->user_id);
             $usuario->delete();             
-            return response()->json($usuario, 200);
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
         }
         catch(\Exception $e)
         {
