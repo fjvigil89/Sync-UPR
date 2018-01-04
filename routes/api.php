@@ -86,7 +86,7 @@ Route::resource("marcas","MarcasController",['only'=>[
 	]]);
 
 //Otras rutas.........................................................
-
+Route::get('user/departamento/{id}','DepartamentoController@nousuarios');
 
 
 

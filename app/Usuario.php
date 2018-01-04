@@ -36,6 +36,7 @@ class Usuario extends Model
             'activo'=>$this->activo,
             'instancias'=> $this->instancias,
             'user'=>$this->user,
+            'departamento'=>$this->departamento_id,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
 
             
