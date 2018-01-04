@@ -62,10 +62,16 @@ class HotelController extends Controller
                 }
                 
 
-                $disponible= $this->multiexplode(array(","),$request->servicios_disponibles);
-                $destacado= $this->multiexplode(array(","),$request->servicios_destacados);  
+                $a_dispo= $this->multiexplode(array(","),$request->servicios_disponibles);
+                $a_desta= $this->multiexplode(array(","),$request->servicios_destacados);                 
+                
+
+                $disponible=$this->QuitarDoblesInteger($a_dispo);
+                $destacado=$this->QuitarDoblesInteger($a_desta);
                 
                 
+
+
                 $igual=true;         
                 for ($i=0; $i < count($disponible)-1 ; $i++) {         
                     for ($j=0; $j < count($destacado)-1 ; $j++) { 
@@ -117,6 +123,23 @@ class HotelController extends Controller
         $ready = str_replace($delimiters, $delimiters[0], $string);
         $launch = explode($delimiters[0], $ready);
         return  $launch;
+    }
+
+    public function QuitarDoblesInteger($cadena)
+    {
+        
+        for ($i=0; $i < count($cadena)-1 ; $i++) {  
+            for ($j=$i+1; $j < count($cadena)-1 ; $j++) { 
+                if($cadena[$i] == $cadena[$j])
+                {
+                    $cadena[$j]="";   
+                }
+
+            }           
+            
+
+        }
+        return $cadena;
     }
 
     /**
