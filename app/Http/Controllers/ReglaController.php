@@ -35,43 +35,41 @@ class ReglaController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try{
-            $regla = Reglas::create($request->all());           
             
-            /*$condicionescant= $request->condicionescant;
-            if ($condicionescant >0 ) {
-                for ($i=0; $i < $condicionescant ; $i++) { 
+            $regla = new Reglas;
+            $regla->nombre = $request->nombre;        
+            $regla->descripcion= $request->descripcion;  
+            $regla->cumple= $request->cumple;     
+            $regla->activo = 0;  
+            $regla->save(); 
 
-                    $condicion=new Condicion;                
-                    $condicion->nombre= $request->Input('condiciones'.$i);
-                    $condicion->tipo= $request->Input('tipo'.$i);
-                    $condicion->cumple= $request->Input('asignacion0');
-                    $condicion->regla()->associate($regla);
-                    $condicion->save();                    
-                   
-                }
-            } */
-/*
-            $accionescant= $request->accionescant;
-            if ($accionescant >0 ) {
-                for ($i=0; $i < $accionescant ; $i++) { 
-                    $acicones=new Acciones;
-                    $acicones->nombre= $request->Input('accion_nombre'.$i);
-                    $acicones->asignacion= $request->Input('accion_asignacion'.$i);                
-                    $acicones->regla()->associate($regla);
-                    $acicones->save();
-                }
-            }*/
+            for ($i=0; $i < $request->cantcond; $i++) 
+            { 
+                $condicion = new Condicion;
+                $condicion->nombre = $request->Input('condicion'.$i);
+                $condicion->tipo = $request->Input('tipo'.$i);
+                $condicion->cumple = $request->Input('asignacion'.$i);
+                $condicion->regla()->associate($regla);
+                $condicion->save();
+            }
+            for ($i=0; $i < $request->cantacciones; $i++) 
+            { 
+                $accion = new Acciones;
+                $accion->nombre = $request->Input('accionname'.$i);
+                $accion->asignacion = $request->Input('accionasig'.$i);
+                $accion->regla()->associate($regla);
+                $accion->save();
+            }
 
             return response()->json(['status'=>true, 'message'=>'Regla agregada correctamente'], 200);
-
         }
         catch(\Exception $e)
         {
-            Log::critical("No se puede agregar una Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            Log::critical("No se puede agregar la Regla:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return response("Alguna cosa esta mal", 500);
-        }
+        } 
+       
     }
 
     /**

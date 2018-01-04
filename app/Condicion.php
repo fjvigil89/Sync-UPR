@@ -18,7 +18,7 @@ class Condicion extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'tipo','cumple'];
+    protected $fillable = ['id','nombre', 'tipo','cumple'];
 
     public function toArray()
     {
