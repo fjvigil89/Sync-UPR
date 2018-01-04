@@ -77,17 +77,19 @@ class CuentaCorreoController extends Controller
 
                     $area= $request->areas_mensajeria;    
 
-                    $a=Array();
+                    //$a=Array();
                     for ($i=0; $i <count($area)-1 ; $i++) { 
                             # code...
                             if($area[$i]!= "")
                             {   
-                               array_push($a, (int)$area[$i]); 
+                               //array_push($a, (int)$area[$i]); 
+                                $email->areaMensajeria()->associate((int)$area[$i]);
+                                $email->save();                   
                             }
 
                         }
-                    $email->areaMensajeria()->associate($a[0]);
-                    $email->save();                   
+                    //$email->areaMensajeria()->associate($a[0]);
+                    
                     return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
                 }        
                 $email = CuentasCorreo::find($id);

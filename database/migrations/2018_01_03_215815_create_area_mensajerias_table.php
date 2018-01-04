@@ -16,7 +16,7 @@ class CreateAreaMensajeriasTable extends Migration
         Schema::create('area_mensajerias', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            //$table->integer('cuentasCorreo_id')->nullable()->unsigned();
+            $table->integer('cuentasCorreo_id')->nullable()->unsigned();
             $table->timestamps();
         });
     }

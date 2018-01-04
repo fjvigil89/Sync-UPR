@@ -196,24 +196,22 @@ class DepartamentoController extends Controller
 
 
                 $departamento = Departamento::find($id);
-                return $departamento;
+                
                 if (!$departamento) {
                     return response("No existe el Departamento", 404);
-                }
-                else
+                }                
+                
+                if(count($departamento->Usuario)>0)
                 {
-
-                    if(count($departamento->usuarios)>=1)
-                    {
-                        foreach ($departamento->usuarios as $variable) {
-                           
-                            $variable->departamento_id= 0;
-                            $variable->save(); 
-                        }
+                    foreach ($departamento->Usuario as $variable) {
+                       
+                        $variable->departamento_id= 0;
+                        $variable->save(); 
                     }
-                    $departamento->delete();
-                    return response()->json($departamento, 200); 
-                }            
+                }
+                $departamento->delete();
+                return response()->json($departamento, 200); 
+                            
                   
         }
         catch(\Exception $e)

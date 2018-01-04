@@ -25,10 +25,8 @@ class CreateCuentasCorreosTable extends Migration
             $table->string('servidor_saliente');
             $table->integer('puerto_saliente');
             $table->boolean('anular_puerto_saliente')->default(false);
-            $table->boolean('usar_ssl_saliente')->default(false);
-
+            $table->boolean('usar_ssl_saliente')->default(false);            
             
-            $table->integer('areaMensajeria_id')->nullable()->unsigned();
             $table->timestamps();
         });
     }

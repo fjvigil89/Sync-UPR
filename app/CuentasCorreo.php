@@ -13,7 +13,7 @@ class CuentasCorreo extends Model
     }
 
     public function areaMensajeria(){
-		return $this->belongsTo('Api\AreaMensajeria', 'areaMensajeria_id');
+		return $this->hasMany('Api\AreaMensajeria', 'areaMensajeria_id');
 	}
          /**
      * The attributes that are mass assignable.
