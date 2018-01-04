@@ -194,4 +194,18 @@ class DepartamentoController extends Controller
             return response("Alguna cosa esta mal", 500);
         }
     }
+    public function nousuarios($id)
+    {
+            $queries = Usuario::where('departamento_id', '<>', $id)->get();
+
+
+            $results = array();
+            
+            foreach ($queries as $query)
+            {
+                $results[] = [ 'id' => $query->id, 'username' => $query->username];
+            }
+            
+            return response()->json($results);
+    }
 }
