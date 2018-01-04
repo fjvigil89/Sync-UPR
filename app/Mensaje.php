@@ -12,6 +12,10 @@ class Mensaje extends Model
         return $this->belongsTo('Api\Cliente');
     }
 
+    public function areaMensajeria(){
+        return $this->belongsTo('Api\AreaMensajeria');
+    }
+
     public function respuetasDefinidas()
     {
         return $this->hasMany('Api\RespuestasDefinidas');

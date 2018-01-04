@@ -17,7 +17,12 @@ class Usuario extends Model
         return $this->belongsToMany('Api\Cliente','cliente_usuarios','usuario_id','cliente_id');
     }
 
-    protected $fillable = ['username', 'apellidos', 'rol','activo'];
+    public function departamento()
+    {
+        return $this->belongsTo('Api\Departamento');
+    }
+
+    protected $fillable = ['username', 'apellidos', 'rol', 'activo', 'instancias'];
 
     public function toArray()
     {
@@ -29,6 +34,8 @@ class Usuario extends Model
             'email'=>$this->user->email, 
             'rol'=>$this->rol,                
             'activo'=>$this->activo,
+            'instancias'=> $this->instancias,
+            'user'=>$this->user,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y')
 
             

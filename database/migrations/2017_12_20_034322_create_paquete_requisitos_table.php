@@ -17,9 +17,9 @@ class CreatePaqueteRequisitosTable extends Migration
             $table->increments('id');
             $table->boolean('activo')->default(true);
             $table->integer('requisito_id')->unsigned();
-            $table->foreign('requisito_id')->references('id')->on('requisitos')->onDelete('cascade');
+            //$table->foreign('requisito_id')->references('id')->on('requisitos')->onDelete('cascade');
             $table->integer('paquete_id')->unsigned();              
-            $table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');
+            //$table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');
             $table->timestamps();
         });
     }

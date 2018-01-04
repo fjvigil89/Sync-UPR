@@ -22,7 +22,7 @@ class CreateRespuestasDefinidasTable extends Migration
             $table->string('contenido');
             $table->string('pie');
             $table->integer('estacion_id')->unsigned();            
-            $table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
+            //$table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
             $table->boolean('activo')->default(true);
             $table->timestamps();
         });

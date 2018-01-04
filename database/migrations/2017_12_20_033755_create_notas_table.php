@@ -20,7 +20,7 @@ class CreateNotasTable extends Migration
             $table->timestamp('fecha');
             $table->boolean('destacada')->default(false);
             $table->integer('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
+            //$table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
             $table->timestamps();
         });
     }

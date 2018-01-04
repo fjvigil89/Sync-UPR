@@ -46,7 +46,19 @@ Route::resource('usuario', 'UsuarioController',['only'=>[
 	'index','store','show','update','destroy'
 	]]);
 
+Route::resource('departamento', 'DepartamentoController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
+
+Route::resource('cuentasCorreo', 'CuentaCorreoController',['only'=>[
+	'index','store','show','update','destroy'
+	]]);
+
 Route::resource("hoteles","HotelController",['only'=>[
+	'index','store','show','update','destroy'
+	]]);
+
+Route::resource("area_mensajeria","AreaMensajeriaController",['only'=>[
 	'index','store','show','update','destroy'
 	]]);
 

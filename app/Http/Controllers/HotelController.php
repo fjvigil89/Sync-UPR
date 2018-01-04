@@ -78,12 +78,14 @@ class HotelController extends Controller
                     if(!$igual)
                     {
                       $hotel->servicios()->attach($disponible[$i],['destacado' => true, 'disponible'=>true]);
+                       $igual=true;
                     }
                     else{
                       $hotel->servicios()->attach($disponible[$i],['destacado' => false, 'disponible'=>true]);
                     }
                     
                 }
+                
                 $diff=true;
                 for ($i=0; $i < count($destacado)-1 ; $i++) {         
                     for ($j=0; $j < count($disponible)-1 ; $j++) { 
@@ -98,7 +100,8 @@ class HotelController extends Controller
                         $hotel->servicios()->attach($destacado[$i],['destacado' => true, 'disponible'=>false]);
                     }            
                 }
-        
+            
+
             
             $hotel->save();
             return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
@@ -195,13 +198,12 @@ class HotelController extends Controller
                     }
                 }
                 if(!$igual)
-                {
-                  
+                {                  
                   array_push($aux, (int)$disponible[$i]); 
-                  
+                  $igual=true;
                 }
-                else{
-                    
+                else
+                {                    
                     array_push($aux2, (int)$disponible[$i]);                   
                 }
                          
@@ -209,7 +211,7 @@ class HotelController extends Controller
 
 
 
-            if(!$igual)
+            if(count($aux)>0)
                 {
                     $a1=[];
                     foreach ($aux as $key) {
@@ -217,14 +219,13 @@ class HotelController extends Controller
                     }
                     $hotel->servicios()->sync($a1);
                 }
-            else{                   
+            if(count($aux2)>0)    
+                {                   
                     $a2=[];
                     foreach ($aux2 as $key) {
                         $a2[$key]=['destacado' => false, 'disponible'=>true];
-                    }
-                    
-                    $hotel->servicios()->sync($a2);
-                    
+                    }                    
+                    $hotel->servicios()->sync($a2);                    
                 } 
 
             $diff=true;
@@ -245,7 +246,7 @@ class HotelController extends Controller
                   
             }
 
-            if($diff)        
+            if(count($aux3)>0)        
                 {
                     $a3=[];
                     foreach ($aux3 as $key) {

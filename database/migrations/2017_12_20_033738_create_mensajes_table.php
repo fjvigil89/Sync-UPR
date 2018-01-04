@@ -23,7 +23,8 @@ class CreateMensajesTable extends Migration
             $table->string('rutaPlantilla');
             $table->string('rutaAdjunto');
             $table->integer('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
+            //$table->foreign('cliente_id')->references('id')->on('clientes')->onUpdate('cascade');
+            $table->integer('areaMensajeria_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -18,9 +18,9 @@ class CreateCondicionsTable extends Migration
             $table->string('nombre');
             $table->string('tipo');         
             $table->integer('regla_id')->unsigned();
-            $table->foreign('regla_id')->references('id')->on('reglas');
+            //$table->foreign('regla_id')->references('id')->on('reglas');
             $table->integer('estacion_id')->unsigned();
-            $table->foreign('estacion_id')->references('id')->on('estacions');                          
+            //$table->foreign('estacion_id')->references('id')->on('estacions');                          
             $table->timestamps();
         });
     }

@@ -21,11 +21,11 @@ class CreateReservasTable extends Migration
             $table->timestamp('fechaSalida');
             $table->integer('operacion');
             $table->integer('cliente_id')->unsigned();
-            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
+            //$table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->integer('paquete_id')->unsigned();            
-            $table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');
+            //$table->foreign('paquete_id')->references('id')->on('paquetes')->onDelete('cascade');
             $table->integer('estacion_id')->unsigned();            
-            $table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
+            //$table->foreign('estacion_id')->references('id')->on('estacions')->onDelete('cascade');         
             $table->timestamps();
         });
     }

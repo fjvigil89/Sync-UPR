@@ -17,9 +17,9 @@ class CreateRespuestaAdjuntosTable extends Migration
             $table->increments('id');
             $table->boolean('activo')->default(true);
             $table->integer('respuestasdefinidas_id')->unsigned();
-            $table->foreign('respuestasdefinidas_id')->references('id')->on('respuestas_definidas')->onDelete('cascade');
+            //$table->foreign('respuestasdefinidas_id')->references('id')->on('respuestas_definidas')->onDelete('cascade');
             $table->integer('documentosadjuntos_id')->unsigned();            
-            $table->foreign('documentosadjuntos_id')->references('id')->on('documentos_adjuntos');
+            //$table->foreign('documentosadjuntos_id')->references('id')->on('documentos_adjuntos');
             $table->timestamps();
         });
     }

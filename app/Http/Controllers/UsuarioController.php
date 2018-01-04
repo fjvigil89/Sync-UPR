@@ -25,20 +25,7 @@ class UsuarioController extends Controller
             );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $usuario = Usuario::all();
-        return response()->json(
-            $usuario
-            );
-    }
-
-    /**
+        /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -46,24 +33,24 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $usuario = new Usuario;
-        $usuario->username=$request->input('username');
-        $usuario->apellidos =$request->input('apellidos');
-        $usuario->rol   =$request->input('rol');
         
+        try{
+            $usuario = Usuario::create($request->all());                       
 
-        $user   =   new User;
-        $user->name =   $request->input('nombre');
-        $user->email    =   $request->input('email');
-        $user->password =   Hash::make($request->input('password'));
-        $user->remember_token = Hash::make(csrf_token());       
-        $user->save();
-        $usuario->user()->associate($user);     
-        $usuario->save();
+            $user=User::create($request->all());
+            
+            $usuario->user()->associate($user);     
+            $usuario->save();
 
-        //Session::flash('message','Usuario creado exitosamente');
-        return Redirect::to('sistema');
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar un Usuario:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -74,26 +61,22 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        $usuario = Usuario::find($id);
-        return response()->json(
-            $usuario->toArray()
-            );
+        
+        try{
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return response("No existe el Usuario", 404);
+            }            
+            return response()->json($usuario, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Usuario:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-        $usuario = Usuario::find($id);
-        return response()->json(
-            $usuario->toArray()
-            );
-    }
+  
 
     /**
      * Update the specified resource in storage.
@@ -105,21 +88,37 @@ class UsuarioController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $usuario = Usuario::find($id);      
-        
-        $usuario->username=$request->input('username');
-        $usuario->apellidos =$request->input('apellidos');
-        $usuario->rol=$request->input('rol'); 
-        $user   =User::find($usuario->user_id);
-        
-        $user->name =   $request->input('nombre');
-        $user->email    =   $request->input('email');
-        $user->password =   bcrypt( $request->input('password') );
-        $user->save();      
-        $usuario->save();
 
-        //Session::flash('message','Usuario actualizado exitosamente');
-        return Redirect::to('sistema');
+        try{
+                if ($request->isMethod('patch')) 
+                {
+
+                    $usuario = Usuario::find($id);    
+                    $usuario->activo= $request->activo;                
+                    $usuario->save();
+                    return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+                }  
+            
+            
+            $usuario = Usuario::find($id);    
+            $usuario->fill($request->all());
+
+            $user=User::find($usuario->user->id);
+            $user->fill($request->all());
+            $user->save();
+
+            $usuario->user()->associate($user);     
+            $usuario->save();
+
+            
+            return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
+
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede agregar un Usuario:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 
     /**
@@ -130,12 +129,20 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
-        $usuario=Usuario::find($id);    
-            
-        User::destroy($usuario->user_id);   
-        
-        $usuario->delete(); 
-        return response()->json(['message'=>'borrado']);
+       
+        try{
+            $usuario = Usuario::find($id);
+            if (!$usuario) {
+                return response("No existe el Usuario", 404);
+            }
+            User::destroy($usuario->user_id);
+            $usuario->delete();             
+            return response()->json($usuario, 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede Mostrar el Usuario:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }

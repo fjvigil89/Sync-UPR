@@ -18,9 +18,12 @@ class CreateUsuariosTable extends Migration
             $table->string('username');         
             $table->string('apellidos');
             $table->string('rol');
+            $table->integer('instancias');
             $table->boolean('activo')->default(true);
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('departamento_id')->unsigned();
+            //$table->foreign('departamento_id')->references('id')->on('departamentos')->onDelete('cascade');
             $table->timestamps();
         });
     }

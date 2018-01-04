@@ -16,9 +16,9 @@ class CreateHotelServiciosTable extends Migration
         Schema::create('hotel_servicios', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('hotel_id')->unsigned();
-            $table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
+            //$table->foreign('hotel_id')->references('id')->on('hotels')->onDelete('cascade');
             $table->integer('servicio_id')->unsigned();
-            $table->foreign('servicio_id')->references('id')->on('servicios')->onDelete('cascade');
+            //$table->foreign('servicio_id')->references('id')->on('servicios')->onDelete('cascade');
             $table->boolean('destacado')->defaul(true);
             $table->boolean('disponible')->defaul(true);
             $table->timestamps();
