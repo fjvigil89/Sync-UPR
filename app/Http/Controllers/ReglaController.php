@@ -21,6 +21,7 @@ class ReglaController extends Controller
     public function index()
     {
         //
+        
          $regla = Reglas::all();
          return response()->json($regla,200);
     }
