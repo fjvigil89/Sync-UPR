@@ -134,6 +134,16 @@ class DepartamentoController extends Controller
                             }
 
                         }
+
+                    $nouser== $request->usuario_datach;
+                    if($nouser != "")
+                    {
+                        
+                        $user = Usuario::find((int)$nouser);
+                        $user->departamento_id=null;
+                        $user->save(); 
+                    }
+
                     $departamento->save();
                     return response()->json(['status'=>true, 'message'=>'Muchas Gracias'], 200);
                 } 
