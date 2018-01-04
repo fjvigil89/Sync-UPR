@@ -17,7 +17,9 @@ class CreateReglasTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('descripcion');
-            $table->boolean('activo')->defaul(true);
+            $table->string('cumple');
+            $table->boolean('activo')->defaul(false);
+            
             $table->timestamps();
         });
     }

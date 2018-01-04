@@ -22,7 +22,7 @@ class Reglas extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'descripcion','activo'];
+    protected $fillable = ['nombre', 'descripcion','cumple','activo'];
 
     public function toArray()
     {
@@ -31,11 +31,10 @@ class Reglas extends Model
             'nombre'=>$this->nombre,                
             'descripcion'=>$this->descripcion,
             'activo'=>$this->activo,
+            'cumple'=>$this->cumple,
             "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('d-m-Y'),
             'accion'=>$this->accion,
-            'condiciones' =>$this->condiciones
-
-            
+            'condiciones' =>$this->condiciones           
         ];
     }
     public function delete()

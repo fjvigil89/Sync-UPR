@@ -16,11 +16,11 @@ class CreateCondicionsTable extends Migration
         Schema::create('condicions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->string('tipo');         
+            $table->string('tipo');  
+            $table->string('cumple');       
             $table->integer('regla_id')->unsigned();
             $table->foreign('regla_id')->references('id')->on('reglas');
-            $table->integer('estacion_id')->unsigned();
-            $table->foreign('estacion_id')->references('id')->on('estacions');                          
+                                    
             $table->timestamps();
         });
     }
