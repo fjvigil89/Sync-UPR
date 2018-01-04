@@ -17,7 +17,8 @@ class CreateAccionesTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('asignacion');
-            $table->integer('regla_id')->unsigned()->nullable();    
+            $table->integer('regla_id')->unsigned();    
+            
             //$table->foreign('regla_id')->references('id')->on('reglas');
             $table->timestamps();
         });
