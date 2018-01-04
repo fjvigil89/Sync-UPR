@@ -9,7 +9,7 @@ class AreaMensajeria extends Model
     //
     public function cuentasCorreo()
     {
-        return $this->belongsTo('Api\CuentasCorreo', 'areaMensajeria_id');
+        return $this->belongsTo('Api\CuentasCorreo', 'cuentasCorreo_id');
     }
          /**
      * The attributes that are mass assignable.

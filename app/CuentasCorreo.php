@@ -13,7 +13,7 @@ class CuentasCorreo extends Model
     }
 
     public function areaMensajeria(){
-		return $this->hasMany('Api\AreaMensajeria', 'areaMensajeria_id');
+		return $this->hasMany('Api\AreaMensajeria', 'cuentasCorreo_id');
 	}
          /**
      * The attributes that are mass assignable.
@@ -45,7 +45,12 @@ class CuentasCorreo extends Model
     }
     public function delete()
     {
-        
+        if(count($this->areaMensajeria) > 0){
+            foreach($this->areaMensajeria as $post)
+            {
+                $post->delete();
+            }
+        }
         return parent::delete();
     } 
 }

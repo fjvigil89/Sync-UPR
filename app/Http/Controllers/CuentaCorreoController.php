@@ -7,6 +7,7 @@ use Log;
 use Session;
 use Redirect;
 use Api\CuentasCorreo;
+use Api\AreaMensajeria;
 class CuentaCorreoController extends Controller
 {
     /**
@@ -82,9 +83,13 @@ class CuentaCorreoController extends Controller
                             # code...
                             if($area[$i]!= "")
                             {   
-                               //array_push($a, (int)$area[$i]); 
-                                $email->areaMensajeria()->associate((int)$area[$i]);
-                                $email->save();                   
+                                $mensajeria= new AreaMensajeria;
+                                $mensajeria->nombre=$area[$i];
+                                $mensajeria->save();
+
+                                $mensajeria->cuentasCorreo()->associate($email);                                
+                                $mensajeria->save();
+                                              
                             }
 
                         }
@@ -114,5 +119,18 @@ class CuentaCorreoController extends Controller
     public function destroy($id)
     {
         //
+        try{
+            $email = CuentasCorreo::find($id);
+            if (!$email) {
+                return response("No existe el Correo", 404);
+            } 
+            $email->delete();                       
+            return response("El Correo ha sido Eliminado", 200);
+        }
+        catch(\Exception $e)
+        {
+            Log::critical("No se puede eliminar el Correo:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
     }
 }
