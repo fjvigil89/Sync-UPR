@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 02, 2018 at 07:52 PM
+-- Generation Time: Jan 04, 2018 at 06:40 PM
 -- Server version: 5.5.54-0ubuntu0.14.04.1
 -- PHP Version: 7.0.1-2+deb.sury.org~trusty+1
 
@@ -30,10 +30,35 @@ CREATE TABLE `acciones` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `asignacion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `regla_id` int(10) UNSIGNED DEFAULT NULL,
+  `regla_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `area_mensajerias`
+--
+
+CREATE TABLE `area_mensajerias` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuentasCorreo_id` int(10) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `area_mensajerias`
+--
+
+INSERT INTO `area_mensajerias` (`id`, `nombre`, `cuentasCorreo_id`, `created_at`, `updated_at`) VALUES
+(1, 'Correspondencia Clientes', 1, '2018-01-03 10:00:00', '2018-01-15 10:00:00'),
+(2, 'Correspondencia Hoteles', 1, '2018-01-10 10:00:00', '2018-01-04 10:00:00'),
+(3, 'Pozo de Correspondencia', 1, '2018-01-04 10:00:00', '2018-01-11 10:00:00'),
+(7, 'Pozo de Correspondencia', 2, '2018-01-05 04:25:41', '2018-01-05 04:25:41'),
+(8, 'Correspondencia Hoteles', 2, '2018-01-05 04:36:43', '2018-01-05 04:36:43');
 
 -- --------------------------------------------------------
 
@@ -49,7 +74,7 @@ CREATE TABLE `clientes` (
   `genero` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ultimaConexion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `direccion_id` int(10) UNSIGNED NOT NULL,
   `datosbanck_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -80,11 +105,42 @@ CREATE TABLE `condicions` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tipo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cumple` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `regla_id` int(10) UNSIGNED NOT NULL,
-  `estacion_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cuentas_correos`
+--
+
+CREATE TABLE `cuentas_correos` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `servidor_entrante` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `puerto_entrante` int(11) NOT NULL,
+  `anular_puerto_entrante` tinyint(1) NOT NULL DEFAULT '0',
+  `usar_ssl_entrante` tinyint(1) NOT NULL DEFAULT '0',
+  `servidor_saliente` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `puerto_saliente` int(11) NOT NULL,
+  `anular_puerto_saliente` tinyint(1) NOT NULL DEFAULT '0',
+  `usar_ssl_saliente` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cuentas_correos`
+--
+
+INSERT INTO `cuentas_correos` (`id`, `email`, `password`, `tipo`, `servidor_entrante`, `puerto_entrante`, `anular_puerto_entrante`, `usar_ssl_entrante`, `servidor_saliente`, `puerto_saliente`, `anular_puerto_saliente`, `usar_ssl_saliente`, `created_at`, `updated_at`) VALUES
+(1, 'ddf@df.d', 'dsfdsf', 'Imap', '', 0, 0, 0, '', 0, 0, 0, '2018-01-05 03:55:23', '2018-01-05 03:55:23'),
+(2, 'sdfdsf@df.d', 'sdfsdff', 'Imap', '', 0, 0, 0, '', 0, 0, 0, '2018-01-05 04:21:35', '2018-01-05 04:21:35');
 
 -- --------------------------------------------------------
 
@@ -99,6 +155,20 @@ CREATE TABLE `datos_bancks` (
   `cuenta` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `fechaIngreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `fechaTransaccion` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `departamentos`
+--
+
+CREATE TABLE `departamentos` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cuentascorreo_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -127,14 +197,6 @@ CREATE TABLE `direccions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `direccions`
---
-
-INSERT INTO `direccions` (`id`, `pais`, `ciudad`, `codigoPostal`, `idPais`, `calle`, `longitud`, `latitud`, `estado`, `municipio`, `colonia`, `numeroEx`, `numeroInt`, `created_at`, `updated_at`) VALUES
-(1, 'Cuba', 'Pinar Del Río', 10400, 'CU', 'Marti final', '-82.3830400', '23.1330200', '', '', '', '', '', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(2, 'Cuba', 'Pinar Del Río', 10400, 'CU', 'Marti final', '-82.3830400', '23.1330200', '', '', '', '', '', '2018-01-03 05:20:51', '2018-01-03 05:20:51');
-
 -- --------------------------------------------------------
 
 --
@@ -150,13 +212,6 @@ CREATE TABLE `documentos_adjuntos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `documentos_adjuntos`
---
-
-INSERT INTO `documentos_adjuntos` (`id`, `nombre`, `descripcion`, `activo`, `created_at`, `updated_at`) VALUES
-(1, '10906266_10153023712304729_4584394282862906461_n.jpg', 'rfrfrfr', 1, '2018-01-03 05:18:30', '2018-01-03 05:18:35');
-
 -- --------------------------------------------------------
 
 --
@@ -171,13 +226,6 @@ CREATE TABLE `documentos_solicitars` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `documentos_solicitars`
---
-
-INSERT INTO `documentos_solicitars` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
-(1, 'edede', 'eeded', 1, '2018-01-03 05:19:08', '2018-01-03 05:19:22');
 
 -- --------------------------------------------------------
 
@@ -217,22 +265,6 @@ CREATE TABLE `galerias` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `galerias`
---
-
-INSERT INTO `galerias` (`id`, `hotel_id`, `ruta`, `created_at`, `updated_at`) VALUES
-(1, 1, '10906266_10153023712304729_4584394282862906461_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(2, 1, '12122649_1054114641276546_2455959803988004142_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(3, 1, '12439089_607240012763346_7874849225862132478_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(4, 1, '14449752_259137121154260_7624987266665868834_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(5, 1, '14495237_259137021154270_3486446012215726724_n.jpg', '2018-01-03 05:20:29', '2018-01-03 05:20:29'),
-(6, 2, '10906266_10153023712304729_4584394282862906461_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(7, 2, '12122649_1054114641276546_2455959803988004142_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(8, 2, '12439089_607240012763346_7874849225862132478_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(9, 2, '14449752_259137121154260_7624987266665868834_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(10, 2, '14495237_259137021154270_3486446012215726724_n.jpg', '2018-01-03 05:20:51', '2018-01-03 05:20:51');
-
 -- --------------------------------------------------------
 
 --
@@ -252,14 +284,6 @@ CREATE TABLE `hotels` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `hotels`
---
-
-INSERT INTO `hotels` (`id`, `nombre`, `smallName`, `descripcion`, `rating`, `activo`, `direccion_id`, `marca_id`, `created_at`, `updated_at`) VALUES
-(1, 'Hermitasss', 'Piragua', 'hotel de la ciudad de pinar del r\'io', 2, 1, 1, 3, '2018-01-03 05:20:29', '2018-01-03 05:45:24'),
-(2, 'Hermita', 'Piragua', 'hotel de la ciudad de pinar del r\'io', 2, 1, 2, 3, '2018-01-03 05:20:51', '2018-01-03 05:21:26');
-
 -- --------------------------------------------------------
 
 --
@@ -273,13 +297,6 @@ CREATE TABLE `hotel_paquetes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `hotel_paquetes`
---
-
-INSERT INTO `hotel_paquetes` (`id`, `hotel_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2018-01-03 05:21:56', '2018-01-03 05:21:56');
 
 -- --------------------------------------------------------
 
@@ -296,20 +313,6 @@ CREATE TABLE `hotel_servicios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `hotel_servicios`
---
-
-INSERT INTO `hotel_servicios` (`id`, `hotel_id`, `servicio_id`, `destacado`, `disponible`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
-(2, 1, 1, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
-(3, 1, 2, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
-(4, 1, 2, 1, 1, '2018-01-03 05:20:30', '2018-01-03 05:45:24'),
-(5, 2, 1, 1, 1, '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(6, 2, 1, 1, 1, '2018-01-03 05:20:51', '2018-01-03 05:20:51'),
-(7, 2, 2, 1, 1, '2018-01-03 05:20:52', '2018-01-03 05:20:52'),
-(8, 2, 2, 1, 1, '2018-01-03 05:20:52', '2018-01-03 05:20:52');
 
 -- --------------------------------------------------------
 
@@ -353,6 +356,7 @@ CREATE TABLE `mensajes` (
   `rutaPlantilla` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rutaAdjunto` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cliente_id` int(10) UNSIGNED NOT NULL,
+  `areaMensajeria_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -403,7 +407,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (27, '2017_12_20_034503_create_servicios_table', 1),
 (28, '2017_12_20_034514_create_telefonos_table', 1),
 (29, '2017_12_20_040644_create_usuarios_table', 1),
-(30, '2017_12_30_030043_create_marcas_table', 1);
+(30, '2017_12_30_030043_create_marcas_table', 1),
+(31, '2018_01_03_040030_create_departamentos_table', 1),
+(32, '2018_01_03_214253_create_cuentas_correos_table', 1),
+(33, '2018_01_03_215815_create_area_mensajerias_table', 1);
 
 -- --------------------------------------------------------
 
@@ -464,13 +471,6 @@ CREATE TABLE `paquetes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `paquetes`
---
-
-INSERT INTO `paquetes` (`id`, `nombre`, `tipo`, `precio`, `moneda`, `maximoAdulto`, `maximoNino`, `cantidadDias`, `cantidadNoches`, `costoAdicional`, `costosPersonaAdicional`, `costosXcancelacion`, `costosXaplazar`, `costosXaplaza2`, `costosXaplaza3`, `rating`, `destacado`, `activo`, `disponible`, `created_at`, `updated_at`) VALUES
-(1, 'paquetesssss', 'Económico Plus', 0, 'USD', 2, 2, 4, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, '01/24/2018, 01/30/2018, 01/31/2018', '2018-01-03 05:21:56', '2018-01-03 05:48:51');
-
 -- --------------------------------------------------------
 
 --
@@ -486,13 +486,6 @@ CREATE TABLE `paquete_documentos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `paquete_documentos`
---
-
-INSERT INTO `paquete_documentos` (`id`, `activo`, `documentos_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2018-01-03 05:21:57', '2018-01-03 05:21:57');
-
 -- --------------------------------------------------------
 
 --
@@ -507,13 +500,6 @@ CREATE TABLE `paquete_requisitos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `paquete_requisitos`
---
-
-INSERT INTO `paquete_requisitos` (`id`, `activo`, `requisito_id`, `paquete_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2018-01-03 05:21:56', '2018-01-03 05:21:56');
 
 -- --------------------------------------------------------
 
@@ -537,6 +523,7 @@ CREATE TABLE `reglas` (
   `id` int(10) UNSIGNED NOT NULL,
   `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cumple` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -556,13 +543,6 @@ CREATE TABLE `requisitos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `requisitos`
---
-
-INSERT INTO `requisitos` (`id`, `descripcion`, `nombre`, `activo`, `created_at`, `updated_at`) VALUES
-(1, 'cece', 'cece', 1, '2018-01-03 05:19:16', '2018-01-03 05:19:21');
 
 -- --------------------------------------------------------
 
@@ -604,13 +584,6 @@ CREATE TABLE `respuestas_definidas` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `respuestas_definidas`
---
-
-INSERT INTO `respuestas_definidas` (`id`, `nombre`, `asunto`, `descripcion`, `encabezado`, `contenido`, `pie`, `estacion_id`, `activo`, `created_at`, `updated_at`) VALUES
-(1, 'rfrfrfr', 'rcrcr', 'rcrc', 'rcrc', 'rcrc', 'rcrcr', 2, 0, '2018-01-03 05:18:47', '2018-01-03 05:18:47');
-
 -- --------------------------------------------------------
 
 --
@@ -625,13 +598,6 @@ CREATE TABLE `respuesta_adjuntos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `respuesta_adjuntos`
---
-
-INSERT INTO `respuesta_adjuntos` (`id`, `activo`, `respuestasdefinidas_id`, `documentosadjuntos_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -688,6 +654,7 @@ CREATE TABLE `users` (
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `api_token` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -704,8 +671,10 @@ CREATE TABLE `usuarios` (
   `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `apellidos` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `rol` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `instancias` int(11) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `user_id` int(10) UNSIGNED NOT NULL,
+  `departamento_id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -718,6 +687,12 @@ CREATE TABLE `usuarios` (
 -- Indexes for table `acciones`
 --
 ALTER TABLE `acciones`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `area_mensajerias`
+--
+ALTER TABLE `area_mensajerias`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -740,9 +715,21 @@ ALTER TABLE `condicions`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `cuentas_correos`
+--
+ALTER TABLE `cuentas_correos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `datos_bancks`
 --
 ALTER TABLE `datos_bancks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `departamentos`
+--
+ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -894,7 +881,8 @@ ALTER TABLE `telefonos`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD UNIQUE KEY `users_api_token_unique` (`api_token`);
 
 --
 -- Indexes for table `usuarios`
@@ -912,6 +900,11 @@ ALTER TABLE `usuarios`
 ALTER TABLE `acciones`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `area_mensajerias`
+--
+ALTER TABLE `area_mensajerias`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
 -- AUTO_INCREMENT for table `clientes`
 --
 ALTER TABLE `clientes`
@@ -927,25 +920,35 @@ ALTER TABLE `cliente_usuarios`
 ALTER TABLE `condicions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `cuentas_correos`
+--
+ALTER TABLE `cuentas_correos`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `datos_bancks`
 --
 ALTER TABLE `datos_bancks`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `departamentos`
+--
+ALTER TABLE `departamentos`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `direccions`
 --
 ALTER TABLE `direccions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `documentos_adjuntos`
 --
 ALTER TABLE `documentos_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `documentos_solicitars`
 --
 ALTER TABLE `documentos_solicitars`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `estacions`
 --
@@ -955,22 +958,22 @@ ALTER TABLE `estacions`
 -- AUTO_INCREMENT for table `galerias`
 --
 ALTER TABLE `galerias`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `hotels`
 --
 ALTER TABLE `hotels`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `hotel_paquetes`
 --
 ALTER TABLE `hotel_paquetes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `hotel_servicios`
 --
 ALTER TABLE `hotel_servicios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `marcas`
 --
@@ -985,7 +988,7 @@ ALTER TABLE `mensajes`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `notas`
 --
@@ -1000,17 +1003,17 @@ ALTER TABLE `ofertas`
 -- AUTO_INCREMENT for table `paquetes`
 --
 ALTER TABLE `paquetes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `paquete_documentos`
 --
 ALTER TABLE `paquete_documentos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `paquete_requisitos`
 --
 ALTER TABLE `paquete_requisitos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `reglas`
 --
@@ -1020,7 +1023,7 @@ ALTER TABLE `reglas`
 -- AUTO_INCREMENT for table `requisitos`
 --
 ALTER TABLE `requisitos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `reservas`
 --
@@ -1030,12 +1033,12 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT for table `respuestas_definidas`
 --
 ALTER TABLE `respuestas_definidas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `respuesta_adjuntos`
 --
 ALTER TABLE `respuesta_adjuntos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `servicios`
 --
