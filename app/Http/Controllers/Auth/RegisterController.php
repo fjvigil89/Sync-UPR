@@ -1,9 +1,9 @@
 <?php
 
-namespace Api\Http\Controllers\Auth;
+namespace changePwd\Http\Controllers\Auth;
 
-use Api\User;
-use Api\Http\Controllers\Controller;
+use changePwd\User;
+use changePwd\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -58,7 +58,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \Api\User
+     * @return \changePwd\User
      */
     protected function create(array $data)
     {

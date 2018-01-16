@@ -13,7 +13,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Api\User::class, function (Faker $faker) {
+$factory->define(changePwd\User::class, function (Faker $faker) {
     static $password;
 
     return [

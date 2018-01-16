@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Providers;
+namespace changePwd\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;

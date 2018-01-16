@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Exceptions;
+namespace changePwd\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

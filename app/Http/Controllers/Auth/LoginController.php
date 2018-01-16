@@ -1,8 +1,8 @@
 <?php
 
-namespace Api\Http\Controllers\Auth;
+namespace changePwd\Http\Controllers\Auth;
 
-use Api\Http\Controllers\Controller;
+use changePwd\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller

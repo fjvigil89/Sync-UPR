@@ -33,7 +33,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "Api\\": "app/"
+            "changePwd\\": "app/"
         }
     },
     "autoload-dev": {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Http\Middleware;
+namespace changePwd\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

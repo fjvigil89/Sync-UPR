@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Providers;
+namespace changePwd\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Api\Events\Event' => [
-            'Api\Listeners\EventListener',
+        'changePwd\Events\Event' => [
+            'changePwd\Listeners\EventListener',
         ],
     ];
 
