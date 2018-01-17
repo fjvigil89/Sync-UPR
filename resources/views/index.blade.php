@@ -59,21 +59,21 @@
             <form action="{{ url('change') }}" method="get">
               <div class="form-group">
                 <label for="user">Usuario</label>
-                <input type="text" class="form-control" placeholder="Usuario" aria-describedby="user">
+                <input type="text" class="form-control" placeholder="Usuario" aria-describedby="user" name="username">
               </div>
               <div class="form-group">
                 <label for="password">Contraseña actual</label>
-                <input type="password" class="form-control" placeholder="Contraseña actual" aria-describedby="password">
+                <input type="password" class="form-control" placeholder="Contraseña actual" aria-describedby="password" name="passwd">
               </div>
               <div class="form-group">
                 <label for="newPassword">Nueva contraseña</label>
-                <input type="password" class="form-control" placeholder="Nueva contraseña" aria-describedby="password">
+                <input type="password" class="form-control" placeholder="Nueva contraseña" aria-describedby="password" name="newpasswd" id="password">
               </div>
               <div class="form-group">
                 <label for="repeatNewPassword">Repetir nueva contraseña</label>
-                <input type="password" class="form-control" placeholder="Repetir nueva contraseña" aria-describedby="password">  
+                <input type="password" class="form-control" placeholder="Repetir nueva contraseña" aria-describedby="password" id="repetir_password" name="repetir_password">  
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">Cambiar</button>
             </form>
           </div>       
         </div>
@@ -83,5 +83,26 @@
     <script src="js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">      
+        var password = document.getElementById("password");
+        var confirm_password = document.getElementById("repetir_password");
+
+          $(document).on('change', '#password', function(){          
+            validatePassword();
+          })
+          $(document).on('keyup', '#repetir_password', function(){          
+            validatePassword(); 
+          })
+
+          function validatePassword(){
+            if(password.value != confirm_password.value) {
+              confirm_password.setCustomValidity("Las contraseñas no coinciden");
+            } else {
+              confirm_password.setCustomValidity('');
+            }
+          }
+
+
+    </script>
   </body>
 </html>
