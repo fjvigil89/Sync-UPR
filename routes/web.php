@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('change','ChangePwdController@change');
+Route::get('saber_ldap','SyncController@saberLdap');

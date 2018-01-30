@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Providers;
+namespace Sync\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'changePwd\Events\Event' => [
-            'changePwd\Listeners\EventListener',
+        'Sync\Events\Event' => [
+            'Sync\Listeners\EventListener',
         ],
     ];
 

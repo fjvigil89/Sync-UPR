@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => changePwd\User::class,
+        'model' => Sync\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

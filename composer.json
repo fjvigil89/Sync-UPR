@@ -33,7 +33,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "changePwd\\": "app/"
+            "Sync\\": "app/"
         }
     },
     "autoload-dev": {

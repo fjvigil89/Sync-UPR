@@ -1,9 +1,9 @@
 <?php
 
-namespace changePwd\Http\Controllers\Auth;
+namespace Sync\Http\Controllers\Auth;
 
-use changePwd\User;
-use changePwd\Http\Controllers\Controller;
+use Sync\User;
+use Sync\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -58,7 +58,7 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \changePwd\User
+     * @return \Sync\User
      */
     protected function create(array $data)
     {

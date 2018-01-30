@@ -1,8 +1,8 @@
 <?php
 
-namespace changePwd\Http\Controllers\Auth;
+namespace Sync\Http\Controllers\Auth;
 
-use changePwd\Http\Controllers\Controller;
+use Sync\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller

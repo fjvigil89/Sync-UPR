@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Providers;
+namespace Sync\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'changePwd\Model' => 'changePwd\Policies\ModelPolicy',
+        'Sync\Model' => 'Sync\Policies\ModelPolicy',
     ];
 
     /**

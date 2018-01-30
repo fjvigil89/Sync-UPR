@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Providers;
+namespace Sync\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'changePwd\Http\Controllers';
+    protected $namespace = 'Sync\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.

@@ -1,9 +1,9 @@
 <?php
 
-namespace changePwd\Http\Controllers;
+namespace Sync\Http\Controllers;
 
 use Illuminate\Http\Request;
-use changePwd\ldap;
+use Sync\ldap;
 class ChangePwdController extends Controller
 {
    

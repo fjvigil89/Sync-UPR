@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd;
+namespace Sync;
 
 use Illuminate\Database\Eloquent\Model;
 use Log;
@@ -13,7 +13,7 @@ class ldap extends Model
     private $use_ldap=true;
     private $ldap_dn="DC=upr,DC=edu,DC=cu";
     private $ldap_usr_dom="@upr.edu.cu";
-    private $ldap_host="ldap://ad.upr.edu.cu/";
+    private $ldap_host="ldap://10.2.24.36";
     private $message = array(); 
 
     public function  GetMessage()
@@ -98,16 +98,14 @@ class ldap extends Model
             return false;//response("Alguna cosa esta mal", 500);
         }
 
-
     }
-
 
 	function changePassword($user,$oldPassword,$newPassword,$newPasswordCnf){
 		  global $message;
 		  global $message_css;
 		    
 		  error_reporting(0);
-		  //ldap_connect($this->ldapserver);
+		  
 		  
 		  $ldap = ldap_connect($this->ldap_host,389);
 		  if (!$ldap)
@@ -216,8 +214,10 @@ class ldap extends Model
 		    for($i=0;$i<$len;$i++) {
 		        $newPassw .= "{$newPassword1{$i}}\000";
 		    }
-		   	$encodedPass = array('userpassword' => base64_encode($newPassw)); 
-		  
+		   	$encodedPass = array('userpassword' =>base64_encode($newPassw)); 
+		    //dd($ldap);
+		   	//ldap_modify($ldap, $userDn, array('unicodePwd' => $newPass));
+
 		  if (!@ldap_modify($ldap,$user_dn,$encodedPass)){
 		    $error = @ldap_error($ldap);
 		    $errno = @ldap_errno($ldap);
@@ -235,6 +235,41 @@ class ldap extends Model
 		   dd($message);
 
 	}
+
+	function saberLdap(){
+		try{
+			 $ldap_dn_GrupoRedes="OU=_GrupoRedes,DC=upr,DC=edu,DC=cu";
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname');
+
+
+	        $results = @ldap_search($ldap,$ldap_dn_GrupoRedes,'(|(uid=*)(samaccountname=*))',$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+		    $lista = Array();
+		    for ($i=0; $i < count($user_data); $i++) { 
+		    	var_dump($lista,$user_data[$i]["name"][0]);
+		    }		    
+ 			
+		    return $lista;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
+	}
  
+
 
 }

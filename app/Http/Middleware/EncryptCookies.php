@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Http\Middleware;
+namespace Sync\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as Middleware;
 

@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => changePwd\User::class,
+            'model' => Sync\User::class,
         ],
 
         // 'users' => [

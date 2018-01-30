@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Exceptions;
+namespace Sync\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

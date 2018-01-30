@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Http\Middleware;
+namespace Sync\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

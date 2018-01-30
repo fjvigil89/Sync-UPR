@@ -1,6 +1,6 @@
 <?php
 
-namespace changePwd\Providers;
+namespace Sync\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
