@@ -18,7 +18,8 @@
   <body>
     
     <a href="{{ url('saber_ldap') }}">saber ldap </a>
-             
+         
+            
          
   </body>
 </html>

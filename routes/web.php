@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('saber_ldap','SyncController@saberLdap');
+
+Route::get('{samaccountname}', function(){
+	return view('Imagen.imagen');
+});

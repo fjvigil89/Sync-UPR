@@ -4,6 +4,7 @@ namespace Sync;
 
 use Illuminate\Database\Eloquent\Model;
 use Log;
+use Sync\Assets;
 class ldap extends Model
 {
     //
@@ -13,8 +14,10 @@ class ldap extends Model
     private $use_ldap=true;
     private $ldap_dn="DC=upr,DC=edu,DC=cu";
     private $ldap_usr_dom="@upr.edu.cu";
-    private $ldap_host="ldap://10.2.24.36";
+    private $ldap_host="ldap://10.2.24.35";
     private $message = array(); 
+
+    
 
     public function  GetMessage()
     {
@@ -254,12 +257,8 @@ class ldap extends Model
 
 	        $results = @ldap_search($ldap,$ldap_dn_GrupoRedes,'(|(uid=*)(samaccountname=*))',$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);
-		    $lista = Array();
-		    for ($i=0; $i < count($user_data); $i++) { 
-		    	var_dump($lista,$user_data[$i]["name"][0]);
-		    }		    
- 			
-		    return $lista;
+
+		    return $user_data;
 
 	    }
        catch(\Exception $e)
@@ -269,7 +268,167 @@ class ldap extends Model
         }
 
 	}
+
+	function ActualizarCamposIdEmpleado($empleado, $departamento){
+		  try{
+			  global $message;
+			  global $message_css;
+			    
+			  error_reporting(0);
+				$ldap = ldap_connect($this->ldap_host,389);
+			  if (!$ldap)
+		            throw new Exception("Cant connect ldap server", 1);
+		            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+			  
+			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+			    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
+	       
+
+		        $results = @ldap_search($ldap,$this->ldap_dn,'(|(employeenumber='.trim($empleado['idExpediente']).')(employeeid='.trim($empleado['noCi']).'))',$attrib); 
+
+			    $user_data = @ldap_get_entries($ldap, $results);
+			  	$user_entry = @ldap_first_entry($ldap, $results);
+			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+	 			$user_id = $user_data[0]["samaccountname"][0];
+	       
+	            //$entry = array(
+			     		//'streetAddress' =>  $empleado['direccion'],
+			     		//'givenname' => ucwords(strtolower($empleado['nombre'])),
+			    		//'sn' => ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])),
+			    		//'name' => ucwords(strtolower($empleado['nombre'])).' '.ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])),
+			    		//'physicaldeliveryofficename' => $departamento
+			     //);
+			    $entry['givenname']=ucwords(strtolower($empleado['nombre']));
+			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[givenname].";
+			  	}
+
+			    $entry['sn']=ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2']));
+			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[sn].";
+			  	}
+
+			    $entry['streetAddress']=$empleado['direccion'];
+
+			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[streetAddress].";
+			  	}
+			 
+
+			    $entry['physicaldeliveryofficename']=$departamento;		  	
+			  	//$entry["telephonenumber"]= $empleado['telefonoParticular'];		  	  			  
+
+			  	if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change $entry[physicaldeliveryofficename]., please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[physicaldeliveryofficename].";
+
+			  	}
+
+			   $entry['employeenumber']=$empleado['idExpediente'];	
+			  	if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change $entry[employeenumber]., please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[employeenumber].";
+
+			  	}
+
+			  	$entry['employeeid']=$empleado['noCi'];	
+			  	if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change $entry[employeenumber]., please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[employeenumber].";
+
+			  	}
+
+
+			  	return true;
+		  	}
+		  	catch(\Exception $e)
+        	{
+            	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+		  		return false;
+		  	}
+		  	//dd($message);
+	}
+
+	function thumbnailphoto($samaccountname)
+	{
+		 try{
+			  global $message;
+			  global $message_css;
+			    
+			  error_reporting(0);
+				$ldap = ldap_connect($this->ldap_host,389);
+			  if (!$ldap)
+		            throw new Exception("Cant connect ldap server", 1);
+		            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+			  
+			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+			    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
+	       
+
+		        $results = @ldap_search($ldap,$this->ldap_dn,'(samaccountname='.trim($samaccountname).')',$attrib); 
+
+			    $user_data = @ldap_get_entries($ldap, $results);
+			  	$user_entry = @ldap_first_entry($ldap, $results);
+			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+	 			$thumbnailphoto = $user_data[0]["thumbnailphoto"][0];
+
+			  	return $thumbnailphoto;
+		  	}
+		  	catch(\Exception $e)
+        	{
+            	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+		  		return false;
+		  	}
+		  	//dd($message);
+	}
  
 
-
+	
 }
