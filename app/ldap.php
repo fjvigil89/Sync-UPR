@@ -241,7 +241,8 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes="OU=_GrupoRedes,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 //"OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"OU=_GrupoRedes,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
@@ -269,7 +270,7 @@ class ldap extends Model
 
 	}
 
-	function ActualizarCamposIdEmpleado($empleado, $departamento){
+	function ActualizarCamposIdEmpleado($empleado, $departamento, $cargo, $username){
 		  try{
 			  global $message;
 			  global $message_css;
@@ -288,21 +289,28 @@ class ldap extends Model
 			    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
 	       
 
-		        $results = @ldap_search($ldap,$this->ldap_dn,'(|(employeenumber='.trim($empleado['idExpediente']).')(employeeid='.trim($empleado['noCi']).'))',$attrib); 
+		        $results = @ldap_search($ldap,$this->ldap_dn,'(|(employeenumber='.trim($empleado['idExpediente']).')(employeeid='.trim($empleado['noCi']).')(samaccountname='.$username.'))',$attrib); 		        
 
-			    $user_data = @ldap_get_entries($ldap, $results);
+		        
+
+			    $user_data = ldap_get_entries($ldap, $results);			    
 			  	$user_entry = @ldap_first_entry($ldap, $results);
 			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
 	 			$user_id = $user_data[0]["samaccountname"][0];
 	       
-	            //$entry = array(
-			     		//'streetAddress' =>  $empleado['direccion'],
-			     		//'givenname' => ucwords(strtolower($empleado['nombre'])),
-			    		//'sn' => ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])),
-			    		//'name' => ucwords(strtolower($empleado['nombre'])).' '.ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])),
-			    		//'physicaldeliveryofficename' => $departamento
-			     //);
-			    $entry['givenname']=ucwords(strtolower($empleado['nombre']));
+	            $entry = array(
+			    'streetAddress' =>trim(ucwords(strtolower(  $empleado['direccion']))),
+			    'givenname' => trim(ucwords(strtolower($empleado['nombre']))),
+			    'sn' => trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2']))),
+			    'employeenumber'=> $empleado['idExpediente'],	
+			    'employeeid'=> $empleado['noCi'],	
+			    'physicaldeliveryofficename' => trim(ucwords(strtolower($departamento))),
+			    'description'=>ucwords(strtolower($cargo)),
+			    );
+			    
+			    
+
+			    //$entry['givenname']=ucwords(strtolower($empleado['nombre']));
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);
 				    $errno = @ldap_errno($ldap);
@@ -314,7 +322,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			    $entry['sn']=ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2']));
+			    /*$entry['sn']=ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2']));
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);
 				    $errno = @ldap_errno($ldap);
@@ -326,7 +334,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[sn].";
 			  	}
 
-			    $entry['streetAddress']=$empleado['direccion'];
+			    $entry['streetAddress']=ucwords(strtolower($empleado['direccion']));
 
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);
@@ -340,7 +348,7 @@ class ldap extends Model
 			  	}
 			 
 
-			    $entry['physicaldeliveryofficename']=$departamento;		  	
+			    $entry['physicaldeliveryofficename']=ucwords(strtolower($departamento));
 			  	//$entry["telephonenumber"]= $empleado['telefonoParticular'];		  	  			  
 
 			  	if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
@@ -381,6 +389,21 @@ class ldap extends Model
 
 			  	}
 
+			  	$entry['description']=ucwords(strtolower($cargo));	
+			  	if (!@ldap_mod_add($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change $cargo, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $cargo";
+
+			  	}*/
+
+			  	
+
 
 			  	return true;
 		  	}
@@ -397,7 +420,9 @@ class ldap extends Model
 		 try{
 			  global $message;
 			  global $message_css;
-			    
+			  
+			  $exist = true;
+			  $thumbnailphoto="";
 			  error_reporting(0);
 				$ldap = ldap_connect($this->ldap_host,389);
 			  if (!$ldap)
@@ -417,8 +442,29 @@ class ldap extends Model
 			    $user_data = @ldap_get_entries($ldap, $results);
 			  	$user_entry = @ldap_first_entry($ldap, $results);
 			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
-	 			$thumbnailphoto = $user_data[0]["thumbnailphoto"][0];
 
+			  	if($user_data[0]['distinguishedname'][0] == "")$exist = false;  
+	        	if(strstr($user_data[0]['distinguishedname'][0], '_Bajas')) $exist = false;
+
+	 			if (!$exist) {
+
+	 				// Nombre de la imagen					
+					$path = public_path() . "\images\intranetclassic.png";
+					 
+					// Extensión de la imagen
+					$type = pathinfo($path, PATHINFO_EXTENSION);
+					 
+					// Cargando la imagen
+					$data = file_get_contents($path);
+					 
+					// Decodificando la imagen en base64
+					//$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+	 				return $data;
+	 			}
+	 			
+	 			$thumbnailphoto = $user_data[0]["thumbnailphoto"][0];
+	 			
 			  	return $thumbnailphoto;
 		  	}
 		  	catch(\Exception $e)

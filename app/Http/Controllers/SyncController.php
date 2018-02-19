@@ -23,7 +23,7 @@ class SyncController extends Controller
     	 $assets = new Assets;
 
     	 $lista_ldap = $ldap->saberLdap();    	    	 
-    	 
+    	  
     	 
 	    	 //dentro de un for con la cantidad de la lista_ldap
 	    	 for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
@@ -32,21 +32,27 @@ class SyncController extends Controller
 	    	 	 		//$empleado = $assets->findEmpleadoCi($lista_ldap[$i]["employeeid"][0]);
 	    	 			$empleado = $assets->findEmpleado($lista_ldap[$i]["employeenumber"][0]);
 
+
+
 	    	 	 		if ($empleado == "No Existe") {
 	    	 	 			array_push($array_NoUpdate, $lista_ldap[$i]["displayname"][0]);
-	    	 	 			break;
+	    	 	 			//break;
 	    	 	 		}
 
 	    	 	 		$departamento = $assets->findDepartaento(trim($empleado[0]["idCcosto"]));    	 	 	
+
+	    	 	 		$cargo = $assets->findCargo(trim($empleado[0]["idCargo"]));
+
 					 
 
-					 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento))
+					 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
 					 	{
 					 		array_push($array_NoUpdate, $lista_ldap[$i]["displayname"][0]);
 					 	}
+					 	
 					
 	    	 	 }
-	    	  	catch(\Exception $e)
+	    	 	catch(\Exception $e)
         		{
         			
             		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
@@ -55,10 +61,44 @@ class SyncController extends Controller
 		  		}
 
 	    	}
-	    		 
-		 dd($array_NoUpdate);
-		
-	    
+
+	    	//Para actualizar a todos los que no tienen en el ad el numero del trabajador
+	    	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
+	    	 	try{
+	    	 		
+	    	 	 		$empleado = $assets->findEmpleadoCi($lista_ldap[$i]["employeeid"][0]);
+	    	 			//$empleado = $assets->findEmpleado($lista_ldap[$i]["employeenumber"][0]);
+
+
+
+	    	 	 		if ($empleado == "No Existe") {
+	    	 	 			array_push($array_NoUpdate, $lista_ldap[$i]["displayname"][0]);
+	    	 	 			//break;
+	    	 	 		}
+
+	    	 	 		$departamento = $assets->findDepartaento(trim($empleado[0]["idCcosto"]));    	 	 	
+
+	    	 	 		$cargo = $assets->findCargo(trim($empleado[0]["idCargo"]));
+
+					 
+
+					 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
+					 	{
+					 		array_push($array_NoUpdate, $lista_ldap[$i]["displayname"][0]);
+					 	}
+					
+	    	 	 }
+	    	 	catch(\Exception $e)
+        		{
+        			
+            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+		  		 	array_push($array_NoUpdate, $lista_ldap[$i]["displayname"][0]);
+			  		
+		  		}
+
+	    	}
+
+	    dd($array_NoUpdate);
     	
     }
 

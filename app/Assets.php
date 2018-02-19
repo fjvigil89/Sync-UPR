@@ -68,4 +68,18 @@ class Assets extends Model
         }
 	}
 
+	function findCargo($idCargo)
+	{
+		try{
+			$response = $this->client->get("rh_cargos/".$idCargo."?_format=json");
+			$data = collect(json_decode($response->getBody()->getContents(),true));				
+			return trim($data['descCargo']);
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al cargo del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+	}
+
 }
