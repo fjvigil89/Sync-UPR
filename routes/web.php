@@ -11,11 +11,15 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('index');
-});
+});*/
 
-Route::get('saber_ldap','SyncController@saberLdap');
+Route::get('/','SyncController@saberLdap');
+
+//Route::get('saber_ldap','SyncController@saberLdap');
+
+Route::get('update/{employeenumber}','SyncController@update');
 
 Route::get('{samaccountname}', function(){
 	return view('Imagen.imagen');

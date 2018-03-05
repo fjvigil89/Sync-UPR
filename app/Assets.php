@@ -32,7 +32,7 @@ class Assets extends Model
         {
             Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             //return response("Alguna cosa esta mal", 500);
-            return "No Existe";
+            return "Alguna cosa esta mal";
         }
 	}
 
@@ -49,7 +49,7 @@ class Assets extends Model
         {
             Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             //return response("Alguna cosa esta mal", 500);
-            return "No Existe";
+            return "Alguna cosa esta mal";
         }
 	}
 
@@ -59,12 +59,21 @@ class Assets extends Model
 			$response = $this->client->get("areas_responsabilidads?_format=json&idCcosto=".$idCosto);
 			$data = collect(json_decode($response->getBody()->getContents(),true));	
 
+			if(trim($data["hydra:member"][0]['descArearesponsabilidad']) == "")
+				{
+					$response = $this->client->get("centro_costos/".$idCosto."?_format=json");
+					$data = collect(json_decode($response->getBody()->getContents(),true));	
+					
+					return trim($data["descCcosto"]);
+				}
+
 			return trim($data["hydra:member"][0]['descArearesponsabilidad']);
 		}
 		catch(\Exception $e)
         {
             Log::critical("No se puede acceder al área de responzabilidad del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return response("Alguna cosa esta mal", 500);
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
         }
 	}
 
@@ -73,12 +82,35 @@ class Assets extends Model
 		try{
 			$response = $this->client->get("rh_cargos/".$idCargo."?_format=json");
 			$data = collect(json_decode($response->getBody()->getContents(),true));				
+
 			return trim($data['descCargo']);
 		}
 		catch(\Exception $e)
         {
             Log::critical("No se puede acceder al cargo del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return response("Alguna cosa esta mal", 500);
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
+        }
+	}
+
+	function findDocente($idTrabajador)
+	{
+		try{	
+				
+				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&docente=1");
+				$data = collect(json_decode($response->getBody()->getContents(),true));					
+				
+				if(trim($data["hydra:member"][0]['idExpediente']) == "")
+				{	
+					return false;
+				}			
+				return true;			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return false;
         }
 	}
 
