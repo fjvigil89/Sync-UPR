@@ -16,6 +16,10 @@ class Assets extends Model
 	{		# code...
 		$this->client = new Client([                              
                 'base_uri' => 'http://apiassets.upr.edu.cu/',
+                'headers'=>[
+                			"Content-Type" => "text/html",
+                			"charset" => "utf-8",
+                			],
                 ]);
 	}
 
@@ -98,6 +102,27 @@ class Assets extends Model
 		try{	
 				
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&docente=1");
+				$data = collect(json_decode($response->getBody()->getContents(),true));					
+				
+				if(trim($data["hydra:member"][0]['idExpediente']) == "")
+				{	
+					return false;
+				}			
+				return true;			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return false;
+        }
+	}
+
+	function findBaja($idTrabajador)
+	{
+		try{	
+				
+				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=1");
 				$data = collect(json_decode($response->getBody()->getContents(),true));					
 				
 				if(trim($data["hydra:member"][0]['idExpediente']) == "")

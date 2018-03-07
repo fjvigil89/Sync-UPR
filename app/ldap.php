@@ -241,8 +241,7 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=NO Mirtha,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"OU=Direccion de Planificacion y Estadistica,OU=DIRECTOR GENERAL 1,OU=Areas Centrales,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"OU=Direccion de Contabilidad y Finanzas,OU=DIRECTOR GENERAL 1,OU=Areas Centrales,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"OU=Direccion,OU=DIRECTOR GENERAL 1,OU=Areas Centrales,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"//"OU=Areas Centrales,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-			 //"OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";//"OU=_GrupoRedes,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)

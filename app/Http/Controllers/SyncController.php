@@ -26,13 +26,16 @@ class SyncController extends Controller
 	    	 $ldap = new ldap();
 	    	 $assets = new Assets;	    	 
 	    	 $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+	    	 $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+	    	 $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+	    	 $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 	    	 $lista_ldap = $ldap->saberLdap(); 
+	    	 
 	    	 $group= array();
 	    	 //dd($lista_ldap);
 	    	 	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
-		    	 	try{
-		    	 		
-		    	 	 		//$empleado = $assets->findEmpleadoCi($lista_ldap[$i]["employeeid"][0]);
+		    	 	try{		    	 		
+		    	 	 		
 		    	 			$empleado = $assets->findEmpleado($lista_ldap[$i]["employeenumber"][0]);
 		    	 			
 		    	 	 		if ($empleado == "No Existe") {
@@ -41,7 +44,7 @@ class SyncController extends Controller
 		    	 	 		}
 
 		    	 	 		if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
-		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
+		    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
 		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
 			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
 			  		 			
@@ -49,56 +52,70 @@ class SyncController extends Controller
 		    	 	 		}
 
 		    	 	 		
-		    	 	 		$departamento = $assets->findDepartaento(trim($empleado[0]["idCcosto"]));
-		    	 	 		if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
-		    	 	 			
-		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
-
+		    	 	 		$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
+		    	 	 		if ($TrabBaja) {		    	 	 			
+		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $bajas);	
 
 		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
 			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
 			  		 			
-			  		 			break;
+			  		 			//break;
+		    	 	 		}
+		    	 	 		else{
+
+			    	 	 		$departamento = $assets->findDepartaento(trim($empleado[0]["idCcosto"]));
+			    	 	 		if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
+			    	 	 			
+			    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
+
+
+			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
+				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
+				  		 			
+				  		 			//break;
+			    	 	 		}
+
+			    	 	 		
+			    	 	 		$cargo = $assets->findCargo(trim($empleado[0]["idCargo"]));
+
+			    	 	 		if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
+			    	 	 			
+			    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
+			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
+				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
+				  		 			
+
+				  		 			//break;
+			    	 	 		}
+			    	 	 		
+							 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
+							 	{
+							 		array_push($array_NoUpdate, $lista_ldap[$i]);
+							 		//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
+							 		//return false;
+							 	}
+							 	else{
+
+							 		array_push($array_Update, $lista_ldap[$i]);
+							 	}
+
+							 	
+							 	
+							 	$profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
+							 	
+			    	 	 		if (!$profes) {
+			    	 	 			
+			    	 	 			$group= ['UPR-Wifi'];
+			    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
+			    	 	 		}
+			    	 	 		if($profes){
+			    	 	 			$group= ['UPR-Wifi'];	
+			    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);	    	 	 			
+			    	 	 			//$ldap->addtogroup($lista_ldap[$i]['samaccountname'], $group);
+			    	 	 		}
 		    	 	 		}
 
-		    	 	 		
-		    	 	 		$cargo = $assets->findCargo(trim($empleado[0]["idCargo"]));
-
-		    	 	 		if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
-		    	 	 			
-		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
-			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
-			  		 			
-
-			  		 			break;
-		    	 	 		}
-		    	 	 		
-						 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
-						 	{
-						 		array_push($array_NoUpdate, $lista_ldap[$i]);
-						 		//return false;
-						 	}
-						 	else{
-
-						 		array_push($array_Update, $lista_ldap[$i]);
-						 	}
-						 	
-						 	
-						 	$profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
-						 	
-		    	 	 		if (!$profes) {
-		    	 	 			
-		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado".$lista_ldap[$i]["displayname"][0]." por no ser docente:");
-			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);		  		 			
-
-			  		 			break;
-		    	 	 		}
-		    	 	 		if($profes == true){
-		    	 	 			$group= ['UPR-Wifi'];		    	 	 			
-		    	 	 			//$ldap->addtogroup($lista_ldap[$i]['samaccountname'], $group);
-		    	 	 		}
-
-						 	
+						 $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");		
 						 	
 						
 		    	 	 }
@@ -121,6 +138,7 @@ class SyncController extends Controller
 
 		return view('update',[
 			'array'=>$array_NoUpdate,
+			'arrayProcesados'=>$array_Update, 
 			'time' => $time_total,
 			'noUpdate' => count($array_NoUpdate),
 			'update' => count($array_Update),
