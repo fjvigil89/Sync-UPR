@@ -241,7 +241,7 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=CUM Consolacion del Sur,OU=CUM,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
@@ -318,11 +318,6 @@ class ldap extends Model
 				    $message_css = "yes";	    
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
-
-			    
-
-			  	
-
 
 			  	return true;
 		  	}
@@ -457,5 +452,83 @@ class ldap extends Model
 
 	}
 
+	function Disable($samaccountname)
+ 	{
+
+ 		$ldap = ldap_connect($this->ldap_host,389);
+		  if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	    ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	    ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+	    
+
+	    $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+	    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname','useraccountcontrol'); 
+   
+
+        $results = @ldap_search($ldap,$this->ldap_dn,'(samaccountname='.trim($samaccountname).')',$attrib); 
+
+		
+	    $user_data = @ldap_get_entries($ldap, $results);
+	  	$user_entry = @ldap_first_entry($ldap, $results);
+	  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+	  	
+	  	
+        $entry = array(
+			    'useraccountcontrol' =>"514",
+			    );
+			    
+	    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+		    $error = @ldap_error($ldap);
+		    $errno = @ldap_errno($ldap);
+		    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+		    $message[] = "$errno - $error";
+	  	}
+	  	else {
+		    $message_css = "yes";	    
+		    $message[] = "The change for $user_id has been used $entry[givenname].";
+	  	}
+ 	}
+
+	function Enable($samaccountname)
+ 	{
+
+ 		$ldap = ldap_connect($this->ldap_host,389);
+		  if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	    ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	    ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  	   
+
+	    $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+	    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname', 'useraccountcontrol'); 
+   
+
+        $results = @ldap_search($ldap,$this->ldap_dn,'(samaccountname='.trim($samaccountname).')',$attrib); 
+
+	    $user_data = @ldap_get_entries($ldap, $results);
+	  	$user_entry = @ldap_first_entry($ldap, $results);
+	  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+
+         $entry = array(
+			    'useraccountcontrol' =>"512",
+			    );
+			    
+			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[givenname].";
+			  	}
+ 	}
 	
 }
