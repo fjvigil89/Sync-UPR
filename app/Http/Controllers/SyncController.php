@@ -9,6 +9,7 @@ use Sync\Assets;
 use Log;
 use Carbon\Carbon;
 use Collection;
+use Mail;
 class SyncController extends Controller
 {
     
@@ -66,6 +67,8 @@ class SyncController extends Controller
 			    	 	 			
 			    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
 
+			    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
 
 			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
 				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);			  		 			
@@ -77,6 +80,8 @@ class SyncController extends Controller
 			    	 	 			
 			    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
 
+			    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
 			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
 				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
 				  		 			
@@ -85,7 +90,8 @@ class SyncController extends Controller
 							 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
 							 	{
 							 		array_push($array_NoUpdate, $lista_ldap[$i]);
-							 		//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);								 		
+							 		//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);	
+							 		//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);							 		
 							 	}
 							 	else{
 
@@ -117,6 +123,7 @@ class SyncController extends Controller
 		    	 	 }
 		    	 	catch(\Exception $e)
 	        		{
+	        			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 	        			//$ldap->mover($lista_ldap[$i]['dn'], $NoSync);		        			
 	            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
 			  		 	array_push($array_NoUpdate, $lista_ldap[$i]);
@@ -146,6 +153,35 @@ class SyncController extends Controller
     	 $ldap = new ldap();
     	 return $ldap->thumbnailphoto($samaccountname);     	 
 
+    }
+
+    function SendEmail($nombre, $email)
+    {
+
+    	$data = array(
+			'name' => $nombre,
+			'email' => $email
+		);	
+
+		
+	
+		Mail::send('Email.notification', $data, function ($message) use ($data) { 
+		    $message->from('frank.vigil@upr.edu.cu', 'UPRedes');
+		    //$message->sender('john@johndoe.com', 'John Doe');
+			
+		    $message->to($data['email'].'@upr.edu.cu', $data['name']);
+		
+		    //$message->cc('john@johndoe.com', 'John Doe');
+		    //$message->bcc('john@johndoe.com', 'John Doe');
+		
+		    //$message->replyTo('john@johndoe.com', 'John Doe');
+		
+		    $message->subject('Sincronizador Automático de la UPR');
+		
+		    //$message->priority(3);
+		
+		    //$message->attach('pathToFile');
+		});
     }
    
 }

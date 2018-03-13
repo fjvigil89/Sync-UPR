@@ -24,3 +24,5 @@ Route::get('update/{employeenumber}','SyncController@update');
 Route::get('{samaccountname}', function(){
 	return view('Imagen.imagen');
 });
+
+Route::get('email/sendEmail/{nombre}/{email}', 'SyncController@SendEmail');

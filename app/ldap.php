@@ -241,7 +241,7 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=CUM Consolacion del Sur,OU=CUM,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
@@ -299,13 +299,13 @@ class ldap extends Model
 	 			$user_id = $user_data[0]["samaccountname"][0];
 	       
 	            $entry = array(
-			    'streetAddress' =>trim(ucwords(strtolower(  $empleado['direccion']))),
-			    'givenname' => trim(ucwords(strtolower($empleado['nombre']))),
-			    'sn' => trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2']))),
+			    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['direccion'])))),
+			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
+			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
 			    //'employeenumber'=> $empleado['idExpediente'],	
 			    'employeeid'=> $empleado['noCi'],	
-			    'physicaldeliveryofficename' => trim(ucwords(strtolower($departamento))),
-			    'description'=>ucwords(strtolower($cargo)),
+			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
+			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),
 			    );
 			    
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
