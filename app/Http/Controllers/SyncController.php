@@ -45,6 +45,7 @@ class SyncController extends Controller
 		    	 	 			break;
 		    	 	 		}
 
+
 		    	 	 		if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
 
 		    	 	 			$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
@@ -53,7 +54,8 @@ class SyncController extends Controller
 		    	 	 		}
 
 		    	 	 		
-		    	 	 		$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);	 		
+		    	 	 		$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);	 	
+
 		    	 	 		if ($TrabBaja) {
 		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $bajas);	
 		    	 	 			$ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
@@ -76,7 +78,7 @@ class SyncController extends Controller
 				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);			  		 			
 			    	 	 		}
 
-			    	 	 		
+
 			    	 	 		$cargo = $assets->findCargo(trim(ltrim($empleado[0]["idCargo"])));
 			    	 	 		if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
 
@@ -101,15 +103,15 @@ class SyncController extends Controller
 				    	 	 		if (!$profes) {
 				    	 	 			
 				    	 	 			$group= ['UPR-Wifi'];
-				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
+				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
 				    	 	 		}
 				    	 	 		if($profes){
 				    	 	 			$group= ['UPR-Wifi'];	
 				    	 	 			//$ldap->addtogroup($lista_ldap[$i]['samaccountname'], $group);
 
-				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $Docente);				    	 			
-				    	 	 		}
-				    	 	 		$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");	
+				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);				    	 			
+				    	 	 		}		
+				    	 	 		$ldap->Enable($lista_ldap[$i]['samaccountname'][0]);		    	 	 		
 							 	}
 							 	
 		    	 	 		}

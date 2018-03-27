@@ -241,7 +241,7 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
