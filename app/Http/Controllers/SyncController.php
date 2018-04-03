@@ -21,26 +21,26 @@ class SyncController extends Controller
      */
     public function saberLdap(Request $request)
     {
-    	$time_start = microtime(true);
-	    	 $array_NoUpdate= array();
-	    	 $array_Update= array();
-	    	 $ldap = new ldap();
-	    	 $assets = new Assets;	    	 
-	    	 $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-	    	 $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-	    	 $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-	    	 $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-	    	 $lista_ldap = $ldap->saberLdap(); 
-	    	 $group= array();
+    	 $time_start = microtime(true);    	 
+		 $array_NoUpdate= array();
+		 $array_Update= array();
+		 $ldap = new ldap();
+		 $assets = new Assets;	    	 
+		 $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+		 $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+		 $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+		 $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+		 $lista_ldap = $ldap->saberLdap(); 
+		 $group= array();
 	    	 
 	    	 	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
 		    	 	try{		    	 		
 		    	 	 		
 
-		    	 			$empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0])));
+		    	 			$empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
 		    	 			
 		    	 	 		if ($empleado == "No Existe") {
-		    	 	 			$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+		    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 		    	 	 			array_push($array_NoUpdate, $lista_ldap[$i]);
 		    	 	 			break;
 		    	 	 		}
@@ -48,7 +48,7 @@ class SyncController extends Controller
 
 		    	 	 		if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
 
-		    	 	 			$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+		    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
 			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);			  		 			
 		    	 	 		}
@@ -67,6 +67,7 @@ class SyncController extends Controller
 		    	 	 		else{
 		    	 	 			
 			    	 	 		$departamento = $assets->findDepartaento(trim(ltrim($empleado[0]["idCcosto"])));
+
 
 			    	 	 		if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
 			    	 	 			
@@ -102,14 +103,14 @@ class SyncController extends Controller
 							 		$profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
 				    	 	 		if (!$profes) {
 				    	 	 			
-				    	 	 			$group= ['UPR-Wifi'];
-				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
+				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
+				    	 	 			$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0]);	 
+				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
 				    	 	 		}
 				    	 	 		if($profes){
-				    	 	 			$group= ['UPR-Wifi'];	
-				    	 	 			//$ldap->addtogroup($lista_ldap[$i]['samaccountname'], $group);
-
-				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);				    	 			
+				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);
+				    	 	 			$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0]);
+				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
 				    	 	 		}		
 				    	 	 		$ldap->Enable($lista_ldap[$i]['samaccountname'][0]);		    	 	 		
 							 	}
@@ -143,6 +144,49 @@ class SyncController extends Controller
 			'total' => count($lista_ldap)-1,
 		]);
     	
+    }
+
+    function AddGrupoNoDocente($distinguishedname)
+    {
+    	$ldap = new ldap();
+    	//grupos que se les adicionar'an al usuario 
+    	$group= [
+    		'Domain Users',
+    		'UPR-Wifi',
+    		'UPR-Jabber',
+    		'UPR-Correo-Internacional'
+    	];
+    	
+		$ldap->addtogroup($distinguishedname, $group);
+    }
+
+    function AddGrupoDocente($distinguishedname)
+    {
+    	$ldap = new ldap();
+
+    	//grupos que se les adicionar'an al usuario 
+    	$group= [
+    		'Domain Users',
+    		'UPR-Wifi',
+    		'UPR-Jabber',
+    		'UPR-Internet-Profes',
+    		'UPR-Correo-Internacional'
+    	];
+		
+		$ldap->addtogroup($distinguishedname, $group);
+    }
+
+    function DeleteGrupo($distinguishedname)
+    {
+    	$ldap = new ldap();
+
+    	//grupos que se quiere que no se le sean eliminado al usuario
+    	//$group= [
+    		//'',    		
+    	//];
+		//$ldap->deltogroup($distinguishedname, $group);	
+
+		$ldap->deltogroup($distinguishedname);	
     }
 
     function thumbnailphoto($samaccountname)

@@ -11,11 +11,12 @@
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('index');
-});*/
+});
 
-Route::get('/','SyncController@saberLdap');
+Route::get('saber_ldap','SyncController@saberLdap');
+
 
 //Route::get('saber_ldap','SyncController@saberLdap');
 

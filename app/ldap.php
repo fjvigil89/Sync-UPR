@@ -419,36 +419,100 @@ class ldap extends Model
 		}
  	}
 
- 	function addtogroup($username, $groupname) {
+ 	function addtogroup($distinguishedname, $groupname) { 
 
- 		$ldap = ldap_connect($this->ldap_host,389);
-		  if (!$ldap)
-	            throw new Exception("Cant connect ldap server", 1);
-	            
-	    ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
-	    ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+ 		$ldap = ldap_connect($this->ldap_host);
+        if (!$ldap)
+            throw new Exception("Cant connect ldap server", 1);
+        
+      
 
-	    list($newRdn, $null) = explode(',', $distinguishedName, 2);
-
-	    $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
-			  
-			  // bind anon and find user by uid
-	    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
-   
+        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+          
 
 
+        $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+        
+        $attrib = array('cn','distinguishedName'); 
+        
+	  foreach ($groupname as $item) {
+	  	
+	  	$results = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($item).')',$attrib);
+        $user_data = @ldap_get_entries($ldap, $results);
 
-		  foreach ($groupname as $item) {
-		  	# code...		  	
-		  	$dn = "CN=".$item.",OU=_Gestion,DC=upr,DC=edu,DC=cu";
-		  	$addme["member"] = $dn;		  			  	
-		  	$res = @ldap_mod_add($ldap, $dn, $addme);
-		  	if (!$res) {
-		    	$errstr .= ldap_error($ldap);		    
-		 	 }
-		  }
-		  
-		  dd($errstr);
+	  	$dn = $user_data[0]['dn'];
+
+	  	$addme["member"] = $distinguishedname;
+	  	$res = @ldap_mod_add($ldap, $dn, $addme);
+	  	if (!$res) {
+	    	$errstr .= ldap_error($ldap);		    
+	 	}
+	  }
+		  	
+	}
+
+	//funci'on que elimina los grupos asociados a los usuarios 
+	//revive direccion del usuario dentro del ldap
+	//recive grupos que se desean no eliminar del usuario
+	function deltogroup($distinguishedname, $groupname = null) { 
+	
+		//conexi'on con el ldap de la UPR
+ 		$ldap = ldap_connect($this->ldap_host);
+        if (!$ldap)
+            throw new Exception("Cant connect ldap server", 1);
+
+        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);   
+
+        //Construcci'on del objeto de la conexi'on del ldap de la UPR
+        $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+        
+        //atributos que quiero que me debuelva la consulta
+        $attrib = array('cn','distinguishedName','objectcategory'); 
+
+        //resultado de la consulta al ldap pasandole el filtro para los grupos
+        $results = @ldap_search($ldap,$this->ldap_dn,'(	objectcategory=CN=Group,CN=Schema,CN=Configuration,DC=upr,DC=edu,DC=cu)',$attrib);
+
+        //listado de todos los grupos
+        $user_data = @ldap_get_entries($ldap, $results);
+
+      for ($i=0; $i <$user_data['count'] ; $i++) 
+      { 
+
+      	$exist = true;
+      	$igual = false;
+
+      	//para descartar grupos de distintas Unidades Organizativas
+	    if(strstr($user_data[$i]['distinguishedname'][0], 'Builtin')) $exist = false;
+	    if(strstr($user_data[$i]['distinguishedname'][0], 'Users')) $exist = false;
+
+	    if ($exist) {
+	    	$dn = $user_data[$i]['dn'];
+
+	    	//comparaci'on de los grupos de la UPR con los grupos que no se desean eliminar al usuario
+	    	if($groupname != null)
+	    	{
+		    	foreach ($groupname as $value) {
+		    		$grourNoDeleter = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($value).')',$attrib);
+			        $group_data = @ldap_get_entries($ldap, $grourNoDeleter);
+				  	if($dn = $group_data[0]['dn']){$igual = true;}
+		    	}
+	    	}
+
+	    	if (!$igual) {	    		
+			  	$addme["member"] = $distinguishedname;
+			  	$res = @ldap_mod_del($ldap, $dn, $addme);
+			  	if (!$res) {
+			    	$errstr .= ldap_error($ldap);		    
+			 	}	
+	    	}
+		  	
+	    }
+
+	  	
+	  }	  
+	
 
 	}
 
