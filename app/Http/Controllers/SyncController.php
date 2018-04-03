@@ -57,6 +57,8 @@ class SyncController extends Controller
 		    	 	 		$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);	 	
 
 		    	 	 		if ($TrabBaja) {
+
+		    	 	 			$this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
 		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $bajas);	
 		    	 	 			$ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
@@ -104,13 +106,14 @@ class SyncController extends Controller
 				    	 	 		if (!$profes) {
 				    	 	 			
 				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-				    	 	 			$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0]);	 
+				    	 	 			$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));	 
 				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
 				    	 	 		}
 				    	 	 		if($profes){
-				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);
-				    	 	 			$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0]);
-				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
+				    	 	 			
+				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);				
+				    	 	 			$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
+				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
 				    	 	 		}		
 				    	 	 		$ldap->Enable($lista_ldap[$i]['samaccountname'][0]);		    	 	 		
 							 	}
@@ -146,47 +149,62 @@ class SyncController extends Controller
     	
     }
 
-    function AddGrupoNoDocente($distinguishedname)
+    function AddGrupoNoDocente($distinguishedname, $idEmployeed)
     {
     	$ldap = new ldap();
+    	$assets = new Assets;
+
     	//grupos que se les adicionar'an al usuario 
     	$group= [
     		'Domain Users',
     		'UPR-Wifi',
     		'UPR-Jabber',
     		'UPR-Correo-Internacional'
-    	];
-    	
+    	];   	
+
+    	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
+    		array_push($group, $value);
+    	}
+
 		$ldap->addtogroup($distinguishedname, $group);
     }
 
-    function AddGrupoDocente($distinguishedname)
+    function AddGrupoDocente($distinguishedname, $idEmployeed)
     {
-    	$ldap = new ldap();
-
-    	//grupos que se les adicionar'an al usuario 
-    	$group= [
+    	$ldap = new ldap();    
+    	$assets = new Assets;
+    	//grupos que se les adicionar'an al usuario     	
+    	$group = [
     		'Domain Users',
     		'UPR-Wifi',
     		'UPR-Jabber',
     		'UPR-Internet-Profes',
     		'UPR-Correo-Internacional'
     	];
-		
+
+    	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
+    		array_push($group, $value);
+    	}
+
 		$ldap->addtogroup($distinguishedname, $group);
-    }
+    }    
 
     function DeleteGrupo($distinguishedname)
     {
     	$ldap = new ldap();
 
     	//grupos que se quiere que no se le sean eliminado al usuario
-    	//$group= [
-    		//'',    		
-    	//];
-		//$ldap->deltogroup($distinguishedname, $group);	
+    	$group= [    		
+    		'UPR-Internet-NoDocente',
+    		'UPR-Ras',
+    	];
+		$ldap->deltogroup($distinguishedname, $group);	
+    }
 
-		$ldap->deltogroup($distinguishedname);	
+    function DeleteGrupoBaja($distinguishedname)
+    {
+    	$ldap = new ldap();
+    	$ldap->deltogroup($distinguishedname);
     }
 
     function thumbnailphoto($samaccountname)

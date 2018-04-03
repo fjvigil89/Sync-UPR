@@ -139,4 +139,34 @@ class Assets extends Model
         }
 	}
 
+	function SaberGrupo($idTrabajador)
+    {
+    	try{
+			$array = Array();
+
+			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
+			$data = collect(json_decode($response->getBody()->getContents(),true));			
+			
+			if(trim($data["hydra:member"][0]['idCargo']) == '9387'){ array_push($array, 'UPR-Internet-Rector');}
+			if(trim($data["hydra:member"][0]['idCargo']) == '1046'){ array_push($array, 'UPR-Internet-Rector');}
+			if(trim($data["hydra:member"][0]['idCargo']) == '1052'){ array_push($array, 'UPR-Internet-Rector');}
+			if(trim($data["hydra:member"][0]['idCategoria']) == '5'){ array_push($array, 'UPR-Internet-Cuadros');}
+			if(trim($data["hydra:member"][0]['idCategoria']) == '6'){ array_push($array, 'UPR-Internet-Cuadros');}
+			if(trim($data["hydra:member"][0]['idCategoria']) == '7'){ array_push($array, 'UPR-Internet-Cuadros');}
+			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '09'){ array_push($array, 'UPR-Internet-Master');}
+			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '08'){ array_push($array, 'UPR-Internet-Doctores');}
+
+			
+			return $array;
+		
+			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
+        }
+    }
+
 }

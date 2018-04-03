@@ -477,43 +477,43 @@ class ldap extends Model
         //listado de todos los grupos
         $user_data = @ldap_get_entries($ldap, $results);
 
+        
       for ($i=0; $i <$user_data['count'] ; $i++) 
       { 
 
       	$exist = true;
       	$igual = false;
+      	$errstr = "";
 
       	//para descartar grupos de distintas Unidades Organizativas
 	    if(strstr($user_data[$i]['distinguishedname'][0], 'Builtin')) $exist = false;
 	    if(strstr($user_data[$i]['distinguishedname'][0], 'Users')) $exist = false;
 
-	    if ($exist) {
-	    	$dn = $user_data[$i]['dn'];
-
-	    	//comparaci'on de los grupos de la UPR con los grupos que no se desean eliminar al usuario
-	    	if($groupname != null)
+	    if ($exist) 
 	    	{
-		    	foreach ($groupname as $value) {
-		    		$grourNoDeleter = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($value).')',$attrib);
-			        $group_data = @ldap_get_entries($ldap, $grourNoDeleter);
-				  	if($dn = $group_data[0]['dn']){$igual = true;}
+		    	$dn = $user_data[$i]['dn'];	    	
+		    	//comparaci'on de los grupos de la UPR con los grupos que no se desean eliminar al usuario	    	
+		    	if($groupname != null)
+		    	{
+			    	foreach ($groupname as $value) {
+			    		$grourNoDeleter = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($value).')',$attrib);		    		
+				        $group_data = @ldap_get_entries($ldap, $grourNoDeleter);
+					  	if($dn == $group_data[0]['dn']){$igual = true;}
+			    	}
+		    	}	    	
+		    	if (!$igual) {
+				  	$addme["member"] = $distinguishedname;			  	
+				  	$res = @ldap_mod_del($ldap, $dn, $addme);
+				  	if (!$res) {
+				    	$errstr .= ldap_error($ldap);		    
+				 	}	
 		    	}
+			  	
 	    	}
-
-	    	if (!$igual) {	    		
-			  	$addme["member"] = $distinguishedname;
-			  	$res = @ldap_mod_del($ldap, $dn, $addme);
-			  	if (!$res) {
-			    	$errstr .= ldap_error($ldap);		    
-			 	}	
-	    	}
-		  	
-	    }
 
 	  	
-	  }	  
+	  	}
 	
-
 	}
 
 	function Disable($samaccountname)
