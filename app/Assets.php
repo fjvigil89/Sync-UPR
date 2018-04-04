@@ -28,7 +28,7 @@ class Assets extends Model
 		try{
 			
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
-				$data = collect(json_decode($response->getBody()->getContents(),true));					
+				$data = collect(json_decode($response->getBody()->getContents(),true));							
 				return $data["hydra:member"];
 			
 		}
@@ -147,6 +147,7 @@ class Assets extends Model
 			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
 			$data = collect(json_decode($response->getBody()->getContents(),true));			
 			
+			//Kuotas
 			if(trim($data["hydra:member"][0]['idCargo']) == '9387'){ array_push($array, 'UPR-Internet-Rector');}
 			if(trim($data["hydra:member"][0]['idCargo']) == '1046'){ array_push($array, 'UPR-Internet-Rector');}
 			if(trim($data["hydra:member"][0]['idCargo']) == '1052'){ array_push($array, 'UPR-Internet-Rector');}
@@ -156,6 +157,30 @@ class Assets extends Model
 			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '09'){ array_push($array, 'UPR-Internet-Master');}
 			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '08'){ array_push($array, 'UPR-Internet-Doctores');}
 
+			//para listas
+			if(trim($data["hydra:member"][0]['idCcosto']) == '4008'){ array_push($array, 'ProfesoresCRAI');}
+
+			//para Grupos
+			if(trim($data["hydra:member"][0]['idCcosto']) == '4016')
+				{ 
+					array_push($array, 'Domain Admins');
+					array_push($array, 'UPR-Admin-Internet-Kuota');
+					array_push($array, 'UPR-Redmine');
+					array_push($array, 'UPR-Ids');
+					array_push($array, 'UPR-TASK-ADMINISTRATOR');
+					array_push($array, 'UPR-TASK-MANAGER');
+					array_push($array, 'UPR-Comunidad');
+					array_push($array, 'UPR-Upredes');
+					array_push($array, 'UPR-OwnCloud');
+					array_push($array, 'UPR-Noc');
+					array_push($array, 'UPR-Admins-Telefonos');
+					array_push($array, 'UPR-Backup-admins');
+					array_push($array, 'UPR-OTRS-Admins');
+					array_push($array, 'UPR-Admins-Voiceip');
+					array_push($array, 'UPRedes');
+					array_push($array, 'wifi-admin');
+					
+				}
 			
 			return $array;
 		

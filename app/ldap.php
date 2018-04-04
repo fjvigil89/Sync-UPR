@@ -491,7 +491,7 @@ class ldap extends Model
 
 	    if ($exist) 
 	    	{
-		    	$dn = $user_data[$i]['dn'];	    	
+		    	$dn = $user_data[$i]['dn'];			    	 	
 		    	//comparaci'on de los grupos de la UPR con los grupos que no se desean eliminar al usuario	    	
 		    	if($groupname != null)
 		    	{
@@ -513,6 +513,8 @@ class ldap extends Model
 
 	  	
 	  	}
+
+	  	
 	
 	}
 
