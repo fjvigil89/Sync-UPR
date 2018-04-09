@@ -104,13 +104,13 @@ class SyncController extends Controller
 				    	 	 			
 				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
 				    	 	 			$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));	 
-				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
+				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
 				    	 	 		}
 				    	 	 		if($profes){
 				    	 	 			
 				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);				
 				    	 	 			$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-				    	 	 			//$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
+				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
 				    	 	 		}		
 				    	 	 		$ldap->Enable($lista_ldap[$i]['samaccountname'][0]);		    	 	 		
 							 	}
@@ -155,7 +155,8 @@ class SyncController extends Controller
     		'Domain Users',
     		'UPR-Wifi',
     		'UPR-Jabber',
-    		'UPR-Correo-Internacional'
+    		'UPR-Correo-Internacional',
+        'UPR-NoDocentes'
     	];   	
 
     	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
@@ -175,7 +176,8 @@ class SyncController extends Controller
     		'UPR-Wifi',
     		'UPR-Jabber',
     		'UPR-Internet-Profes',
-    		'UPR-Correo-Internacional'
+    		'UPR-Correo-Internacional',
+        'UPR-Docentes'
     	];
 
     	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
@@ -444,7 +446,7 @@ class SyncController extends Controller
   			  			
 
     	];
-		$ldap->deltogroup($distinguishedname, $group);	
+	   	$ldap->deltogroup($distinguishedname, $group);	
     }
 
     function DeleteGrupoBaja($distinguishedname)
@@ -467,27 +469,492 @@ class SyncController extends Controller
     	$data = array(
 			'name' => $nombre,
 			'email' => $email
-		);	
+		  );	
 
 		
 	
-		Mail::send('Email.notification', $data, function ($message) use ($data) { 
-		    $message->from('frank.vigil@upr.edu.cu', 'UPRedes');
-		    //$message->sender('john@johndoe.com', 'John Doe');
-			
-		    $message->to($data['email'].'@upr.edu.cu', $data['name']);
-		
-		    //$message->cc('john@johndoe.com', 'John Doe');
-		    //$message->bcc('john@johndoe.com', 'John Doe');
-		
-		    //$message->replyTo('john@johndoe.com', 'John Doe');
-		
-		    $message->subject('Sincronizador Automático de la UPR');
-		
-		    //$message->priority(3);
-		
-		    //$message->attach('pathToFile');
-		});
+  		Mail::send('Email.notification', $data, function ($message) use ($data) { 
+  		    $message->from('frank.vigil@upr.edu.cu', 'UPRedes');
+  		    //$message->sender('john@johndoe.com', 'John Doe');
+  			
+  		    $message->to($data['email'].'@upr.edu.cu', $data['name']);
+  		
+  		    //$message->cc('john@johndoe.com', 'John Doe');
+  		    //$message->bcc('john@johndoe.com', 'John Doe');
+  		
+  		    //$message->replyTo('john@johndoe.com', 'John Doe');
+  		
+  		    $message->subject('Sincronizador Automático de la UPR');
+  		
+  		    //$message->priority(3);
+  		
+  		    //$message->attach('pathToFile');
+  		});
     }
-   
+
+    function InternetProfesore()
+    {         
+       
+        try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $Docente =$ldap->InternetProfesores();
+             $lista_Doc = array();
+
+             for ($i=0; $i < count($Docente)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($Docente[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$Docente[$i]['cn'][0], 'description' => $Docente[$i]['description'][0], 'physicaldeliveryofficename' => $Docente[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_Doc, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_Doc, 
+            'time' => $time_total,            
+            'total' => count($lista_Doc)-1,
+            'reporte' => 'Internet Docentes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function InternetEstudiantes()
+    {     
+
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $estudiantes =$ldap->InternetEstudiante();
+             $lista_estud = array();
+
+             for ($i=0; $i < count($estudiantes)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($estudiantes[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$estudiantes[$i]['cn'][0], 'description' => $estudiantes[$i]['description'][0]='estudiante', 'physicaldeliveryofficename' => $estudiantes[$i]['physicaldeliveryofficename'][0]='facultad'];
+                  array_push($lista_estud, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_estud, 
+            'time' => $time_total,            
+            'total' => count($lista_estud)-1,
+            'reporte' => 'Internet Estudiantes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del estudiantes ".$estudiantes[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function InternetNoDocentes()
+    {     
+
+       
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $NoDocente =$ldap->InternetNoDocentes();
+             $lista_noDoc = array();
+
+             for ($i=0; $i < count($NoDocente)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($NoDocente[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$NoDocente[$i]['cn'][0], 'description' => $NoDocente[$i]['description'][0], 'physicaldeliveryofficename' => $NoDocente[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_noDoc, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_noDoc, 
+            'time' => $time_total,            
+            'total' => count($lista_noDoc)-1,
+            'reporte' => 'Internet No Docentes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function NoDocentes()
+    {     
+
+       
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $NoDocente =$ldap->NoDocentes();
+             $lista_noDoc = array();
+
+             for ($i=0; $i < count($NoDocente)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($NoDocente[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$NoDocente[$i]['cn'][0], 'description' => $NoDocente[$i]['description'][0], 'physicaldeliveryofficename' => $NoDocente[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_noDoc, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_noDoc, 
+            'time' => $time_total,            
+            'total' => count($lista_noDoc)-1,
+            'reporte' => 'No Docentes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Docentes()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $Docente =$ldap->Docentes();
+             $lista_Doc = array();
+
+             for ($i=0; $i < count($Docente)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($Docente[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$Docente[$i]['cn'][0], 'description' => $Docente[$i]['description'][0], 'physicaldeliveryofficename' => $Docente[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_Doc, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_Doc, 
+            'time' => $time_total,            
+            'total' => count($lista_Doc)-1,
+            'reporte' => 'Docentes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Estudiantes()
+    {     
+
+       
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $estud =$ldap->Estudiante();
+             $lista_estud = array();
+
+             for ($i=0; $i < count($estud)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($estud[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$estud[$i]['cn'][0], 'description' => $estud[$i]['description'][0]='estudiante', 'physicaldeliveryofficename' => $estud[$i]['physicaldeliveryofficename'][0]='facultad'];
+                  array_push($lista_estud, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_estud, 
+            'time' => $time_total,            
+            'total' => count($lista_estud)-1,
+            'reporte' => 'Estudiantes'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del OU Estudiantes ".$estud[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Ras()
+    {   
+        try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $ras =$ldap->UsuariosRas();
+             $lista_ras = array();
+
+             for ($i=0; $i < count($ras)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($ras[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$ras[$i]['cn'][0], 'description' => $ras[$i]['description'][0], 'physicaldeliveryofficename' => $ras[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_ras, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_ras, 
+            'time' => $time_total,            
+            'total' => count($lista_ras)-1,
+            'reporte' => 'Ras'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Doctores()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $doctores =$ldap->KuotaDoctor();
+             $lista_Doctor = array();
+
+             for ($i=0; $i < count($doctores)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($doctores[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$doctores[$i]['cn'][0], 'description' => $doctores[$i]['description'][0], 'physicaldeliveryofficename' => $doctores[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_Doctor, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_Doctor, 
+            'time' => $time_total,            
+            'total' => count($lista_Doctor)-1,
+            'reporte' => 'Kuota de Doctores'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del doctores ".$doctores[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Master()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $master =$ldap->KuotaMater();
+             $lista_Master = array();
+
+             for ($i=0; $i < count($master)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($master[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$master[$i]['cn'][0], 'description' => $master[$i]['description'][0], 'physicaldeliveryofficename' => $master[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_Master, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_Master, 
+            'time' => $time_total,            
+            'total' => count($lista_Master)-1,
+            'reporte' => 'Kuota de Master'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del master ".$master[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function Cuadro()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $cuadro =$ldap->KuotaCuadro();
+             $lista_cuadro = array();
+
+             for ($i=0; $i < count($cuadro)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($cuadro[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$cuadro[$i]['cn'][0], 'description' => $cuadro[$i]['description'][0], 'physicaldeliveryofficename' => $cuadro[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_cuadro, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_cuadro, 
+            'time' => $time_total,            
+            'total' => count($lista_cuadro)-1,
+            'reporte' => 'Kuota de Cuadro'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del cuadro ".$cuadro[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+    
+    function Rector()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $rector =$ldap->KuotaRector();
+             $lista_Rector = array();
+
+             for ($i=0; $i < count($rector)-1 ; $i++) { 
+
+                $exist = $this->OU_No_Revisar($rector[$i]);
+                if ($exist)
+                {                
+                  
+                  $list_aux= ['cn'=>$rector[$i]['cn'][0], 'description' => $rector[$i]['description'][0], 'physicaldeliveryofficename' => $rector[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_Rector, $list_aux );  
+                }                
+                
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_Rector, 
+            'time' => $time_total,            
+            'total' => count($lista_Rector)-1,
+            'reporte' => 'Kuota de Rector'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(Carbon::now()." No se puede Ver Los usuarios del rector ".$rector[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+    function OU_No_Revisar($ras)
+    {     
+      $exist = true;
+      if($ras['distinguishedname'][0] == "")$exist = false;
+      if(strstr($ras['distinguishedname'][0], '_Bajas'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], 'Bajas'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], '_UsuariosEspeciales'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], '_Jubilados'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], 'Facultades'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], 'No Sync'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], '_Postgrado'))$exist = false;
+      if(strstr($ras['distinguishedname'][0], '_Institucionales'))$exist = false;
+
+      return $exist;      
+
+    }
+
+
 }

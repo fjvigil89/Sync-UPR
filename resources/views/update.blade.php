@@ -1,6 +1,7 @@
 @extends('layouts.layout')
 
-
+@section('content')
+  
 <div class="table-responsive">
 	<span><p>Cantidad de procesados: {{  $update }} de {{ $total }}</p></span>	
 	<span><p>Tiempo de Ejecución: {{  $time }}</p></span>	
@@ -67,3 +68,5 @@
         </div>
     </div>
 </div>
+
+@stop   

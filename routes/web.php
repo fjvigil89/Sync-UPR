@@ -15,7 +15,27 @@ Route::get('/', function () {
     return view('index');
 });
 
+//Sync UPR
 Route::get('saber_ldap','SyncController@saberLdap');
+
+//Inertet
+Route::get('internet_profes','SyncController@InternetProfesore');
+Route::get('internet_est','SyncController@InternetEstudiantes');
+Route::get('internet_no_docente','SyncController@InternetNoDocentes');
+
+//Funcione
+Route::get('no_docente','SyncController@NoDocentes');
+Route::get('docente','SyncController@Docentes');
+Route::get('estudiantes','SyncController@Estudiantes');
+
+//RAS
+Route::get('ras','SyncController@Ras');
+
+//Kuotas
+Route::get('doctor','SyncController@Doctores');
+Route::get('master','SyncController@Master');
+Route::get('cuadro','SyncController@Cuadro');
+Route::get('rector','SyncController@Rector');
 
 
 //Route::get('saber_ldap','SyncController@saberLdap');
