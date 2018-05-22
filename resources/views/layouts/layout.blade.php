@@ -35,9 +35,11 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Usuarios
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
+              <li><a href="{{ url('todos_users') }}">Todos los Usuarios </a></li>
               <li><a href="{{ url('docente') }}">Docentes </a></li>
               <li><a href="{{ url('no_docente') }}">No Docentes </a></li>
               <li><a href="{{ url('estudiantes') }}">Estudiantes</a></li>
+              <li><a href="{{ url('adiestrados') }}">Adiestrados</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -46,8 +48,10 @@
             <ul class="dropdown-menu">                          
               <li><a href="{{ url('internet_profes') }}">Internet Profesores </a></li>
               <li><a href="{{ url('internet_no_docente') }}">Internet No Docentes </a></li>
-              <li><a href="{{ url('ras') }}">Ras </a></li>
               <li><a href="{{ url('internet_est') }}">Internet Estudiantes </a></li>
+              <li><a href="{{ url('ras') }}">Ras </a></li>
+              <li><a href="{{ url('docentes_ras') }}">Docentes Ras </a></li>
+              <li><a href="{{ url('nodocentes_ras') }}">No Docentes Ras </a></li>
             </ul>
           </li>
           <li class="dropdown">

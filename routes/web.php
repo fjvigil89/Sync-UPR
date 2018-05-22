@@ -23,13 +23,17 @@ Route::get('internet_profes','SyncController@InternetProfesore');
 Route::get('internet_est','SyncController@InternetEstudiantes');
 Route::get('internet_no_docente','SyncController@InternetNoDocentes');
 
-//Funcione
+//Funciones dentro de la UPR
 Route::get('no_docente','SyncController@NoDocentes');
 Route::get('docente','SyncController@Docentes');
 Route::get('estudiantes','SyncController@Estudiantes');
+Route::get('adiestrados','SyncController@Adiestrados');
+Route::get('todos_users','SyncController@TodosUsuarios');
 
 //RAS
 Route::get('ras','SyncController@Ras');
+Route::get('docentes_ras','SyncController@DocentesRas');
+Route::get('nodocentes_ras','SyncController@NoDocentesRas');
 
 //Kuotas
 Route::get('doctor','SyncController@Doctores');

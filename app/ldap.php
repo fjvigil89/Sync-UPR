@@ -38,7 +38,7 @@ class ldap extends Model
 
             return   $ldapBind; 
      }
-     
+    
     function Auth($username, $password, $adGroupName = false){
         global $ldap_host,$ldap_dn;
             
@@ -608,7 +608,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Est,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -639,7 +639,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Profes,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -669,7 +669,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Docentes,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -701,7 +701,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Estudiantes,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -733,7 +733,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Doctores,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -765,7 +765,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Master,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -797,7 +797,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Cuadros,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -829,7 +829,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-Rector,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -860,7 +860,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Internet-NoDocente,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -890,7 +890,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-NoDocentes,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -922,7 +922,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Ras,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
@@ -940,4 +940,96 @@ class ldap extends Model
         }
  	}
 	
+	function DocentesRas()
+ 	{
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
+
+	         $filter="(&(objectClass=user)(memberOf=CN=UPR-Docentes,OU=_Gestion,DC=upr,DC=edu,DC=cu)(memberOf=CN=UPR-Ras,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
+	        
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+	function NoDocentesRas()
+ 	{
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
+
+	         $filter="(&(objectClass=user)(memberOf=CN=UPR-NoDocentes,OU=_Gestion,DC=upr,DC=edu,DC=cu)(memberOf=CN=UPR-Ras,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
+	        
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+	function Adiestrados()
+ 	{
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
+
+	         $filter="(&(objectClass=user)(description=Recien Graduado En Adiestramiento))";
+	        
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+		    
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+ 	
+
 }

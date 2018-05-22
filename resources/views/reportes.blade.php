@@ -13,6 +13,7 @@
                   <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Usuario</th>
                         <th>Plaza</th>
                         <th>Oficina</th>                        
                         <th></th>
@@ -23,6 +24,7 @@
                     @foreach($arrayProcesados as $item)
                     <tr>
                         <td>{{ $item['cn'] }}</td>
+                        <td>{{ $item['samaccountname'] }}</td>
                         <td>{{ $item['description'] }}</td>
                         <td>{{ $item['physicaldeliveryofficename']}}</td>
                         <td></td>                        
