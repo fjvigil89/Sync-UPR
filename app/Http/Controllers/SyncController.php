@@ -138,7 +138,7 @@ class SyncController extends Controller
   	        		{
   	        			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
   	        			//$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
-  	            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+  	            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
   			  		 	array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
   				  		
   			  		}
