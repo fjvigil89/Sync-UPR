@@ -1,10 +1,9 @@
 ---
 
-stages:
-  - check
+stages: 
   - deploy
   - composer
-
+  - check
 deploy_environment:
   stage: deploy
   script:
