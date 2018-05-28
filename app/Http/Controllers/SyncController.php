@@ -49,91 +49,89 @@ class SyncController extends Controller
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $exist = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $exist = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $exist = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Trabajador Docente')) $exist = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Bajas')) $exist = false;
+                     
+                   if($exist)
+                   {
 
-                  dd($exist);
-
-
-
-  		    	 			$empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
-  		    	 			
-  		    	 	 		if ($empleado == "No Existe") {
-  		    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-  		    	 	 			array_push($array_NoUpdate, $lista_ldap[$i]);
-  		    	 	 			break;
-  		    	 	 		}
-
-
-  		    	 	 		if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
-
-  		    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-  		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
-  			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);			  		 			
-  		    	 	 		}
-
-  		    	 	 			
-  		    	 	 		$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
-  		    	 	 		if ($TrabBaja) {
-
-  		    	 	 			$this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
-  		    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $bajas);	
-  		    	 	 			$ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
-
-  		    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
-  			  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
-  			  		 			
-  		    	 	 		}
-  		    	 	 		else{
-  		    	 	 			
-  			    	 	 		$departamento = $assets->findDepartaento(trim(ltrim($empleado[0]["idCcosto"])));
-  			    	 	 		if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
-  			    	 	 			
-
-  			    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+                        $empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
+                        
+                        if ($empleado == "No Existe") {
+                          //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+                          array_push($array_NoUpdate, $lista_ldap[$i]);
+                          break;
+                        }
 
 
-  			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
-  				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);			  		 			
-  			    	 	 		}
+                        if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
+
+                          //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+                          Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
+                          array_push($array_NoUpdate, $lista_ldap[$i]);                 
+                        }
+
+                      
+                        $TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
+                        if ($TrabBaja) {
+
+                          $this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
+                          $ldap->mover($lista_ldap[$i]['dn'], $bajas);  
+                          $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
+
+                          Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
+                          array_push($array_NoUpdate, $lista_ldap[$i]);
+                          
+                        }
+                        else{
+                          
+                              $departamento = $assets->findDepartaento(trim(ltrim($empleado[0]["idCcosto"])));
+                              if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
+                                  //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
+                                Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
+                                array_push($array_NoUpdate, $lista_ldap[$i]);                 
+                              }
 
 
-  			    	 	 		$cargo = $assets->findCargo(trim(ltrim($empleado[0]["idCargo"])));
-  			    	 	 		if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
+                              $cargo = $assets->findCargo(trim(ltrim($empleado[0]["idCargo"])));
+                              if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
 
-  			    	 	 			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+                                //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
-  			    	 	 			Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
-  				  		 			array_push($array_NoUpdate, $lista_ldap[$i]);
-  				  		 			
-  			    	 	 		}
+                                Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
+                                array_push($array_NoUpdate, $lista_ldap[$i]);
+                                
+                              }
 
-  			    	 	 		
-  							 	if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
-  							 	{
-  							 		array_push($array_NoUpdate, $lista_ldap[$i]);
-  							 		$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");	
-  							 		//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);							 		
-  							 	}
-  							 	else{
+                          
+                            if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
+                            {
+                              array_push($array_NoUpdate, $lista_ldap[$i]);
+                              $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
+                              //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);                 
+                            }
+                            else{
 
-  							 		array_push($array_Update, $lista_ldap[$i]);
-  							 		$profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
-  				    	 	 		if (!$profes) {
-  				    	 	 			
-  				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-  				    	 	 			$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));	 
-  				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $NoDocente);	    	 	 			
-  				    	 	 		}
-  				    	 	 		if($profes){
-  				    	 	 			
-  				    	 	 			$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);				
-  				    	 	 			$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-  				    	 	 			$ldap->mover($lista_ldap[$i]['dn'], $Docente);				
-  				    	 	 		}		
-  				    	 	 		$ldap->Enable($lista_ldap[$i]['samaccountname'][0]);		    	 	 		
-  							 	}
-  							 	
-  		    	 	 		}
-  						 	
+                              array_push($array_Update, $lista_ldap[$i]);
+                              $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
+                                if (!$profes) {
+                                  
+                                  $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
+                                  $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
+                                  $ldap->mover($lista_ldap[$i]['dn'], $NoDocente);
+                                  $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
+                                }
+                                if($profes){
+                                  
+                                  $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
+                                  $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
+                                  $ldap->mover($lista_ldap[$i]['dn'], $Docente);        
+                                }   
+                                $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
+                            }
+                          }
+                   }     						 	
   						
   		    	 	 }
   		    	 	catch(\Exception $e)
@@ -141,8 +139,7 @@ class SyncController extends Controller
   	        			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
   	        			//$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
   	            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-  			  		 	array_push($array_NoUpdate, $lista_ldap[$i]);
-  			  		 	
+  			  		 	array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
   				  		
   			  		}
 
