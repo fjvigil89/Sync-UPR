@@ -36,23 +36,22 @@ class SyncController extends Controller
   	    	 	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
   		    	 	try{		    	 		
   		    	 	 		
-                  $exist = true;
-                  $igual = false;
-                  $errstr = "";
+                  $lugar = true;
+                  $existe_asstes = true;
 
                   //para descartar grupos de distintas Unidades Organizativas
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Builtin')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Users')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], '2ble')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Estudiantes')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Facultades')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Trabajador Docente')) $exist = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Bajas')) $exist = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Builtin')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Users')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], '2ble')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Estudiantes')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Facultades')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Trabajador Docente')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Bajas')) $lugar = false;
                      
-                   if($exist)
+                   if($lugar)
                    {
 
                         $empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
@@ -68,7 +67,8 @@ class SyncController extends Controller
 
                           //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
                           Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
-                          array_push($array_NoUpdate, $lista_ldap[$i]);                 
+                          array_push($array_NoUpdate, $lista_ldap[$i]);  
+                          break;               
                         }
 
                       
