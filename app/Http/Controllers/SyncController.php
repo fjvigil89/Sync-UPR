@@ -47,9 +47,13 @@ class SyncController extends Controller
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Estudiantes')) $exist = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Facultades')) $exist = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $exist = false;
-                  dd($exist);
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $exist = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $exist = false;
+
+                  dd($exist);
+
+
+
   		    	 			$empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
   		    	 			
   		    	 	 		if ($empleado == "No Existe") {
