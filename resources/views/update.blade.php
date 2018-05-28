@@ -14,9 +14,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Apellidos</th>
-                        <th>usuario</th>
-                        <th>#-Trabajador</th>
-                        <th>#-CI</th>
+                        <th>usuario</th>                        
                         <th></th>
                     </tr>
                 </thead>
@@ -26,9 +24,7 @@
                 	<tr>
                         <td>{{ $item['givenname'][0] }}</td>
                         <td>{{ $item['sn'][0] }}</td>
-                        <td>{{ $item['samaccountname'][0] }}</td>
-                        <td>{{ $item['employeenumber'][0] }}</td>
-                        <td>{{ $item['employeeid'][0] }}</td>                        
+                        <td>{{ $item['samaccountname'][0] }}</td>                        
                     </tr>
                 	@endforeach
                 </tbody>
