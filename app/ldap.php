@@ -241,7 +241,7 @@ class ldap extends Model
 
 	function saberLdap(){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes= "OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
@@ -254,10 +254,11 @@ class ldap extends Model
 		 
 	         $attrib = array('thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname');
 
-
-	        $results = @ldap_search($ldap,$ldap_dn_GrupoRedes,'(|(uid=*)(samaccountname=*))',$attrib);  
+	        $filter='(&(samaccountname=*)(objectClass=user))';
+	        $results = @ldap_search($ldap,$ldap_dn_GrupoRedes,$filter,$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);
-
+	    
+	    	
 
 		    return $user_data;
 
