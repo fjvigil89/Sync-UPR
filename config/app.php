@@ -173,7 +173,7 @@ return [
          */
         Sync\Providers\AppServiceProvider::class,
         Sync\Providers\AuthServiceProvider::class,
-        // Sync\Providers\BroadcastServiceProvider::class,
+        Sync\Providers\BroadcastServiceProvider::class,
         Sync\Providers\EventServiceProvider::class,
         Sync\Providers\RouteServiceProvider::class,
 
