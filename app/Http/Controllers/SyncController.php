@@ -59,7 +59,7 @@ class SyncController extends Controller
                         if ($empleado == "No Existe") {
                           //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
                           array_push($array_NoUpdate, $lista_ldap[$i]);
-                          break;
+                          continue;
                         }
 
 
@@ -68,7 +68,7 @@ class SyncController extends Controller
                           //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
                           Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
                           array_push($array_NoUpdate, $lista_ldap[$i]);  
-                          break;               
+                          continue;               
                         }
 
                       
