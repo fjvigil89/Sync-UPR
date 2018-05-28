@@ -5,15 +5,6 @@ stages:
   - deploy
   - composer
 
-check_environment:
-  stage: check
-  script:
-   - echo "${CI_COMMIT_REF_NAME}"
-   - tools/check.sh $CI_COMMIT_REF_NAME
-  when: always
-  environment:
-    name: ${CI_COMMIT_REF_NAME} 
-
 deploy_environment:
   stage: deploy
   script:
@@ -31,3 +22,13 @@ composer_environment:
   when: always
   environment:
     name: ${CI_COMMIT_REF_NAME}
+
+check_environment:
+  stage: check
+  script:
+   - echo "${CI_COMMIT_REF_NAME}"
+   - tools/check.sh $CI_COMMIT_REF_NAME
+  when: always
+  environment:
+    name: ${CI_COMMIT_REF_NAME} 
+
