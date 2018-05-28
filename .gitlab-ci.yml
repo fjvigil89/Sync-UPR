@@ -1,8 +1,18 @@
 ---
 
 stages:
+  - check
   - deploy
   - composer
+
+deploy_environment:
+  stage: check
+  script:
+   - echo "${CI_COMMIT_REF_NAME}"
+   - tools/check.sh $CI_COMMIT_REF_NAME
+  when: always
+  environment:
+    name: ${CI_COMMIT_REF_NAME} 
 
 deploy_environment:
   stage: deploy
