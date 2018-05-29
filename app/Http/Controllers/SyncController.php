@@ -71,12 +71,13 @@ class SyncController extends Controller
                           $existe_asstes= false;
                           $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
                         }
-
+                        
                         if($existe_asstes)
                         {
+                          Log::alert(Carbon::now() ." Empleado ". $lista_ldap[$i]["distinguishedname"][0]." del assets ");
 
-                          array_push($array_Update, $lista_ldap[$i]);
-                          /*$TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
+                          
+                          $TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
                           if ($TrabBaja) {
 
                             $this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
@@ -134,7 +135,7 @@ class SyncController extends Controller
                                   }   
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
                               }//else del if de ActualizarCampos
-                            }*/ //else del if de Trabbaja 
+                            }//else del if de Trabbaja 
                         }//if existe_assets
                    }//if lugar     						 	
   						
