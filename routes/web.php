@@ -49,7 +49,7 @@ Route::get('deshabilitar/{assamacount}','ChangePwdController@deshabilitar');
 Route::get('update/{employeenumber}','SyncController@update');
 
 //ver fotos
-Route::get('{samaccountname}', function(){
+Route::get('usuarios/{samaccountname}', function(){
 	return view('Imagen.imagen');
 });
 
@@ -59,3 +59,6 @@ Route::get('email/sendEmail/{nombre}/{email}', 'SyncController@SendEmail');
 
 //busqueda
 Route::post('busqueda','SyncController@Buscar')->name('busqueda');
+
+//logs
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

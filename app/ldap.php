@@ -472,7 +472,7 @@ class ldap extends Model
 	//revive direccion del usuario dentro del ldap
 	//recive grupos que se desean no eliminar del usuario
 	function deltogroup($distinguishedname, $groupname = null) { 
-	
+		set_time_limit(0);
 		//conexi'on con el ldap de la UPR
  		$ldap = ldap_connect($this->ldap_host);
         if (!$ldap)
