@@ -492,7 +492,6 @@ class ldap extends Model
 
         //listado de todos los grupos
         $user_data = @ldap_get_entries($ldap, $results);
-
         
       for ($i=0; $i <$user_data['count'] ; $i++) 
       { 
