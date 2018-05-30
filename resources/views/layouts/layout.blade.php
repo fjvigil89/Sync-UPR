@@ -66,14 +66,14 @@
               <li><a href="{{ url('master') }}">Master </a></li>
               <li><a href="{{ url('cuadro') }}">Cuadros </a></li>
             </ul>
-          </li>
-           <li><a href="{{ url('saber_ldap') }}">Sync-Usuarios</a></li>
+          </li>           
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
-               <form class="navbar-form navbar-left" action="/action_page.php">
+               <form class="navbar-form navbar-left" action="{{route ('busqueda')}}" method="post">
+                  {{ csrf_field() }}
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input name="search" type="text" class="form-control" placeholder="Search">
                     <div class="input-group-btn">
                       <button class="btn btn-default" type="submit">
                         <i class="glyphicon glyphicon-search"></i>

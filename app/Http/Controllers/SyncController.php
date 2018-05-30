@@ -16,10 +16,10 @@ class SyncController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request     
      * @return \Illuminate\Http\Response
      */
-    public function saberLdap(Request $request)
+    public function saberLdap(Request $request, $item) //item es la unidad a actualizar (Estudiantes, Docentes, No Docentes)
     {
     	 $time_start = microtime(true);    	 
   		 $array_NoUpdate= array();
@@ -30,7 +30,7 @@ class SyncController extends Controller
   		 $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
   		 $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
   		 $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-  		 $lista_ldap = $ldap->saberLdap(); 
+  		 $lista_ldap = $ldap->saberLdap($item); 
   		 $group= array();
   	    	 
   	    	 	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
@@ -43,12 +43,10 @@ class SyncController extends Controller
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Builtin')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Users')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], '2ble')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Estudiantes')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Facultades')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Trabajador Docente')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Bajas')) $lugar = false;
                      
                    if($lugar)
@@ -66,7 +64,7 @@ class SyncController extends Controller
                         if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
 
                           //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-                          Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
+                          Log::critical($i." -- No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
                           array_push($array_NoUpdate, $lista_ldap[$i]);  
                           $existe_asstes= false;
                           $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
@@ -74,7 +72,7 @@ class SyncController extends Controller
                         
                         if($existe_asstes)
                         {
-                          Log::alert(Carbon::now() ." Empleado ". $lista_ldap[$i]["distinguishedname"][0]." del assets ");
+                          Log::alert($i." -- Empleado ". $lista_ldap[$i]["distinguishedname"][0]." del assets ");
 
                           
                           $TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
@@ -84,7 +82,7 @@ class SyncController extends Controller
                             $ldap->mover($lista_ldap[$i]['dn'], $bajas);  
                             $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
-                            Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
+                            Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
                             array_push($array_NoUpdate, $lista_ldap[$i]);
                             
                           }
@@ -94,7 +92,7 @@ class SyncController extends Controller
                                 if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
                                     //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
-                                  Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
+                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
                                   array_push($array_NoUpdate, $lista_ldap[$i]);                 
                                 }
 
@@ -104,7 +102,7 @@ class SyncController extends Controller
 
                                   //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
-                                  Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
+                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
                                   array_push($array_NoUpdate, $lista_ldap[$i]);
                                   
                                 }
@@ -144,7 +142,7 @@ class SyncController extends Controller
   	        		{
   	        			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
   	        			//$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
-  	            		Log::critical(Carbon::now()." No se puede actualizar al empleado ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+  	            		Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
   			  		 	array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
   				  		
   			  		}
@@ -548,7 +546,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -589,7 +587,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del estudiantes ".$estudiantes[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del estudiantes ".$estudiantes[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -631,7 +629,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -673,7 +671,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del NoDocente ".$NoDocente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -713,7 +711,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del Docente ".$Docente[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -755,7 +753,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del OU Estudiantes ".$estud[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del OU Estudiantes ".$estud[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -795,7 +793,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -834,7 +832,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -874,7 +872,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del RAS ".$ras[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -914,7 +912,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del doctores ".$doctores[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del doctores ".$doctores[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -954,7 +952,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del master ".$master[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del master ".$master[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -994,7 +992,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del cuadro ".$cuadro[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del cuadro ".$cuadro[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -1034,7 +1032,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del rector ".$rector[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del rector ".$rector[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -1074,7 +1072,7 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del adiestrados ".$adiestrados[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del adiestrados ".$adiestrados[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
@@ -1139,10 +1137,11 @@ class SyncController extends Controller
           catch(\Exception $e)
             {
              
-              Log::critical(Carbon::now()." No se puede Ver Los usuarios del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical(" No se puede Ver Los usuarios del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
+
     function OU_No_Revisar($ras)
     {     
       $exist = true;
@@ -1158,6 +1157,61 @@ class SyncController extends Controller
 
       return $exist;      
 
+    }
+
+    function Buscar(Request $request)
+    {    
+      
+      try{
+             $exist = true;
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $busaqueda =$ldap->Busqueda($request->search);
+
+             $lista_busaqueda = array();
+
+             for ($i=0; $i < count($busaqueda)-1 ; $i++) {
+                if(strstr($busaqueda[$i]['distinguishedname'][0], 'Computers'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], 'Estudiantes'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], 'Graduados'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], 'Bajas'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], '_Bajas'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], '_Postgrado'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], '_Institucionales'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], 'No Sync'))$exist = false;
+                if(strstr($busaqueda[$i]['distinguishedname'][0], '_UsuariosEspeciales'))$exist = false;
+
+                                    
+                  if($exist)
+                  {
+                    $list_aux= ['cn'=>$busaqueda[$i]['cn'][0],'samaccountname'=>$busaqueda[$i]['samaccountname'][0],'description' => $busaqueda[$i]['description'][0],'physicaldeliveryofficename' => $busaqueda[$i]['physicaldeliveryofficename'][0]
+                    ];                    
+                    array_push($lista_busaqueda, $list_aux );
+                  }                  
+                  
+                   
+                  
+              }
+             
+            $time_end = microtime(true);
+            $duration = $time_end - $time_start;
+            $hours = (int)($duration/60/60);
+            $minutes = (int)($duration/60)-$hours*60;
+            $seconds = (int)$duration-$hours*60*60-$minutes*60;
+            $time_total="horas ".$hours." minutos ".$minutes." segundos ".$seconds;
+             return view('search',[            
+            'arrayProcesados'=>$lista_busaqueda, 
+            'time' => $time_total,            
+            'total' => count($lista_busaqueda)-1,            
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(" No se puede Ver Los usuarios del Busaqueda ".$busaqueda[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
     }
 
 

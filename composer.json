@@ -10,18 +10,9 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
 	    "laravelcollective/html":"^5.4.0",
-        "guzzlehttp/guzzle": "dev-master"
-        
-    },
-    "repositories": [
-    {
-      "packagist": false
-    },
-    {
-        "type": "composer",
-        "url": "http://composer.upr.edu.cu"
-    }
-    ],
+        "guzzlehttp/guzzle": "dev-master",
+        "rap2hpoutre/laravel-log-viewer": "^0.14.3"        
+    },    
     "require-dev": {
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",

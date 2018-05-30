@@ -239,9 +239,24 @@ class ldap extends Model
 
 	}
 
-	function saberLdap(){
+	function saberLdap($item){
 		try{
-			 $ldap_dn_GrupoRedes= "OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 $ldap_dn_GrupoRedes='';
+			 
+			 if($item == 'Docentes')
+			 {
+			 	$ldap_dn_GrupoRedes= "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }
+			 if($item == 'NoDocentes')
+			 {
+			 	$ldap_dn_GrupoRedes= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }
+			 if($item == 'Estudiantes')
+			 {
+			 	$ldap_dn_GrupoRedes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }
+
+			 
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
 		  	 if (!$ldap)
@@ -554,7 +569,7 @@ class ldap extends Model
 	  	}
 	  	else {
 		    $message_css = "yes";	    
-		    $message[] = "The change for $user_id has been used $entry[givenname].";
+		    $message[] = "The change for has been used.";
 	  	}
  	}
 
@@ -592,7 +607,7 @@ class ldap extends Model
 			  	}
 			  	else {
 				    $message_css = "yes";	    
-				    $message[] = "The change for $user_id has been used $entry[givenname].";
+				    $message[] = "The change for has been used.";
 			  	}
  	}
 
@@ -1031,6 +1046,38 @@ class ldap extends Model
             return response("Alguna cosa esta mal", 500);
         }
  	}
- 	
+
+ 	function Busqueda($search)
+ 	{
+ 		
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','name');
+
+	         $filter='(&(|(samaccountname='.$search.')(cn='.$search.')(displayname='.$search.')(givenname='.$search.')(name='.$search.')(physicaldeliveryofficename='.$search.')(sn='.$search.'))(objectclass=user))';
+
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+		    
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+ 	//$filter='(&(|(samaccountname='.$search.')(cn='.$search.')(displayname='.$search.')(givenname='.$search.')(name='.$search.')(physicaldeliveryofficename='.$search.')(sn='.$search.'))(objectclass=computer))';
 
 }

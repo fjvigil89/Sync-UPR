@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 //Sync UPR
-Route::get('saber_ldap','SyncController@saberLdap');
+Route::get('saber_ldap/{item}','SyncController@saberLdap');
 
 //Inertet
 Route::get('internet_profes','SyncController@InternetProfesore');
@@ -41,13 +41,21 @@ Route::get('master','SyncController@Master');
 Route::get('cuadro','SyncController@Cuadro');
 Route::get('rector','SyncController@Rector');
 
-
-//Route::get('saber_ldap','SyncController@saberLdap');
+//Trabajo de secretaria
+Route::get('changePwd//{assamacount}','ChangePwdController@change');
+Route::get('habilitar/{assamacount}','ChangePwdController@habilitar');
+Route::get('deshabilitar/{assamacount}','ChangePwdController@deshabilitar');
 
 Route::get('update/{employeenumber}','SyncController@update');
 
+//ver fotos
 Route::get('{samaccountname}', function(){
 	return view('Imagen.imagen');
 });
 
+//envio de email
 Route::get('email/sendEmail/{nombre}/{email}', 'SyncController@SendEmail');
+
+
+//busqueda
+Route::post('busqueda','SyncController@Buscar')->name('busqueda');
