@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Client;
 use Collection;
 use Log;
+use Carbon\Carbon;
 class Assets extends Model
 {
     //
@@ -118,7 +119,7 @@ class Assets extends Model
         }
 	}
 
-	function findBaja($idTrabajador)
+	function findBaja($idTrabajador)//busca rl trabajador y verifica que no sea baja
 	{
 		try{	
 				
@@ -136,6 +137,48 @@ class Assets extends Model
             Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             //return response("Alguna cosa esta mal", 500);
             return false;
+        }
+	}
+
+	function SearchBajaProfesor()//El metodo busca todos lo Trabajadores que fueron baja en el d'ia de hoy
+	{
+		try{	
+			   $date = Carbon::now();
+				$response = $this->client->get("/empleados_gras?_format=json&baja=1&fechaBaja=".$date->toDateString());
+				$data = collect(json_decode($response->getBody()->getContents(),true));		
+				
+				if(trim($data["hydra:member"][0]['idExpediente']) == "")
+				{	
+					return "No Existe";
+				}			
+				return $data["hydra:member"];			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "No Existe";
+        }
+	}
+
+	function SearchAltasProfesor()//El metodo busca todos lo Trabajadores que fueron baja en el d'ia de hoy
+	{
+		try{	
+			   $date = Carbon::now();
+				$response = $this->client->get("/empleados_gras?_format=json&baja=0&alta=1&fechaContratacion=".$date->toDateString());
+				$data = collect(json_decode($response->getBody()->getContents(),true));		
+				
+				if(trim($data["hydra:member"][0]['idExpediente']) == "")
+				{	
+					return "No Existe";
+				}			
+				return $data["hydra:member"];			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "No Existe";
         }
 	}
 

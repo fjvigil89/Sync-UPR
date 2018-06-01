@@ -12,6 +12,11 @@ use Collection;
 use Mail;
 class SyncController extends Controller
 {
+
+    private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     
     /**
      * Store a newly created resource in storage.
@@ -26,10 +31,6 @@ class SyncController extends Controller
   		 $array_Update= array();
   		 $ldap = new ldap();
   		 $assets = new Assets;	    	 
-  		 $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-  		 $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-  		 $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-  		 $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
   		 $lista_ldap = $ldap->saberLdap($item); 
   		 $group= array();
   	    	 
@@ -79,7 +80,7 @@ class SyncController extends Controller
                           if ($TrabBaja) {
 
                             $this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
-                            $ldap->mover($lista_ldap[$i]['dn'], $bajas);  
+                            $ldap->mover($lista_ldap[$i]['dn'], $this->bajas);  
                             $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
                             Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
@@ -122,14 +123,14 @@ class SyncController extends Controller
                                     
                                     $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
                                     $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
-                                    $ldap->mover($lista_ldap[$i]['dn'], $NoDocente);
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
                                     $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
                                   }
                                   if($profes){
                                     
                                     $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
                                     $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-                                    $ldap->mover($lista_ldap[$i]['dn'], $Docente);        
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
                                   }   
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
                               }//else del if de ActualizarCampos
@@ -1022,6 +1023,127 @@ class SyncController extends Controller
           }
     }
 
+    function ActualizarBajasProfesores(Request $request)
+    {                 
+      try{
+             $ldap = new ldap();
+             $assets = new Assets();
+             $baja =$assets->SearchBajaProfesor();
+             if ($baja != "No Existe") {              
+               # code...              
+                  
+                   for ($i=0; $i < count($baja) ; $i++) {
 
+                        
+                        Log::critical("Dandole de Baja al usuario ".$baja[$i]['nombre']." Day ".Carbon::now());   
+                        
+                        $lista=$ldap->saberLdapTrabajador($baja[$i]['idExpediente']);
+                        $this->DeleteGrupoBaja($lista[$i]['distinguishedname'][0]);
+                        $ldap->mover($lista[$i]['dn'], $this->bajas);  
+                        $ldap->Disable($lista[$i]['samaccountname'][0]);
+                        
+                    }                   
+                  
+                  return $baja;
+                
+             }
+             else
+              {
+                Log::critical("No Hay Trabajadores de Baja ".Carbon::now());
+              } 
+
+              return $baja;
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(" No se puede da de Baja a ".$baja[$i]["nombre"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+   function ActualizarAltasProfesores(Request $request)
+    {                 
+      try{
+             $ldap = new ldap();
+             $assets = new Assets();
+             $alta =$assets->SearchAltasProfesor();
+             
+             if ($alta != "No Existe") {              
+               # code...              
+                  
+                   for ($i=0; $i < count($alta) ; $i++) {
+
+                        
+                        Log::critical("Dandole de Alta al usuario ".$alta[$i]['nombre']." Day ".Carbon::now());   
+                        
+                        $exist      =$ldap->ExistUsuario($alta[$i]['idExpediente']);                       
+                        if ($exist) {
+                          # code...
+                            $lista_ldap =$ldap->Busqueda($alta[$i]['idExpediente']); 
+                            $departamento = $assets->findDepartaento(trim(ltrim($alta[$i]["idCcosto"])));
+                                if ($departamento == "" || $departamento == "Alguna cosa esta mal") {                                    
+                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");                         
+                                }
+
+                                $cargo = $assets->findCargo(trim(ltrim($alta[$i]["idCargo"])));
+                                if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
+
+                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");                                  
+                                }
+                            
+                              if(!$ldap->ActualizarCamposIdEmpleado($alta[$i], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
+                              {
+                                
+                                $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
+                              }
+                              else{                               
+                                $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
+                                  if (!$profes) {
+                                    
+                                    $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
+                                    $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
+                                    $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
+                                  }
+                                  if($profes){
+                                    
+                                    $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
+                                    $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
+                                  }   
+                                  $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);
+                                }
+
+                        }//if exist
+                        else
+                        {
+                          if (!$ldap->CrearUsuario($alta[$i])) {
+                            # code...
+                            Log::critical(" No se puede da de Alta a ".$alta[$i]["nombre"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+                          }
+                        }
+                        
+                    }                   
+                  
+                  return $alta;
+                
+             }
+             else
+              {
+                Log::critical("No Hay Trabajadores de Alta ".Carbon::now());
+              } 
+
+              return $alta;
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(" No se puede da de Alta a ".$alta[$i]["nombre"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
 }
  

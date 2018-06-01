@@ -62,3 +62,9 @@ Route::post('busqueda','SyncController@Buscar')->name('busqueda');
 
 //logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+//Actualizar Bajas
+Route::get('actualizar_bajas_profesores','SyncController@ActualizarBajasProfesores')->name('bajasProfesores');
+
+//Actualizar Alta
+Route::get('actualizar_altas_profesores','SyncController@ActualizarAltasProfesores')->name('altasProfesores');
