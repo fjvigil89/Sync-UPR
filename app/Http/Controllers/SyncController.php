@@ -282,13 +282,6 @@ class SyncController extends Controller
     	$ldap->deltogroup($distinguishedname);
     }
 
-    function thumbnailphoto($samaccountname)
-    {   	
-
-    	 $ldap = new ldap();
-    	 return $ldap->thumbnailphoto($samaccountname);     	 
-
-    }
 
     function SendEmail($nombre, $email)
     {
@@ -1179,5 +1172,11 @@ class SyncController extends Controller
             
           }
     }
+
+    function Login()
+    {
+      return view('Login.login');
+    }
+
 }
  

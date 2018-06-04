@@ -27,8 +27,7 @@ class ldap extends Model
     }
 
      function isLdapUser($username,$password,$ldap){
-            global $ldap_dn,$ldap_usr_dom;
-            
+        try{    
             //$ldap = ldap_connect($this->ldap_host,389);    
 
             ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
@@ -36,38 +35,50 @@ class ldap extends Model
      
             $ldapBind= ldap_bind($ldap, $username. $this->ldap_usr_dom, $password);            
             //ldap_unbind($ldap);   
-                
 
-            return   $ldapBind; 
+            return true; 
+          }
+        catch(\Exception $e)
+        {
+            Log::critical("Problemas con la Authentication del LDAP:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
+        }
      }
     
-    function Auth($username, $password, $adGroupName = false){
-        global $ldap_host,$ldap_dn;
+    function Auth($username, $password, $adGroupName = false){        
             
         $ldap = ldap_connect($this->ldap_host);
         if (!$ldap)
             throw new Exception("Cant connect ldap server", 1);
         
-          return isLdapUser($username, $password, $ldap);     
+
+        return $this->isLdapUser($username, $password, $ldap);     
         
     }
 
-    function Info($username, $password, $adGroupName = false,$attrib){
-        global $ldap_host,$ldap_dn;
-            
-        $ldap = ldap_connect($this->ldap_host);
-        if (!$ldap)
-            throw new Exception("Cant connect ldap server", 1);
-        
-       if($this->isLdapUser($username, $password, $ldap)){     
-               
-            
-            $results = ldap_search($ldap,$this->ldap_dn,'(sAMAccountName=' . $username . ')',$attrib);
-      
-            $user_data = ldap_get_entries($ldap, $results);
-            
-              
-            return $user_data;
+    function Info($username, $password, $attrib, $adGroupName = false){
+        try{
+	        global $ldap_host,$ldap_dn;
+	            
+	        $ldap = ldap_connect($this->ldap_host);
+	        if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	        
+	       if($this->isLdapUser($username, $password, $ldap)){  
+	            
+	            $results = ldap_search($ldap,$this->ldap_dn,'(sAMAccountName=' . $username . ')',$attrib);
+	      
+	            $user_data = ldap_get_entries($ldap, $results);
+	            
+	              
+	            return $user_data;
+	        }
+
+    	}
+    	catch(\Exception $e)
+        {
+            Log::critical("Problemas con la Info del LDAP:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
         }
         
     }

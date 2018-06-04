@@ -71,3 +71,6 @@ Route::get('actualizar_altas_profesores','SyncController@ActualizarAltasProfesor
 
 //Reportes
 Route::get('ultimos_usuarios_creados','SyncController@UltimosUsuariosCreados')->name('ultimosUsuariosCreados');
+
+//Reportes
+Route::get('login','SyncController@Login')->name('Login');

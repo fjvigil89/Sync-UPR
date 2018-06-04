@@ -17,7 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/user/{samaccountname}', 'SyncController@thumbnailphoto');
+//saber fotos
+Route::get('/user/{samaccountname}', 'ApiController@thumbnailphoto');
+
+//saber fotos
+Route::post('login', 'ApiController@AuthLdap')->name('apilogin');
+
 
 
 
