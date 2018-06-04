@@ -121,15 +121,15 @@ class SyncController extends Controller
                                 $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
                                   if (!$profes) {
                                     
-                                    $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-                                    $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
+                                    //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
+                                    //$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
                                     $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
                                     $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
                                   }
                                   if($profes){
                                     
-                                    $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
-                                    $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
+                                    //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
+                                    //$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
                                     $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
                                   }   
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
@@ -882,6 +882,40 @@ class SyncController extends Controller
             {
              
               Log::critical(" No se puede Ver Los usuarios del adiestrados ".$adiestrados[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            
+          }
+    }
+
+    function UltimosUsuariosCreados()
+    {           
+       try{
+             $time_start = microtime(true); 
+             $ldap = new ldap();
+             $usuarios_creados =$ldap->SaberUltimasUserCreador();
+             $lista_usuarios_creados = array();
+
+             for ($i=0; $i < count($usuarios_creados)-1 ; $i++) { 
+                  
+                  $list_aux= ['cn'=>$usuarios_creados[$i]['cn'][0],'samaccountname'=>$usuarios_creados[$i]['samaccountname'][0] , 'description' => $usuarios_creados[$i]['description'][0], 'physicaldeliveryofficename' => $usuarios_creados[$i]['physicaldeliveryofficename'][0]];
+                  array_push($lista_usuarios_creados, $list_aux );
+              }
+             
+            $time_end = microtime(true);
+            $time_total = $time_end - $time_start;
+
+            
+             return view('reportes',[            
+            'arrayProcesados'=>$lista_usuarios_creados, 
+            'time' => $time_total,            
+            'total' => count($lista_usuarios_creados)-1,
+            'reporte' => 'Adiestrados en la UPR'
+          ]);
+
+          }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(" No se puede Ver Los usuarios del adiestrados ".$usuarios_creados[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }

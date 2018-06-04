@@ -4,6 +4,8 @@ namespace Sync;
 
 use Illuminate\Database\Eloquent\Model;
 use Log;
+use Collection;
+use Carbon\Carbon;
 use Sync\Assets;
 class ldap extends Model
 {
@@ -1207,6 +1209,39 @@ class ldap extends Model
 		  		return false;
 		  	}
 		  	
+	}
+
+	function SaberUltimasUserCreador(){
+		try{		
+
+			$date = Carbon::now();				 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','name','employeenumber');
+
+	         $filter='(&(objectclass=user)(whencreated='.$date->toDateString().'))';
+	         dd($filter);
+
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+		    
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
 	}
 
 }
