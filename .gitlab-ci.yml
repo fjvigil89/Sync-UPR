@@ -31,3 +31,11 @@ check_environment:
   environment:
     name: ${CI_COMMIT_REF_NAME} 
 
+swagger_environment:
+  stage: check
+  script:
+   - echo "${CI_COMMIT_REF_NAME}"
+   - tools/swagger.sh $CI_COMMIT_REF_NAME
+  when: always
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
