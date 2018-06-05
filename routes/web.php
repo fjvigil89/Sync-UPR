@@ -74,3 +74,6 @@ Route::get('ultimos_usuarios_creados','SyncController@UltimosUsuariosCreados')->
 
 //Reportes
 Route::get('login','SyncController@Login')->name('Login');
+
+//Swagger
+Route::get('doc','SyncController@Doc')->name('Doc');

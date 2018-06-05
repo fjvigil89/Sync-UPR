@@ -10,6 +10,13 @@ use Log;
 use Carbon\Carbon;
 use Collection;
 use Mail;
+
+
+/**
+ * Class ApiController
+ *
+ * @package Sync\Http\Controllers
+ */
 class ApiController extends Controller
 {
     //
@@ -31,7 +38,34 @@ class ApiController extends Controller
        return response()->json($login,404);
     }
 
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @SWG\Get(
+     *     path="/api/user/samaccountname",
+     *     description="Retorna la foto del Usuario de la UPR",
+     *     operationId="api.thumbnailphoto",
+     *     produces={"application/json"},
+     *     tags={"thumbnailphoto"},
+	 *     @SWG\Parameter(
+	 *     name="samaccountname",
+	 *     in="path",
+	 *     description="Target customer.",
+	 *     required=true,
+	 *     type="string"
+	 *   ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Dashboard overview."
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized action.",
+     *     )
+     * )
+     */
     function thumbnailphoto($samaccountname)
     {   	
 

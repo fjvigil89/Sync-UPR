@@ -1,0 +1,49 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Sample API",
+        "contact": {
+            "name": "Frank J. Vigil Vega",
+            "url": "http://di.upr.edu.cu"
+        },
+        "version": "1.0"
+    },
+    "host": "",
+    "basePath": "sync.upr.edu.cu",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/api/user/samaccountname": {
+            "get": {
+                "tags": [
+                    "dashboard"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Retorna la foto del Usuario de la UPR",
+                "operationId": "api.dashboard.thumbnailphoto",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "samaccountname",
+                        "in": "path",
+                        "description": "Target customer.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview."
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

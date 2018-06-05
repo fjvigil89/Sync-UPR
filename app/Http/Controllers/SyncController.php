@@ -24,8 +24,9 @@ class SyncController extends Controller
      * @param  \Illuminate\Http\Request  $request     
      * @return \Illuminate\Http\Response
      */
-    public function saberLdap(Request $request, $item) //item es la unidad a actualizar (Estudiantes, Docentes, No Docentes)
+    public function saberLdap(Request $request, $item) //item es la unidad a actualizar (Estudiantes, Docentes, No Docentes, Bajas)
     {
+       
     	 $time_start = microtime(true);    	 
   		 $array_NoUpdate= array();
   		 $array_Update= array();
@@ -161,6 +162,8 @@ class SyncController extends Controller
   			'update' => count($array_Update),
   			'total' => count($lista_ldap)-1,
   		]);
+
+
     	
     }
 
@@ -1176,6 +1179,11 @@ class SyncController extends Controller
     function Login()
     {
       return view('Login.login');
+    }
+
+   function Doc()
+    {
+      return view('swagger.swagger');
     }
 
 }

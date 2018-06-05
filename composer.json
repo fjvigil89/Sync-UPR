@@ -11,7 +11,9 @@
         "laravel/tinker": "~1.0",
 	    "laravelcollective/html":"^5.4.0",
         "guzzlehttp/guzzle": "dev-master",
-        "rap2hpoutre/laravel-log-viewer": "^0.14.3"        
+        "rap2hpoutre/laravel-log-viewer": "^0.14.3",
+        "itsgoingd/clockwork": "^2.2",
+        "zircote/swagger-php": "^2.0"        
     },            
     "require-dev": {
         "filp/whoops": "~2.0",
