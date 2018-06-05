@@ -48,7 +48,7 @@ class SyncController extends Controller
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $lugar = false;
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Bajas')) $lugar = false;
+                  
                      
                    if($lugar)
                    {  
@@ -117,19 +117,19 @@ class SyncController extends Controller
                               }
                               else{
 
+                                
                                 array_push($array_Update, $lista_ldap[$i]);
                                 $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
                                   if (!$profes) {
                                     
                                     //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-                                    //$this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
-                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
-                                    $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
+                                    $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);                                    
                                   }
                                   if($profes){
                                     
                                     //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
-                                    //$this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
+                                    $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
                                     $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
                                   }   
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                

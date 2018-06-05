@@ -301,6 +301,14 @@ class ldap extends Model
 			 {
 			 	$ldap_dn_GrupoRedes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 }
+			 if($item == 'Bajas')
+			 {
+			 	$ldap_dn_GrupoRedes= "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }
+			 /*if ($item == 'Actualizar') {
+			 	# code...
+			 	$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }*/
 
 			 
 			 $ldap = ldap_connect($this->ldap_host,389);
@@ -411,6 +419,7 @@ class ldap extends Model
 				    $message_css = "yes";	    
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
+
 
 			  	return true;
 		  	}

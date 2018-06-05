@@ -18,12 +18,16 @@ class ApiController extends Controller
     	$ldap= new Ldap();
     	$login =$ldap->Auth($request->user, $request->password);
     	if ($login) {
+
+    		Log::alert(" Se logueo el usuario". $request->user ." de la UPR ");
+
     		$attrib = explode(',', $request->attrib);    		
     	  	$data= $ldap->Info($request->user, $request->password, $attrib);       	  	
     	  	return JsonResponse::create($data, 200, array('Content-Type'=>'application/json; charset=utf-8' ));
           	
 
        }
+       Log::alert(" Fallo al loguear el usuario". $request->user.'con el pass'.$request->password ." de la UPR ");
        return response()->json($login,404);
     }
 
