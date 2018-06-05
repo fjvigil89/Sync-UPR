@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  * @package Sync\Http\Controllers
  *
  * @SWG\Swagger(
- *     basePath="sync.upr.edu.cu",
+ *     basePath="",
  *     host="",
  *     schemes={"https"},
  *     @SWG\Info(

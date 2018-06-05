@@ -44,7 +44,7 @@ class ApiController extends Controller
      * @return \Illuminate\Http\JsonResponse
      *
      * @SWG\Get(
-     *     path="/api/user/samaccountname",
+     *     path="/api/user/{samaccountname}",
      *     description="Retorna la foto del Usuario de la UPR",
      *     operationId="api.thumbnailphoto",
      *     produces={"application/json"},
