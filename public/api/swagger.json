@@ -9,19 +9,19 @@
         "version": "1.0"
     },
     "host": "",
-    "basePath": "sync.upr.edu.cu",
+    "basePath": "",
     "schemes": [
         "https"
     ],
     "paths": {
-        "/api/user/samaccountname": {
+        "/api/user/{samaccountname}": {
             "get": {
                 "tags": [
-                    "dashboard"
+                    "thumbnailphoto"
                 ],
                 "summary": "Display a listing of the resource.",
                 "description": "Retorna la foto del Usuario de la UPR",
-                "operationId": "api.dashboard.thumbnailphoto",
+                "operationId": "api.thumbnailphoto",
                 "produces": [
                     "application/json"
                 ],
