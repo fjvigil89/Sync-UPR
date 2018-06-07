@@ -61,22 +61,14 @@ class Assets extends Model
 	function findDepartaento($idCosto)
 	{
 		try{
-			$response = $this->client->get("areas_responsabilidads?_format=json&idCcosto=".$idCosto);
+			
+			$response = $this->client->get("centro_costos/".$idCosto."?_format=json");
 			$data = collect(json_decode($response->getBody()->getContents(),true));	
-
-			if(trim($data["hydra:member"][0]['descArearesponsabilidad']) == "")
-				{
-					$response = $this->client->get("centro_costos/".$idCosto."?_format=json");
-					$data = collect(json_decode($response->getBody()->getContents(),true));	
-					
-					return trim($data["descCcosto"]);
-				}
-
-			return trim($data["hydra:member"][0]['descArearesponsabilidad']);
+			return trim($data["descCcosto"]);			
 		}
 		catch(\Exception $e)
         {
-            Log::critical("No se puede acceder al área de responzabilidad del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            Log::critical("No se puede acceder al Centro de Costo del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             //return response("Alguna cosa esta mal", 500);
             return "Alguna cosa esta mal";
         }

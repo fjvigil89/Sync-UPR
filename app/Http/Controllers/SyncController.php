@@ -56,10 +56,12 @@ class SyncController extends Controller
                        $empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
                         
                         if ($empleado == "No Existe") {
-                          //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
+                           Log::critical($i." -- No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
                           array_push($array_NoUpdate, $lista_ldap[$i]);
                           $existe_asstes= false;
-                          $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
+                          $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu"); 
+                           Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:"); 
                         }
 
 
@@ -70,6 +72,7 @@ class SyncController extends Controller
                           array_push($array_NoUpdate, $lista_ldap[$i]);  
                           $existe_asstes= false;
                           $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
+                           Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
                         }
                         
                         if($existe_asstes)
@@ -84,7 +87,7 @@ class SyncController extends Controller
                             $ldap->mover($lista_ldap[$i]['dn'], $this->bajas);  
                             $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
-                            Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
+                            Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." por ser baja del assets:");
                             array_push($array_NoUpdate, $lista_ldap[$i]);
                             
                           }
@@ -94,9 +97,10 @@ class SyncController extends Controller
                                 if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
                                     //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
-                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
+                                  Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
                                   array_push($array_NoUpdate, $lista_ldap[$i]);                 
                                 }
+
 
 
                                 $cargo = $assets->findCargo(trim(ltrim($empleado[0]["idCargo"])));
@@ -104,17 +108,18 @@ class SyncController extends Controller
 
                                   //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
-                                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
+                                  Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
                                   array_push($array_NoUpdate, $lista_ldap[$i]);
                                   
                                 }
 
-                            
+                              
                               if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
                               {
                                 array_push($array_NoUpdate, $lista_ldap[$i]);
                                 $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
-                                //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);                 
+                                //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);                
+                                Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." por no Poder Actualizarce:"); 
                               }
                               else{
 
@@ -125,13 +130,15 @@ class SyncController extends Controller
                                     
                                     //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
                                     $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
-                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);                                    
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
+                                    Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." a -- No Docentes --:");                                     
                                   }
                                   if($profes){
                                     
                                     //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
                                     $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-                                    $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
+                                    $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);
+                                    Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." a -- Docentes --:");        
                                   }   
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
                               }//else del if de ActualizarCampos
@@ -141,11 +148,9 @@ class SyncController extends Controller
   						
   		    	 	 }//try
   		    	 	catch(\Exception $e)
-  	        		{
-  	        			//$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-  	        			//$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
-  	            		Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-  			  		 	array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
+  	        		{  	        			
+  	            	Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+  			  		 	 array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
   				  		
   			  		}
 
@@ -162,8 +167,6 @@ class SyncController extends Controller
   			'update' => count($array_Update),
   			'total' => count($lista_ldap)-1,
   		]);
-
-
     	
     }
 

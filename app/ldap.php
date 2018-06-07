@@ -305,10 +305,10 @@ class ldap extends Model
 			 {
 			 	$ldap_dn_GrupoRedes= "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 }
-			 /*if ($item == 'Actualizar') {
+			 if ($item == 'Actualizar') {
 			 	# code...
 			 	$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-			 }*/
+			 }
 
 			 
 			 $ldap = ldap_connect($this->ldap_host,389);
@@ -406,7 +406,7 @@ class ldap extends Model
 			    //'employeenumber'=> $empleado['idExpediente'],	
 			    'employeeid'=> $empleado['noCi'],	
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
-			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),
+			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
 			    );
 			    
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
@@ -420,7 +420,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-
+			  	
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
