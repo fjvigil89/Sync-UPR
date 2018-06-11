@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+/*Route::middleware('auth:web')->get('/', function () {
+    return view('index');
+});*/
 
 Route::get('/', function () {
     return view('index');
@@ -77,3 +80,6 @@ Route::get('login','SyncController@Login')->name('Login');
 
 //Swagger
 Route::get('doc','SyncController@Doc')->name('Doc');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
