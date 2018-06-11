@@ -357,7 +357,8 @@ class ldap extends Model
 
 	        $filter="employeenumber=".$employeenumber;
 	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
-		    $user_data = @ldap_get_entries($ldap, $results);	    		    
+		    $user_data = @ldap_get_entries($ldap, $results);
+		        		    
 		    return $user_data;
 
 	    }
@@ -399,11 +400,19 @@ class ldap extends Model
 			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
 	 			$user_id = $user_data[0]["samaccountname"][0];
 	       		
+	       		if ($empleado['telefonoParticular'] == "") {
+					$phone= "No tiene";
+				}
+				else{
+			    	 $phone=$empleado['telefonoParticular'];		
+			    	} 
+
 	            $entry = array(
 			    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['direccion'])))),
 			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
 			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
-			    //'employeenumber'=> $empleado['idExpediente'],	
+			    //'employeenumber'=> $empleado['idExpediente'],
+			    'telephoneNumber'=>$phone,	
 			    'employeeid'=> $empleado['noCi'],	
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
 			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
@@ -754,6 +763,38 @@ class ldap extends Model
         {
             Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+
+ 	function findUPRedes()
+ 	{
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
+
+	         $filter="(&(objectClass=user)(memberOf=CN=UPRedes,OU=Listas,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
+	        
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+		    
+
+		    return true;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
         }
  	}
 
@@ -1196,11 +1237,11 @@ class ldap extends Model
 				else{
 			    	 $descrip=html_entity_decode(ucwords(strtolower($cargo)));		
 			    	} 
-		    	if ($empleado['telephonenumber'] == "") {
+		    	if ($empleado['telefonoParticular'] == "") {
 					$phone= "No tiene";
 				}
 				else{
-			    	 $phone=$empleado['telephonenumber'];		
+			    	 $phone=$empleado['telefonoParticular'];		
 			    	} 
 
 	            $entry = array(

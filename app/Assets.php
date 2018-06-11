@@ -111,6 +111,8 @@ class Assets extends Model
         }
 	}
 
+
+
 	function findBaja($idTrabajador)//busca rl trabajador y verifica que no sea baja
 	{
 		try{	

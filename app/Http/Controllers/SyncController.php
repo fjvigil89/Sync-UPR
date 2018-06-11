@@ -17,6 +17,7 @@ class SyncController extends Controller
     private $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     private $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     private $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $Upredes = "OU=_GrupoRedes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     
     /**
      * Store a newly created resource in storage.
@@ -123,9 +124,8 @@ class SyncController extends Controller
                               }
                               else{
 
-                                
                                 array_push($array_Update, $lista_ldap[$i]);
-                                $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
+                                $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));                   
                                   if (!$profes) {
                                     
                                     //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
@@ -140,7 +140,16 @@ class SyncController extends Controller
                                     $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);
                                     Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." a -- Docentes --:");        
                                   }   
-                                  $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
+                                  
+                                
+                                  $upredes = $ldap->findUPRedes(trim($lista_ldap[$i]["employeenumber"][0]));                                  
+                                  if ($upredes) { 
+                                      $redes= $ldap->saberLdapTrabajador($lista_ldap[$i]["employeenumber"][0]);                                                                    
+                                    $this->AddGrupoUPredes($redes[0]['distinguishedname'][0],trim($redes[0]['employeenumber'][0]));  
+                                      $ldap->mover($redes[0]['dn'], $this->Upredes);
+                                      Log::warning(" Moviendo al empleado ".$redes[0]["displayname"][0]." a -- Upredes --:");
+                                    }
+                                 $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);
                               }//else del if de ActualizarCampos
                             }//else del if de Trabbaja 
                         }//if existe_assets
@@ -210,7 +219,23 @@ class SyncController extends Controller
     	}
 
 		$ldap->addtogroup($distinguishedname, $group);
-    }    
+    }
+
+    function AddGrupoUPredes($distinguishedname, $idEmployeed)
+    {
+      $ldap = new ldap();    
+      $assets = new Assets;
+      //grupos que se les adicionar'an al usuario       
+      $group = [
+        'Domain Users',        
+      ];
+
+      foreach ($assets->SaberGrupo($idEmployeed) as $value) {
+        array_push($group, $value);
+      }
+
+      $ldap->addtogroup($distinguishedname, $group);
+    }
 
     function DeleteGrupo($distinguishedname)
     {
