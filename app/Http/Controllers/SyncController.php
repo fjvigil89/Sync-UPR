@@ -1111,7 +1111,8 @@ class SyncController extends Controller
                         
                         Log::critical("Dandole de Alta al usuario ".$alta[$i]['nombre']." Day ".Carbon::now());   
                         
-                        $exist      =$ldap->ExistUsuario($alta[$i]['idExpediente']);                       
+                        $exist      =$ldap->ExistUsuario($alta[$i]['idExpediente']);
+                                              
                         if ($exist) {
                           # code...
                             $lista_ldap =$ldap->Busqueda($alta[$i]['idExpediente']); 
@@ -1156,6 +1157,7 @@ class SyncController extends Controller
                             # code...
                             Log::critical(" No se puede da de Alta a ".$alta[$i]["nombre"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
                           }
+                           Log::Info(" Se dio de Alta a ".$alta[$i]["nombre"]." en el AD");
                         }
                         
                     }                   

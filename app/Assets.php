@@ -153,7 +153,7 @@ class Assets extends Model
         }
 	}
 
-	function SearchAltasProfesor()//El metodo busca todos lo Trabajadores que fueron baja en el d'ia de hoy
+	function SearchAltasProfesor()//El metodo busca todos lo Trabajadores que fueron Alta en el d'ia de hoy
 	{
 		try{	
 			   $date = Carbon::now();

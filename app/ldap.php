@@ -1180,35 +1180,49 @@ class ldap extends Model
 			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 			  
 
-				$user_dn = 'CN=mail,OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu';			   
-	 			$pwdtxt = "P@ssword";
-	 			$newPassword = "\"" . $pwdtxt . "\"";
-				$len = strlen($newPassword);
-				$newPassw = "";
-				for($i=0;$i<$len;$i++) {
-				    $newPassw .= "{$newPassword{$i}}\000";
+				$user_dn = 'CN=prueba,OU=Nuevos,OU=_Usuarios,DC=upr,DC=edu,DC=cu';  
+	 			
+				$newPassw = $this->pwd_encryption("P@ssword");
+
+				if(html_entity_decode(trim(ucwords(strtolower($departamento)))) == "") {
+			    		$physical = "No tiene";
+			    	}	
+			    else{
+			    	   $physical = html_entity_decode(trim(ucwords(strtolower($departamento))));
+					}
+				if (html_entity_decode(ucwords(strtolower($cargo))) == "") {
+						$descrip= "No tiene";
+					}
+				else{
+			    	 $descrip=html_entity_decode(ucwords(strtolower($cargo)));		
+			    	} 
+		    	if ($empleado['telephonenumber'] == "") {
+					$phone= "No tiene";
 				}
+				else{
+			    	 $phone=$empleado['telephonenumber'];		
+			    	} 
 
 	            $entry = array(
 			    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['direccion'])))),
 			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
 			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
-			    //'employeenumber'=> $empleado['idExpediente'],	
-			    'employeeid'=> $empleado['noCi'],	
-			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
-			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),
-			    'cn'=>html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))).' '.html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
+			    'employeenumber'=> $empleado['idExpediente'],	
+			    'employeeid'=> $empleado['noCi'],			    
+		    	'physicaldeliveryofficename' => $physical,
+		    	'description'=>$descrip,					    	
 			    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
-			    'mail'			 => 'mail@upr.edu.cu',
-			    'telephoneNumber'=>$empleado['telephonenumber'],
-			    'sAMAccountName' =>'mail',
-			    'UserAccountControl'=>'514',
+			    'mail'			 => 'prueba@upr.edu.cu',
+			    'telephoneNumber'=>$phone,
+			    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
+			    'sAMAccountName' =>'prueba',
+			    'useraccountcontrol'=>'514',
 			    //'unicodePwd'=> $newPassw
 			    );
 
 			    
 			    
-			    if (!@ldap_modify($ldap,$user_dn, $entry)){
+			    if (!@ldap_add($ldap,$user_dn, $entry)){
 				    $error = @ldap_error($ldap);
 				    $errno = @ldap_errno($ldap);
 				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
@@ -1219,7 +1233,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			  	dd($message);
+			  	
 
 			  	return true;
 		  	}
@@ -1229,6 +1243,23 @@ class ldap extends Model
 		  		return false;
 		  	}
 		  	
+	}
+	public function pwd_encryption($password){
+
+		$password = '"' . $password . '"';
+        if (function_exists('mb_convert_encoding')) {
+            $password = mb_convert_encoding($password, 'UTF-16LE', 'UTF-8');
+        } elseif (function_exists('iconv')) {
+            $password = iconv('UTF-8', 'UTF-16LE', $password);
+        } else {
+            $len = strlen($password);
+            $new = '';
+            for ($i = 0; $i < $len; $i++) {
+                $new .= $password[$i] . "\x00";
+            }
+            $password = $new;
+        }
+        return base64_encode($password);
 	}
 
 	function SaberUltimasUserCreador(){
