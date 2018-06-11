@@ -358,7 +358,7 @@ class ldap extends Model
 	        $filter="employeenumber=".$employeenumber;
 	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);
-		        		    
+
 		    return $user_data;
 
 	    }
@@ -412,7 +412,7 @@ class ldap extends Model
 			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
 			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
 			    //'employeenumber'=> $empleado['idExpediente'],
-			    'telephoneNumber'=>$phone,	
+			    //'telephoneNumber'=>$phone,	
 			    'employeeid'=> $empleado['noCi'],	
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
 			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
@@ -1220,8 +1220,13 @@ class ldap extends Model
 			  
 			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 			  
-
-				$user_dn = 'CN=prueba,OU=Nuevos,OU=_Usuarios,DC=upr,DC=edu,DC=cu';  
+			  	
+		  		$cn = $this->user_unic($empleado['nombre'], $empleado['apellido1'], $empleado['apellido2'], 0);
+		  		if ($this->Exist($cn)) {
+		  			$cn = $this->user_unic($empleado['nombre'], $empleado['apellido1'], $empleado['apellido2'], 1);
+		  		}
+		  		
+				$user_dn = 'CN='.$cn.',OU=Nuevos,OU=_Usuarios,DC=upr,DC=edu,DC=cu';  
 	 			
 				$newPassw = $this->pwd_encryption("P@ssword");
 
@@ -1253,10 +1258,10 @@ class ldap extends Model
 		    	'physicaldeliveryofficename' => $physical,
 		    	'description'=>$descrip,					    	
 			    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
-			    'mail'			 => 'prueba@upr.edu.cu',
+			    'mail'			 => $cn.'@upr.edu.cu',
 			    'telephoneNumber'=>$phone,
 			    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
-			    'sAMAccountName' =>'prueba',
+			    'sAMAccountName' =>$cn,
 			    'useraccountcontrol'=>'514',
 			    //'unicodePwd'=> $newPassw
 			    );
@@ -1268,6 +1273,7 @@ class ldap extends Model
 				    $errno = @ldap_errno($ldap);
 				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
 				    $message[] = "$errno - $error";
+				    
 			  	}
 			  	else {
 				    $message_css = "yes";	    
@@ -1275,7 +1281,7 @@ class ldap extends Model
 			  	}
 
 			  	
-
+			  	
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
@@ -1284,6 +1290,22 @@ class ldap extends Model
 		  		return false;
 		  	}
 		  	
+	}
+
+	public function user_unic($nombre, $apellido1, $apellido2, $veces=0){
+		if ($veces == 0) {
+			$a = explode(" ", $nombre);
+		  	$b = explode(" ", $apellido1);
+		  	$c=$apellido2[0];
+		  	return $cn =strtolower($a[0].'.'.$b[0].$c);
+	  	}
+	  	else
+	  	{
+	  		$a = explode(" ", $nombre);
+		  	$b = $apellido1[0];
+		  	$c=explode(" ", $apellido2);
+		  	return $cn =strtolower($a[0].'.'.$b.$c[0]);	
+	  	}
 	}
 	public function pwd_encryption($password){
 

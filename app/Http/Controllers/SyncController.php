@@ -1133,7 +1133,7 @@ class SyncController extends Controller
                   
                    for ($i=0; $i < count($alta) ; $i++) {
 
-                        
+                        $ldap->CrearUsuario($alta[$i]);
                         Log::critical("Dandole de Alta al usuario ".$alta[$i]['nombre']." Day ".Carbon::now());   
                         
                         $exist      =$ldap->ExistUsuario($alta[$i]['idExpediente']);
@@ -1171,7 +1171,14 @@ class SyncController extends Controller
                                     $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
                                     $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
                                     $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
-                                  }   
+                                  }  
+                                  $upredes = $ldap->findUPRedes(trim($lista_ldap[$i]["employeenumber"][0]));                                  
+                                  if ($upredes) { 
+                                      $redes= $ldap->saberLdapTrabajador($lista_ldap[$i]["employeenumber"][0]);                                                                    
+                                    $this->AddGrupoUPredes($redes[0]['distinguishedname'][0],trim($redes[0]['employeenumber'][0]));  
+                                      $ldap->mover($redes[0]['dn'], $this->Upredes);
+                                      Log::warning(" Moviendo al empleado ".$redes[0]["displayname"][0]." a -- Upredes --:");
+                                    } 
                                   $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);
                                 }
 
