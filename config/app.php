@@ -142,8 +142,7 @@ return [
          * Laravel Framework Service Providers...
          */
 
-        Illuminate\Auth\AuthServiceProvider::class,
-        //Ccovey\LdapAuth\LdapAuthServiceProvider::class,
+        Illuminate\Auth\AuthServiceProvider::class,        
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
@@ -167,6 +166,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
+        Adldap\Laravel\AdldapServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -229,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
+        'Adldap' => Adldap\Laravel\Facades\Adldap::class
 
     ],
 

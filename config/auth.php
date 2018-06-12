@@ -66,8 +66,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => Sync\User::class,
+            'driver' => 'adldap',
+            'model' => Sync\User::class,            
         ],
 
         // 'users' => [

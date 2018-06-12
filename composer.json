@@ -14,8 +14,17 @@
         "rap2hpoutre/laravel-log-viewer": "^0.14.3",
         "itsgoingd/clockwork": "^2.2",
         "zircote/swagger-php": "^2.0",
-        "strebl/l5-ldap-auth": "2.1.*"        
-    },            
+        "adldap2/adldap2-laravel": "dev-master"
+    }, 
+    "repositories": [
+        {
+          "packagist": false
+        },
+        {
+            "type": "composer",
+            "url": "http://composer.upr.edu.cu"
+        }
+    ],           
     "require-dev": {
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
