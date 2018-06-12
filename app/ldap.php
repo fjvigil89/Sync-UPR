@@ -429,7 +429,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			  	
+			  	//dd($message);
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
@@ -437,7 +437,7 @@ class ldap extends Model
             	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
 		  		return false;
 		  	}
-		  	//dd($message);
+		  	
 	}
 
 	function thumbnailphoto($samaccountname)
@@ -528,6 +528,8 @@ class ldap extends Model
         if (!$res)  {        	
     		print '|ERROR: '.ldap_error($ldap);
 		}
+
+
  	}
 
  	function addtogroup($distinguishedname, $groupname) { 
@@ -556,6 +558,7 @@ class ldap extends Model
 
 	  	$addme["member"] = $distinguishedname;
 	  	$res = @ldap_mod_add($ldap, $dn, $addme);
+	  	$errstr = '';
 	  	if (!$res) {
 	    	$errstr .= ldap_error($ldap);		    
 	 	}
@@ -689,20 +692,19 @@ class ldap extends Model
 	  	$user_entry = @ldap_first_entry($ldap, $results);
 	  	$user_dn = @ldap_get_dn($ldap, $user_entry);
 
-         $entry = array(
-			    'useraccountcontrol' =>"512",
-			    );
+         $entry = array('useraccountcontrol' =>"512",);
 			    
-			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
-				    $error = @ldap_error($ldap);
-				    $errno = @ldap_errno($ldap);
-				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
-				    $message[] = "$errno - $error";
-			  	}
-			  	else {
-				    $message_css = "yes";	    
-				    $message[] = "The change for has been used.";
-			  	}
+	    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+		    $error = @ldap_error($ldap);
+		    $errno = @ldap_errno($ldap);
+		    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+		    $message[] = "$errno - $error";
+	  	}
+	  	else {
+		    $message_css = "yes";	    
+		    $message[] = "The change for has been used.";
+	  	}
+
  	}
 
  	function InternetEstudiante()
@@ -779,22 +781,20 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','displayname','employeenumber','employeeid');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPRedes,OU=Listas,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
 	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);
 
-		    
-
-		    return true;
+		    return $user_data;
 
 	    }
        catch(\Exception $e)
         {
             Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
-            return false;
+             return response("Alguna cosa esta mal", 500);
         }
  	}
 
@@ -1187,7 +1187,7 @@ class ldap extends Model
 
 	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		 
-	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','name','employeenumber');
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','name','employeenumber','displayname');
 
 	         $filter='(&(|(samaccountname='.$search.')(cn='.$search.')(displayname='.$search.')(givenname='.$search.')(name='.$search.')(physicaldeliveryofficename='.$search.')(employeenumber='.$search.')(sn='.$search.'))(objectclass=user))';
 

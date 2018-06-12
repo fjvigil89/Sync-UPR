@@ -93,64 +93,8 @@ class SyncController extends Controller
                             
                           }
                           else{
-                            
-                                $departamento = $assets->findDepartaento(trim(ltrim($empleado[0]["idCcosto"])));
-                                if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
-                                    //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-
-                                  Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
-                                  array_push($array_NoUpdate, $lista_ldap[$i]);                 
-                                }
-
-
-
-                                $cargo = $assets->findCargo(trim(ltrim($empleado[0]["idCargo"])));
-                                if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
-
-                                  //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-
-                                  Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");
-                                  array_push($array_NoUpdate, $lista_ldap[$i]);
-                                  
-                                }
-
+                             $this->Actualizar_Usuarios_Upr($empleado[0], $lista_ldap[$i]);
                               
-                              if(!$ldap->ActualizarCamposIdEmpleado($empleado[0], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
-                              {
-                                array_push($array_NoUpdate, $lista_ldap[$i]);
-                                $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
-                                //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);                
-                                Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." por no Poder Actualizarce:"); 
-                              }
-                              else{
-
-                                array_push($array_Update, $lista_ldap[$i]);
-                                $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));                   
-                                  if (!$profes) {
-                                    
-                                    //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-                                    $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
-                                    $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
-                                    Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." a -- No Docentes --:");                                     
-                                  }
-                                  if($profes){
-                                    
-                                    //$this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
-                                    $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-                                    $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);
-                                    Log::warning(" Moviendo al empleado ".$lista_ldap[$i]["displayname"][0]." a -- Docentes --:");        
-                                  }   
-                                  
-                                
-                                  $upredes = $ldap->findUPRedes(trim($lista_ldap[$i]["employeenumber"][0]));                                  
-                                  if ($upredes) { 
-                                      $redes= $ldap->saberLdapTrabajador($lista_ldap[$i]["employeenumber"][0]);                                                                    
-                                    $this->AddGrupoUPredes($redes[0]['distinguishedname'][0],trim($redes[0]['employeenumber'][0]));  
-                                      $ldap->mover($redes[0]['dn'], $this->Upredes);
-                                      Log::warning(" Moviendo al empleado ".$redes[0]["displayname"][0]." a -- Upredes --:");
-                                    }
-                                 $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);
-                              }//else del if de ActualizarCampos
                             }//else del if de Trabbaja 
                         }//if existe_assets
                    }//if lugar     						 	
@@ -1128,66 +1072,21 @@ class SyncController extends Controller
              $assets = new Assets();
              $alta =$assets->SearchAltasProfesor();
              $exist = true;
-             if ($alta != "No Existe") {              
-               # code...              
-                  
+             if ($alta != "No Existe") {  
                    for ($i=0; $i < count($alta) ; $i++) {
 
-                        
                         Log::critical("Dandole de Alta al usuario ".$alta[$i]['nombre']." Day ".Carbon::now());   
                         
                         $exist_assets=$ldap->ExistUsuario($alta[$i]['idExpediente']);
-                                            
+                                        
                         if ($exist_assets) { 
-                            $aux = $ldap->Busqueda($alta[$i]['idExpediente']);
-                                                  
+                            $aux = $ldap->Busqueda($alta[$i]['idExpediente']);  
                            if(strstr($aux[0]['distinguishedname'][0], 'Nuevos'))$exist = false;
-                           
+
                            if ($exist) {
-                             # code...
-                              $lista_ldap =$ldap->Busqueda($alta[$i]['idExpediente']); 
-                              $departamento = $assets->findDepartaento(trim(ltrim($alta[$i]["idCcosto"])));
-                                  if ($departamento == "" || $departamento == "Alguna cosa esta mal") {                                    
-                                    Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");                         
-                                  }
-
-                                  $cargo = $assets->findCargo(trim(ltrim($alta[$i]["idCargo"])));
-                                  if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
-
-                                    Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener cargo en assets:");                                  
-                                  }
+                              $this->Actualizar_Usuarios_Upr($alta[$i], $aux[0]);
                               
-                                if(!$ldap->ActualizarCamposIdEmpleado($alta[$i], $departamento, $cargo, $lista_ldap[$i]['samaccountname'][0]))
-                                {
-                                  
-                                  $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
-                                }
-                                else{                               
-                                  $profes = $assets->findDocente(trim($lista_ldap[$i]["employeenumber"][0]));
-                                    if (!$profes) {
-                                      
-                                      $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]); 
-                                      $this->AddGrupoNoDocente($lista_ldap[$i]['distinguishedname'][0],trim($lista_ldap[$i]['employeenumber'][0]));  
-                                      $ldap->mover($lista_ldap[$i]['dn'], $this->NoDocente);
-                                      $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);                
-                                    }
-                                    if($profes){
-                                      
-                                      $this->DeleteGrupo($lista_ldap[$i]['distinguishedname'][0]);        
-                                      $this->AddGrupoDocente($lista_ldap[$i]['distinguishedname'][0], trim($lista_ldap[$i]['employeenumber'][0]));
-                                      $ldap->mover($lista_ldap[$i]['dn'], $this->Docente);        
-                                    }  
-                                    $upredes = $ldap->findUPRedes(trim($lista_ldap[$i]["employeenumber"][0]));                                  
-                                    if ($upredes) { 
-                                        $redes= $ldap->saberLdapTrabajador($lista_ldap[$i]["employeenumber"][0]);                                                                    
-                                      $this->AddGrupoUPredes($redes[0]['distinguishedname'][0],trim($redes[0]['employeenumber'][0]));  
-                                        $ldap->mover($redes[0]['dn'], $this->Upredes);
-                                        Log::warning(" Moviendo al empleado ".$redes[0]["displayname"][0]." a -- Upredes --:");
-                                      } 
-                                    $ldap->Enable($lista_ldap[$i]['samaccountname'][0]);
-                                  }
                            }//if existe
-
                         }//if exist_assets
                         else
                         {
@@ -1217,6 +1116,87 @@ class SyncController extends Controller
               Log::critical(" No se puede da de Alta a ".$alta[$i]["nombre"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
+    }
+
+    function Actualizar_Usuarios_Upr($empleado, $lista_ldap)
+    {
+      
+      try{
+            $ldap = new ldap();
+            $assets = new Assets();
+         $departamento = $assets->findDepartaento(trim(ltrim($empleado["idCcosto"])));
+        if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
+            //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
+          Log::warning(" No se puede actualizar al empleado ".$lista_ldap["displayname"][0]." por no tener departamento en assets:");          
+        }   
+
+        $cargo = $assets->findCargo(trim(ltrim($empleado["idCargo"])));
+        if ($cargo == "" || $cargo == "Alguna cosa esta mal") {
+
+          Log::critical(" No se puede actualizar al empleado ".$empleado["nombre"][0]." por no tener cargo en assets:");                                  
+        }
+        
+        if(!$ldap->ActualizarCamposIdEmpleado($empleado, $departamento, $cargo, $lista_ldap['samaccountname'][0]))
+        {
+                    
+          $ldap->mover($lista_ldap['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+          Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
+
+        }
+        else{ 
+
+            $profes = $assets->findDocente(trim($lista_ldap["employeenumber"][0]));                   
+              if (!$profes) {
+                
+                //$this->DeleteGrupo($lista_ldap['distinguishedname'][0]); 
+                $this->AddGrupoNoDocente($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]));  
+                $ldap->mover($lista_ldap['dn'], $this->NoDocente);
+                Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." a -- No Docentes --:");                                     
+              }
+              if($profes){
+                
+                //$this->DeleteGrupo($lista_ldap['distinguishedname'][0]);        
+                $this->AddGrupoDocente($lista_ldap['distinguishedname'][0], trim($lista_ldap['employeenumber'][0]));
+                $ldap->mover($lista_ldap['dn'], $this->Docente);
+                Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." a -- Docentes --:");        
+              }
+
+            $ldap->Enable($lista_ldap['samaccountname'][0]);
+          }
+          return true;
+      }
+      catch(\Exception $e)
+          {
+           
+            Log::critical(" No se puede Actualizar a ".$lista_ldap["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+
+            return false;          
+        }
+      
+    }
+
+    function UPRedes()
+    {      
+       $ldap = new ldap();
+       $assets = new Assets();
+       $upredes = $ldap->findUPRedes();           
+
+       for ($i=0; $i < count($upredes)-1 ; $i++) {
+          try{
+
+            $this->AddGrupoUPredes($upredes[$i]['distinguishedname'][0],trim($upredes[$i]['employeenumber'][0]));  
+            $ldap->mover($upredes[$i]['dn'], $this->Upredes);
+            Log::warning(" Moviendo al empleado ".$upredes[$i]["displayname"][0]." a -- Upredes --:");      
+            }
+          catch(\Exception $e)
+            {
+             
+              Log::critical(" No se puede mover a ".$upredes[$i]["displayname"][0]." a UPRedes: {$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+          }
+         }
+      //return "UPREDES";           
+          
     }
 
     function Login()

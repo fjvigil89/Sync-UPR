@@ -72,6 +72,9 @@ Route::get('actualizar_bajas_profesores','SyncController@ActualizarBajasProfesor
 //Actualizar Alta
 Route::get('actualizar_altas_profesores','SyncController@ActualizarAltasProfesores')->name('altasProfesores');
 
+//actualizar UPRedes
+Route::get('upredes','SyncController@UPRedes')->name('upredes');
+
 //Reportes
 Route::get('ultimos_usuarios_creados','SyncController@UltimosUsuariosCreados')->name('ultimosUsuariosCreados');
 
@@ -82,4 +85,5 @@ Route::get('login','SyncController@Login')->name('Login');
 Route::get('doc','SyncController@Doc')->name('Doc');
 Auth::routes();
 
+//reglas propias de laravelauth
 Route::get('/home', 'HomeController@index')->name('home');
