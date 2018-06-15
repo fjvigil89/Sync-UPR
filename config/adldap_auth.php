@@ -123,7 +123,7 @@ return [
 
             'discover' => 'samaccountname', // Changed from `userprincipalname`
 
-            'authenticate' => 'samaccountname',//'distinguishedname',
+            'authenticate' => 'distinguishedname',//'distinguishedname',
 
         ],
 
@@ -256,11 +256,10 @@ return [
     |
     */
 
-    'sync_attributes' => [
-
+    'sync_attributes' => [        
         'username' => 'samaccountname', //'userprincipalname',
-
         'name' => 'cn',
+        'email' => 'mail',
 
     ],
 

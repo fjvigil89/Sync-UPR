@@ -12,8 +12,8 @@
 */
 /*Route::middleware('auth:web')->get('/', function () {
     return view('index');
-});*/
-
+});
+*/
 Route::get('/', function () {
     return view('index');
 });

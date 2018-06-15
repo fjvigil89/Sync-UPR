@@ -15,7 +15,12 @@
                         <th>Nombre</th>
                         <th>Usuario</th>
                         <th>Plaza</th>
-                        <th>Oficina</th>                        
+                        <th>Oficina</th>
+                          @guest
+                            <th></th>
+                          @else                          
+                            <th>Opciones</th>
+                          @endguest
                         <th></th>
                     </tr>
                 </thead>
@@ -27,7 +32,11 @@
                         <td>{{ $item['samaccountname'] }}</td>
                         <td>{{ $item['description'] }}</td>
                         <td>{{ $item['physicaldeliveryofficename']}}</td>
-                        <td></td>                        
+                         @guest
+                            <td></td>
+                          @else                          
+                            <td><button type="button" class="btn btn-info btn-sm">Editar</button></td>
+                          @endguest                        
                     </tr>
                     @endforeach
                 </tbody>

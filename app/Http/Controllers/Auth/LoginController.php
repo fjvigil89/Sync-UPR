@@ -42,13 +42,12 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        dd(Auth::attempt($request->only(['username', 'password'])));
+        //dd(Auth::attempt($request->only(['username', 'password'])));
         if (Auth::attempt($request->only(['username', 'password']))) {
        
             // Returns \App\User model configured in `config/auth.php`.
-            $user = Auth::user();
-            dd($user);
-            return redirect()->to('home')
+            $user = Auth::user();            
+            return redirect()->to('/')
                 ->withMessage('Logged in!');
         }
         
