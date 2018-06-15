@@ -20,21 +20,56 @@ use Mail;
 class ApiController extends Controller
 {
     //
-    function AuthLdap(Request $request)
+    /**
+     * @SWG\Get(path="/api/apilogin/{username}/{password}/{attrib}",
+     *   tags={"login"},
+     *   summary="Este metodo permite que los usuarios se autentiquen",
+     *   description="",
+     *   operationId="login",
+     *   produces={"application/json", "application/xml"},
+     *     @SWG\Parameter(
+     *         description="nombre de usuario",     
+     *         in="path",
+     *         name="username",
+     *         required=true,
+     *         type="string"
+     *     ),
+     *      @SWG\Parameter(
+     *         description="password del usuario",     
+     *         in="path",
+     *         name="password",
+     *         required=true,
+     *         type="string"
+     *     ),    
+     *      @SWG\Parameter(
+     *         description="arreglo separade por coma de parametros",     
+     *         in="path",
+     *         name="attrib",
+     *         required=true,
+     *         type="string"
+     *     ),    
+     *   @SWG\Response(
+     *     response=200,
+     *     description="successful operation",     
+     *   ),
+     *   @SWG\Response(response=400, description="Invalid username/password supplied")
+     * )
+    */
+    function AuthLdap($username, $password, $attrib)
     {
     	$ldap= new Ldap();
-    	$login =$ldap->Auth($request->user, $request->password);
+    	$login =$ldap->Auth($username, $password);        
     	if ($login) {
 
-    		Log::alert(" Se logueo el usuario". $request->user ." de la UPR ");
+    		Log::alert(" Se logueo el usuario". $username ." de la UPR ");
 
-    		$attrib = explode(',', $request->attrib);    		
-    	  	$data= $ldap->Info($request->user, $request->password, $attrib);       	  	
+    		$attrib = explode(',', $attrib);    		
+    	  	$data= $ldap->Info($username, $password, $attrib);       	  	
     	  	return JsonResponse::create($data, 200, array('Content-Type'=>'application/json; charset=utf-8' ));
           	
 
        }
-       Log::alert(" Fallo al loguear el usuario". $request->user.'con el pass'.$request->password ." de la UPR ");
+       Log::alert(" Fallo al loguear el usuario". $username.'con el pass'.$password ." de la UPR ");
        return response()->json($login,404);
     }
 

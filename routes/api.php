@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //saber fotos
 Route::get('/user/{samaccountname}', 'ApiController@thumbnailphoto');
 
-//saber fotos
-Route::post('login', 'ApiController@AuthLdap')->name('apilogin');
+//saber login
+Route::get('apilogin/{username}/{password}/{attrib}', 'ApiController@AuthLdap');
 
 
 

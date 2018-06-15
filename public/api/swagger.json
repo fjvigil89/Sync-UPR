@@ -11,9 +11,55 @@
     "host": "",
     "basePath": "",
     "schemes": [
-        "https"
+        "https",
+        "http"
     ],
     "paths": {
+        "/api/apilogin/{username}/{password}/{attrib}": {
+            "get": {
+                "tags": [
+                    "login"
+                ],
+                "summary": "Este metodo permite que los usuarios se autentiquen",
+                "description": "",
+                "operationId": "login",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "nombre de usuario",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "path",
+                        "description": "password del usuario",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "attrib",
+                        "in": "path",
+                        "description": "arreglo separade por coma de parametros",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    }
+                }
+            }
+        },
         "/api/user/{samaccountname}": {
             "get": {
                 "tags": [
