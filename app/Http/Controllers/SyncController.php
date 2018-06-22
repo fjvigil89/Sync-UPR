@@ -1210,6 +1210,14 @@ class SyncController extends Controller
     {
       return view('swagger.swagger');
     }
+    function GraficaTrabajadores()
+    {
+      $data = [
+          "labels" => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          "series" => [ [5, 2, 4, 2, 0]]
+      ];
+      return $data;
+    }
 
 }
  

@@ -83,7 +83,11 @@ Route::get('login','SyncController@Login')->name('Login');
 
 //Swagger
 Route::get('doc','SyncController@Doc')->name('Doc');
-Auth::routes();
+
 
 //reglas propias de laravelauth
 Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes();
+
+//Reportes
+Route::get('grafica_trabajadores','SyncController@GraficaTrabajadores')->name('graficaTrabajadores');
