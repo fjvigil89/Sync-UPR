@@ -104,7 +104,8 @@
           </div>
         </nav> 
         
-        
+     
+         
      <div class="container" >  
       
       
@@ -112,32 +113,11 @@
         
              
         @yield('script')
-     </div>
+     </div>     
 
-     {!!Html::script('js/sync.js')!!}    
+     {!!Html::script('js/sync.js')!!}
+        
 
-<script>
-  var aux= new Vue({
-  el: '#crud',
-  created: function(){
-    this.getGrafica();
-  },
-  data:{
-    labels: [],
-    series: [],
-  },
-  methods:{
-    getGrafica:function(){
-      var urlGrafica = 'grafica_trabajadores';      
-      axios.get(urlGrafica).then(response =>{       
-        this.labels = response.data.labels,
-        this.series = response.data.series        
-      });
-    },
-  }
-
-});
-</script>
          
   </body>
 </html>
