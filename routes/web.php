@@ -90,4 +90,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 //Reportes
-Route::get('grafica_trabajadores','SyncController@GraficaTrabajadores')->name('graficaTrabajadores');
+Route::get('graficaTrabajadores','GraficaController@GraficaTrabajadores')->name('graficaTrabajadores');
+Route::get('getTotalUsuariosPorTipos','GraficaController@GraficaTotalUsuariosPorYipo')->name('getTotalUsuariosPorTipos');
+Route::get('getusuariosPorUnidadesOrganizativas','GraficaController@GraficausUariosPorUnidadesOrganizativas')->name('getusuariosPorUnidadesOrganizativas');
+
+
+//crear Trabajador por su numero de trabajador
+Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
+Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');

@@ -18,10 +18,10 @@ mix.scripts([
 	'resources/assets/js/toastr.js',
 	'resources/assets/js/vue.js',	
 	'resources/assets/js/axios.js',		
-	//'resources/assets/js/chartist.min.js',	
+	'resources/assets/js/chartist.min.js',	
 	'resources/assets/js/sync.js',	
 	],'public/js/sync.js')   
 	.styles([	
 	'resources/assets/css/indice.css',	
-	//'resources/assets/css/chartist.min.css',
+	'resources/assets/css/chartist.min.css',
 	],'public/css/sync.css'); 

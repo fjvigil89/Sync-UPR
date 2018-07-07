@@ -38,6 +38,10 @@
                   <li><a href="{{ url('no_docente') }}">No Docentes </a></li>
                   <li><a href="{{ url('estudiantes') }}">Estudiantes</a></li>
                   <li><a href="{{ url('adiestrados') }}">Adiestrados</a></li>
+                  @guest
+                  @else
+                  <li><a href="{{ url('nuevos_users') }}">Crear Nuevo</a></li>
+                  @endguest
                 </ul>
               </li>
               <li class="dropdown">
@@ -61,7 +65,8 @@
                   <li><a href="{{ url('master') }}">Master </a></li>
                   <li><a href="{{ url('cuadro') }}">Cuadros </a></li>
                 </ul>
-              </li>           
+              </li> 
+                       
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

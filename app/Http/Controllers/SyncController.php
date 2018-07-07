@@ -971,9 +971,7 @@ class SyncController extends Controller
     }
 
     function Buscar(Request $request)
-    {    
-      $user = $this->provider->search()->find($request->search);
-      dd($user);
+    { 
       
       try{
              $exist = true;
@@ -1210,14 +1208,7 @@ class SyncController extends Controller
     {
       return view('swagger.swagger');
     }
-    function GraficaTrabajadores()
-    {
-      $data = [
-          "labels" => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-          "series" => [ [5, 2, 4, 2, 0]]
-      ];
-      return $data;
-    }
+
 
 }
  
