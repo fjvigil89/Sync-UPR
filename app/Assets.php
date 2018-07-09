@@ -24,6 +24,26 @@ class Assets extends Model
                 ]);
 	}
 
+	function ExisteEmpleado($idTrabajador)
+	{
+		try{			
+				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
+				$data = collect(json_decode($response->getBody()->getContents(),true));	
+
+				if($data['hydra:totalItems'] > 0)
+				{
+					return true;			
+				}
+				return false;
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return false;
+        }
+	}
+
 	function findEmpleado($idTrabajador)
 	{
 		try{
@@ -181,9 +201,9 @@ class Assets extends Model
     	try{
 			$array = Array();
 
-			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
-			$data = collect(json_decode($response->getBody()->getContents(),true));			
-			
+			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=0");
+			$data = collect(json_decode($response->getBody()->getContents(),true));
+
 			//Kuotas
 			if(trim($data["hydra:member"][0]['idCargo']) == '9387'){ array_push($array, 'UPR-Internet-Rector');}
 			if(trim($data["hydra:member"][0]['idCargo']) == '1046'){ array_push($array, 'UPR-Internet-Rector');}

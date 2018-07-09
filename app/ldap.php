@@ -115,6 +115,35 @@ class ldap extends Model
         }
 
     }
+	///permite saber si un usuario esta en el ldap por su numero de empleado
+	///esto se usa para crear un usuario nuevo desde el sistema
+    function ExisteEmpleado($employeeid){
+    	try{
+	        $exist = true;  
+	        $ldap = ldap_connect($this->ldap_host);
+	        if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+	        
+	        $ldapBind= ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+	        
+	        $attrib = array('distinguishedname');           
+	          //isLdapUser($username, $password, $ldap);    
+	               
+	        $results = ldap_search($ldap,$this->ldap_dn,'(employeeNumber=' . $employeeid . ')',$attrib);  
+	        $user_data = ldap_get_entries($ldap, $results);
+	        
+	        if($user_data[0]['distinguishedname'][0] == "")$exist = false;  	        
+	        return $exist;
+    	}
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede Cambiar el Password:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;//response("Alguna cosa esta mal", 500);
+        }
+    }
 
     function ExistUsuario($employeenumber){
     	try{
@@ -1266,7 +1295,7 @@ class ldap extends Model
 			    //'unicodePwd'=> $newPassw
 			    );
 
-			    
+			    dd($entry);
 			    
 			    if (!@ldap_add($ldap,$user_dn, $entry)){
 				    $error = @ldap_error($ldap);
@@ -1355,6 +1384,41 @@ class ldap extends Model
         {
             Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             return response("Alguna cosa esta mal", 500);
+        }
+	}
+
+	function isMemberUPRedes($username)
+	{
+		try{		
+
+			
+			$ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','name','employeenumber');
+
+	         $filter="(&(objectClass=user)(samaccountname=".$username.")(memberOf=CN=UPRedes,OU=Listas,OU=_Gestion,DC=upr,DC=edu,DC=cu))";	         
+
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+		    if($user_data['count']>0)
+		    {
+		    	return true;
+		    }		    
+		    return false;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;
         }
 	}
 

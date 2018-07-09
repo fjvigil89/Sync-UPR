@@ -91,3 +91,7 @@ Auth::routes();
 
 //Reportes
 Route::get('grafica_trabajadores','SyncController@GraficaTrabajadores')->name('graficaTrabajadores');
+
+//crear Trabajador por su numero de trabajador
+Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
+Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');

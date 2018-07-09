@@ -971,9 +971,7 @@ class SyncController extends Controller
     }
 
     function Buscar(Request $request)
-    {    
-      $user = $this->provider->search()->find($request->search);
-      dd($user);
+    { 
       
       try{
              $exist = true;
