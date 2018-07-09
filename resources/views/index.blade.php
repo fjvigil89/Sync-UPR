@@ -1,5 +1,6 @@
 @extends('layouts.layout')
  @section('content')
+
       
 <div id="demo">
 </div>
@@ -20,8 +21,6 @@
 		<div class="ct-chart" id="chart-roska"></div>
 	</div>
 </div>
-
-
 
 
 

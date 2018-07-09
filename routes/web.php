@@ -98,3 +98,4 @@ Route::get('getusuariosPorUnidadesOrganizativas','GraficaController@GraficausUar
 //crear Trabajador por su numero de trabajador
 Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
 Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
+

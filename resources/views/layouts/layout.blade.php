@@ -110,16 +110,15 @@
         </nav> 
         
      
-         
-     <div class="container" >  
-      
+     
+     <div class="container">       
       
         @yield('content')
         
              
         @yield('script')
      </div>     
-
+     
      {!!Html::script('js/sync.js')!!}
         
 
