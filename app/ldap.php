@@ -338,7 +338,11 @@ class ldap extends Model
 			 	# code...
 			 	$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 }
-
+			 if ($item == 'Estudiantes') {
+			 	# code...
+			 	$ldap_dn_GrupoRedes="OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 	//$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 }
 			 
 			 $ldap = ldap_connect($this->ldap_host,389);
 		  	 
@@ -399,8 +403,6 @@ class ldap extends Model
 
 	}
 
-
-
 	function ActualizarCamposIdEmpleado($empleado, $departamento, $cargo, $username){
 		  try{
 			  global $message;
@@ -458,12 +460,81 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			  	//dd($message);
+			  	dd($message);
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
         	{
             	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+		  		return false;
+		  	}
+		  	
+	}
+
+	function ActualizarCamposStudent($empleado, $departamento, $cargo, $username){
+		  try{
+			  global $message;
+			  global $message_css;
+			    
+			  error_reporting(0);
+				$ldap = ldap_connect($this->ldap_host,389);
+			  if (!$ldap)
+		            throw new Exception("Cant connect ldap server", 1);
+		            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+			  
+			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+			    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
+	       
+			    
+		        $results = @ldap_search($ldap,$this->ldap_dn,'(|(employeenumber='.trim($empleado['id_student']).')(employeeid='.trim($empleado['identification']).')(samaccountname='.$username.'))',$attrib); 		        
+
+		        
+
+			    $user_data = ldap_get_entries($ldap, $results);
+			  	$user_entry = @ldap_first_entry($ldap, $results);
+			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+	 			$user_id = $user_data[0]["samaccountname"][0];
+	       		
+	       		if ($empleado['phone'] == "") {
+					$phone= "No tiene";
+				}
+				else{
+			    	 $phone=$empleado['phone'];		
+			    	} 
+
+	            $entry = array(
+			    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['address'])))),
+			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))),
+			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['middle_name']).' '.strtolower($empleado['last_name'])))),
+			    //'employeenumber'=> $empleado['id_student'],
+			    //'telephoneNumber'=>$phone,	
+			    'employeeid'=> $empleado['identification'],	
+			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
+			    'description'=>html_entity_decode(ucwords($cargo)),			    
+			    );
+			    
+			    
+			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
+				    $error = @ldap_error($ldap);
+				    $errno = @ldap_errno($ldap);
+				    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+				    $message[] = "$errno - $error";
+			  	}
+			  	else {
+				    $message_css = "yes";	    
+				    $message[] = "The change for $user_id has been used $entry[givenname].";
+			  	}
+
+			  	//dd($message);
+			  	return true;
+		  	}
+		  	catch(\Exception $e)
+        	{
+            	Log::critical("No se puede acceder al usuario del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
 		  		return false;
 		  	}
 		  	
@@ -558,7 +629,6 @@ class ldap extends Model
     		print '|ERROR: '.ldap_error($ldap);
 		}
 
-
  	}
 
  	function addtogroup($distinguishedname, $groupname) { 
@@ -591,7 +661,7 @@ class ldap extends Model
 	  	if (!$res) {
 	    	$errstr .= ldap_error($ldap);		    
 	 	}
-	  }
+	  }	  
 		  	
 	}
 

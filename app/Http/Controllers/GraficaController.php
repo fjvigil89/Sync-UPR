@@ -25,16 +25,26 @@ class GraficaController extends Controller
 
     function GraficaTotalUsuariosPorYipo()
     {
+      $ldap = new ldap();
+      $docente =$ldap->Docentes();
+      $estud =$ldap->Estudiante();
+      $NoDocente =$ldap->NoDocentes();
+
       $data = [                    
           "labels"=> ['Docentes', 'No Docentes', 'Estudiantes'],
-		  "series"=> [1280, 346, 5000]
+		  "series"=> [$docente['count'], $NoDocente['count'], $estud['count']]
       ];
       return $data;
     }
     function GraficausUariosPorUnidadesOrganizativas(){
+      $ldap = new ldap();
+      $docente =$ldap->Docentes();
+      $estud =$ldap->Estudiante();
+      $NoDocente =$ldap->NoDocentes();
+      
     	$data = [                    
           "labels"=> ['Docentes', 'No Docentes', 'Estudiantes'],
-		  "series"=> [1280, 346, 5000]
+		  "series"=> [$docente['count'], $NoDocente['count'], $estud['count']]
       ];
   		return $data;
     }

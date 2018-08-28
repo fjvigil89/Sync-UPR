@@ -1,0 +1,162 @@
+<?php
+
+namespace Sync\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Sync\ldap;
+use Sync\Sigenu;
+use Log;
+use Carbon\Carbon;
+use Collection;
+use Mail;
+class EstudiantesController extends Controller
+{
+    //
+    private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+
+    public function SaberLdapStudent(Request $request)
+    {
+    	$array_Update= array();
+  		 $ldap = new ldap();
+  		 $sigenu = new Sigenu;	    	 
+  		 $lista_ldap = $ldap->saberLdap("Estudiantes"); 
+  		 $group= array();
+  		 
+  		 for ($i=0; $i < count($lista_ldap)-1 ; $i++) { //count($lista_ldap)-1
+  		    try{	 		
+                 
+                  $existe_sigenu = true;                                        
+                   $estudent = $sigenu->findIdStudent(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
+                                     
+                    if ($estudent == "" || $estudent == "Alguna cosa esta mal") {
+
+                       Log::critical($i." -- No se puede actualizar al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
+                      $existe_sigenu= false;
+                      $ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+                    }
+                                          
+                    if($existe_sigenu)
+                    {
+                      
+                      Log::alert($i." -- Estudiante ". $lista_ldap[$i]["distinguishedname"][0]." del Sigenu ");
+                      
+                      $StudentBaja = $sigenu->findBajaStudent($lista_ldap[$i]["employeenumber"][0]);
+                      $StudentEgresado = $sigenu->findEgresadoStudent($lista_ldap[$i]["employeenumber"][0]);
+
+                      if ($StudentBaja || $StudentEgresado)
+                       {
+                       	
+                       	$this->Actualizar_Student_Upr($estudent, $lista_ldap[$i]);
+
+                        $this->DeleteGrupoBajaStudent($lista_ldap[$i]['distinguishedname'][0]);
+                        //$ldap->mover($lista_ldap[$i]['dn'], $this->bajas);  
+                        $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
+
+                        Log::warning(" Moviendo al Estudiante ".$lista_ldap[$i]["displayname"][0]." por ser baja del Sigenu:");
+                        
+                      }                                            
+                      else{
+                      		
+                         $this->Actualizar_Student_Upr($estudent, $lista_ldap[$i]);
+                          
+                        }//else del if de Trabbaja 
+                        
+                    }//if existe_assets
+  						
+    	 	 }//try
+    	 	catch(\Exception $e)
+    		{  	        			
+        		Log::critical(" No se puede actualizar al Estudiante ".$lista_ldap[$i]["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	  		 	 //array_push($array_NoUpdate, $lista_ldap[$i]); 			  		 	
+		  		
+	  		}
+
+  		}//end for 
+
+    }//end method
+
+    function DeleteGrupoBajaStudent($distinguishedname)
+    {
+    	$ldap = new ldap();
+    	$ldap->deltogroup($distinguishedname);
+    }
+
+    function AddGrupoStudent($distinguishedname, $idEmployeed)
+    {
+    	$ldap = new ldap();
+    	$sigenu = new Sigenu;
+
+    	//grupos que se les adicionar'an al usuario 
+    	$group= [
+    		'Domain Users',
+    		'UPR-Wifi',
+    		'UPR-Jabber',
+    		'UPR-Correo-Internacional',
+        	'UPR-Estudiantes',
+        	'UPR-Internet-Est'
+    	];   	
+
+    	foreach ($sigenu->SaberGrupoStudent($idEmployeed) as $value) {
+    		array_push($group, $value);
+    	}
+    	$this->DeleteGrupoBajaStudent($distinguishedname);
+		$ldap->addtogroup($distinguishedname, $group);
+    }
+
+    function Actualizar_Student_Upr($empleado, $lista_ldap)
+    {
+      
+      try{
+            $ldap = new ldap();
+            $sigenu = new Sigenu();  
+            
+         	$facultad = $sigenu->findfacultad(trim(ltrim($empleado["id_student"])));  
+	        if ($facultad == "" || $facultad == "Alguna cosa esta mal") {	        	
+	            //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+
+	          Log::warning(" No se puede actualizar la facultad al Estudiante ".$lista_ldap["displayname"][0]." por no tener Facultad en el Sigenu:");          
+	        }
+
+	        $anno = $sigenu->findAnno(trim(ltrim($empleado["id_student"])));	        
+	        if ($anno == "" || $anno == "Alguna cosa esta mal") {
+
+	         Log::warning(" No se puede actualizar el anno academico al Estudiante ".$lista_ldap["displayname"][0]." por no tener Facultad en el Sigenu:");                                  
+	        }
+
+        	$curso_tipo = $sigenu->findCursoTipo(trim(ltrim($empleado["id_student"])));
+        	
+	        if ($curso_tipo == "" || $curso_tipo == "Alguna cosa esta mal") {
+
+	         Log::warning(" No se puede actualizar tipo de curso al Estudiante ".$lista_ldap["displayname"][0]." por no tener Facultad en el Sigenu:");                                  
+	        }
+
+	        $carrera = $sigenu->findCarrera(trim(ltrim($empleado["id_student"])));
+	         if ($carrera == "" || $carrera == "Alguna cosa esta mal") {
+
+	         Log::warning(" No se puede actualizar la carrera al Estudiante ".$lista_ldap["displayname"][0]." por no tener Facultad en el Sigenu:");                                  
+	        }
+
+	        if(!$ldap->ActualizarCamposStudent($empleado, $facultad, $curso_tipo.' - '.$anno.' - '.$carrera, $lista_ldap['samaccountname'][0]))
+	        {	                    
+
+	          $ldap->mover($lista_ldap['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+	          Log::warning(" Moviendo al Estudiante ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
+
+	        }
+        else{ 
+
+        	$this->AddGrupoStudent($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]));  
+            $ldap->Enable($lista_ldap['samaccountname'][0]);
+          }
+          return true;
+      }
+      catch(\Exception $e)
+          {
+           
+            Log::critical(" No se puede Actualizar a ".$lista_ldap["distinguishedname"][0]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+
+            return false;          
+        }
+      
+    }
+}

@@ -28,7 +28,7 @@ class SyncController extends Controller
     public function saberLdap(Request $request, $item) //item es la unidad a actualizar (Estudiantes, Docentes, No Docentes, Bajas)
     {
        
-    	 $time_start = microtime(true);    	 
+    	  
   		 $array_NoUpdate= array();
   		 $array_Update= array();
   		 $ldap = new ldap();
@@ -107,19 +107,8 @@ class SyncController extends Controller
   				  		
   			  		}
 
-  		    	} 
-  		    	
-  		$time_end = microtime(true);
-  		$time_total = $time_end - $time_start;
-
-  		return view('update',[
-  			'array'=>$array_NoUpdate,
-  			'arrayProcesados'=>$array_Update, 
-  			'time' => $time_total,
-  			'noUpdate' => count($array_NoUpdate),
-  			'update' => count($array_Update),
-  			'total' => count($lista_ldap)-1,
-  		]);
+  		    	} 		    	
+  
     	
     }
 
