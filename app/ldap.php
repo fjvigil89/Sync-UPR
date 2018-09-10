@@ -134,8 +134,38 @@ class ldap extends Model
 	               
 	        $results = ldap_search($ldap,$this->ldap_dn,'(employeeNumber=' . $employeeid . ')',$attrib);  
 	        $user_data = ldap_get_entries($ldap, $results);
+
+	        if($user_data['count'] == 0){$exist = false;}  	        
 	        
-	        if($user_data[0]['distinguishedname'][0] == "")$exist = false;  	        
+	        return $exist;
+    	}
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede Cambiar el Password:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return false;//response("Alguna cosa esta mal", 500);
+        }
+    }
+
+    function ExisteEmpleado_Ci($employeeid){
+    	try{
+	        $exist = true;  
+	        $ldap = ldap_connect($this->ldap_host);
+	        if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+	        
+	        $ldapBind= ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+	        
+	        $attrib = array('distinguishedname');           
+	          //isLdapUser($username, $password, $ldap);    
+	               
+	        $results = ldap_search($ldap,$this->ldap_dn,'(employeeid=' . $employeeid . ')',$attrib);  
+	        $user_data = ldap_get_entries($ldap, $results);
+
+	        if($user_data['count'] == 0){$exist = false;}  	        
+	        
 	        return $exist;
     	}
        catch(\Exception $e)
@@ -443,7 +473,8 @@ class ldap extends Model
 			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
 			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
 			    //'employeenumber'=> $empleado['idExpediente'],
-			    //'telephoneNumber'=>$phone,	
+			    'telephoneNumber'=>$phone,
+			    'mail' => $user_id.'@upr.edu.cu',
 			    'employeeid'=> $empleado['noCi'],	
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
 			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
@@ -460,7 +491,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			  	dd($message);
+			  	//dd($message);
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
@@ -1388,6 +1419,87 @@ class ldap extends Model
             	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
 		  		return false;
 		  	}
+		  	
+	}
+
+	function CrearStudent($empleado, $facultad, $officces){		
+	  try{
+		  global $message;
+		  global $message_css;
+		    
+		  error_reporting(0);
+			$ldap = ldap_connect($this->ldap_host,389);
+		  if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+		  
+		  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		  
+		  	
+	  		$cn = $this->user_unic($empleado['name'], $empleado['first_name'], $empleado['second_name'], 0);
+	  		if ($this->Exist($cn)) {
+	  			$cn = $this->user_unic($empleado['name'], $empleado['first_name'], $empleado['second_name'], 1);
+	  		}
+	  		
+			$user_dn = 'CN='.$cn.',OU=newStudent,OU=_Usuarios,DC=upr,DC=edu,DC=cu';  
+ 			
+			
+			//dd($empleado);
+            $entry = array(
+		    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['address'])))),
+		    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))),
+		    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),
+		    'employeenumber'=> $empleado['id_matriculated_student'],	
+		    'employeeid'=> $empleado['identification'],			    
+	    	'physicaldeliveryofficename' => $officces,
+	    	'description'=>$facultad,					    	
+		    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
+		    'mail'			 => $cn.'@estudiantes.upr.edu.cu',
+		    //'telephoneNumber'=>$empleado[''],
+		    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),
+		    'sAMAccountName' =>$cn,
+		    'useraccountcontrol'=>'514',
+		    'name' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),		    
+		    );
+		    
+		    if (!@ldap_add($ldap,$user_dn, $entry)){
+			    $error = @ldap_error($ldap);
+			    $errno = @ldap_errno($ldap);
+			    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+			    $message[] = "$errno - $error";
+			    
+		  	}
+		  	else {
+			    $message_css = "yes";	    
+			    $message[] = "The change for $user_id has been used $entry[givenname].";
+
+			    $group= [
+		    		'Domain Users',
+		    		'UPR-Wifi',
+		    		'UPR-Jabber',
+		    		'UPR-Correo-Internacional',
+		        	'UPR-Estudiantes',
+		        	'UPR-Internet-Est'
+		    	];   	
+		    	$this->addtogroup($user_dn, $group);
+
+		    	/*$info['unicodepwd'] = "{MD5}".base64_encode(pack("H*",md5("P@ssword")));
+		    	
+		    	if (!ldap_mod_replace($ldap, $user_dn, $info)){
+		    		dd(@ldap_error($ldap));
+		    	}*/
+
+		  	}
+		  	
+		  	return true;
+	  	}
+	  	catch(\Exception $e)
+    	{
+        	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	  		return false;
+	  	}
 		  	
 	}
 

@@ -26,6 +26,7 @@ class Sigenu extends Model
 	function findCiStudent($ciEstudiante)
 	{
 		try{			
+
 			$response = $this->client->get("student?identification=eq.".$ciEstudiante);			
 			$data = collect(json_decode($response->getBody()->getContents(),true));
 			return $data[0];
@@ -134,6 +135,22 @@ class Sigenu extends Model
 	    }
     }
 
+    function findfacultad_fx($idfaculty)
+    {
+    	try{			
+			$response = $this->client->get("faculty?id_faculty=eq.".$idfaculty);			
+			$data = collect(json_decode($response->getBody()->getContents(),true));	
+				
+			return $data[0]['name'];
+			
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return "Alguna cosa esta mal";
+	    }
+    }
     function findCarrera($idEstudiante)
     {
     	try{			
@@ -143,6 +160,25 @@ class Sigenu extends Model
 			$response1 = $this->client->get("national_career?id_national_career=eq.".$carrera_id);
 			$data = collect(json_decode($response1->getBody()->getContents(),true));				
 			
+			return $data[0]['name'];
+			
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return "Alguna cosa esta mal";
+	    }
+    }
+
+    function findCarrera_fx($idcareer)
+    {
+    	try{			
+			$response = $this->client->get("career?id_career=eq.".$idcareer);						
+			$carrera_id = collect(json_decode($response->getBody()->getContents(),true))[0]['national_career_fk'];	
+
+			$response1 = $this->client->get("national_career?id_national_career=eq.".$carrera_id);
+			$data = collect(json_decode($response1->getBody()->getContents(),true));				
 			return $data[0]['name'];
 			
 		}
@@ -169,6 +205,23 @@ class Sigenu extends Model
 	        return "Alguna cosa esta mal";
 	    }
     }
+
+    function findCursoTipo_fx($idcurso_type)
+    {
+    	try{			
+			$response = $this->client->get("course_type?id_course_type=eq.".$idcurso_type);			
+			$data = collect(json_decode($response->getBody()->getContents(),true));		
+			return $data[0]['short_name'];
+			
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return "Alguna cosa esta mal";
+	    }
+    }
+
     function findAnno($idEstudiante)
     {
     	try{			
@@ -200,6 +253,25 @@ class Sigenu extends Model
 				$anno = 6;
 			}
 			return $anno;
+			
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return "Alguna cosa esta mal";
+	    }
+    }
+
+    function findNewStudent()
+    {
+    	try{			
+    		$date = Carbon::now();
+			$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.".$date->toDateString());			
+			//$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.2018-09-02");			
+			$data = collect(json_decode($response->getBody()->getContents(),true));		
+			
+			return $data;
 			
 		}
 		catch(\Exception $e)

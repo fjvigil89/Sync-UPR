@@ -9,26 +9,26 @@
     "packages": [
         {
             "name": "adldap2/adldap2",
-            "version": "v8.1.5",
+            "version": "v9.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Adldap2/Adldap2.git",
-                "reference": "54722408c68f12942fcbf4a1b666d90a178ddc5c"
+                "reference": "9ae15acb833c2f455fdc944e6c761ae0dff53c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/adldap2-adldap2-54722408c68f12942fcbf4a1b666d90a178ddc5c-zip-9b84ca.zip",
-                "reference": "54722408c68f12942fcbf4a1b666d90a178ddc5c",
-                "shasum": "8d29e8880e76a6e17207bda175f7496bd5992fef"
+                "url": "http://composer.upr.edu.cu/dist/adldap2-adldap2-9ae15acb833c2f455fdc944e6c761ae0dff53c95-zip-478506.zip",
+                "reference": "9ae15acb833c2f455fdc944e6c761ae0dff53c95",
+                "shasum": "90a953abcfb3664b7c1bb06ac4b6764051e8385a"
             },
             "require": {
                 "ext-ldap": "*",
                 "illuminate/support": "~5.0",
-                "php": ">=5.5.9"
+                "php": ">=7.0"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9|~1.0",
-                "phpunit/phpunit": "~4.8|~5.6"
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~6.0"
             },
             "type": "library",
             "autoload": {
@@ -57,7 +57,7 @@
                 "ldap",
                 "windows"
             ],
-            "time": "2018-04-19 15:06:54"
+            "time": "2018-08-07 18:36:09"
         },
         {
             "name": "adldap2/adldap2-laravel",
@@ -65,16 +65,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Adldap2/Adldap2-Laravel.git",
-                "reference": "d8485ed22e46597b45bc937dd4eba47b785b223d"
+                "reference": "0b9ffb1f06dc59694932db997adb408bdb976e85"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/adldap2-adldap2-laravel-d8485ed22e46597b45bc937dd4eba47b785b223d-zip-02af4e.zip",
-                "reference": "d8485ed22e46597b45bc937dd4eba47b785b223d",
-                "shasum": "be1feb362dea642163a592891ede7c35f6558fe5"
+                "url": "http://composer.upr.edu.cu/dist/adldap2-adldap2-laravel-0b9ffb1f06dc59694932db997adb408bdb976e85-zip-dadeed.zip",
+                "reference": "0b9ffb1f06dc59694932db997adb408bdb976e85",
+                "shasum": "b2dfb0e812877aeed6c88cc33634b2929b37b013"
             },
             "require": {
-                "adldap2/adldap2": "^8.0",
+                "adldap2/adldap2": "^9.0",
                 "php": ">=7.0"
             },
             "require-dev": {
@@ -110,7 +110,7 @@
                 "laravel",
                 "ldap"
             ],
-            "time": "2018-05-03 22:28:17"
+            "time": "2018-08-07 21:34:14"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -147,30 +147,30 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.4.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/doctrine-annotations-54cacc9b81758b14e3ce750f205a393d52339e97-zip-879343.zip",
-                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
-                "shasum": "35b1e1fa57a56eb54e539a801dc8079ea1f7c47f"
+                "url": "http://composer.upr.edu.cu/dist/doctrine-annotations-c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5-zip-c854b5.zip",
+                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
+                "shasum": "8bbd9b9f723d31eb05f756caa073d647609c69cb"
             },
             "require": {
                 "doctrine/lexer": "1.*",
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^5.7"
+                "phpunit/phpunit": "^6.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.4.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -211,24 +211,24 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24 16:22:25"
+            "time": "2017-12-06 07:11:42"
         },
         {
             "name": "doctrine/inflector",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462"
+                "reference": "5527a48b7313d15261292c149e55e26eae771b0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/doctrine-inflector-e11d84c6e018beedd929cff5220969a3c6d1d462-zip-bb021e.zip",
-                "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462",
-                "shasum": "cef5c0bfc7b3441424889353ab0989c892deb3d0"
+                "url": "http://composer.upr.edu.cu/dist/doctrine-inflector-5527a48b7313d15261292c149e55e26eae771b0a-zip-e56813.zip",
+                "reference": "5527a48b7313d15261292c149e55e26eae771b0a",
+                "shasum": "089d36151ffbca8c27176ab2e3609da2d3494d0b"
             },
             "require": {
-                "php": "^7.0"
+                "php": "^7.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6.2"
@@ -236,7 +236,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
@@ -278,7 +278,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2017-07-22 12:18:28"
+            "time": "2018-01-09 20:05:19"
         },
         {
             "name": "doctrine/lexer",
@@ -336,17 +336,17 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.4",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3"
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/egulias-email-validator-8790f594151ca6a2010c6218e09d96df67173ad3-zip-11b5d2.zip",
-                "reference": "8790f594151ca6a2010c6218e09d96df67173ad3",
-                "shasum": "97d1d67a89ffc88d6bad750b67a9c737df0e8295"
+                "url": "http://composer.upr.edu.cu/dist/egulias-email-validator-54859fabea8b3beecbb1a282888d5c990036b9e3-zip-127b20.zip",
+                "reference": "54859fabea8b3beecbb1a282888d5c990036b9e3",
+                "shasum": "ad364785d680ba0c731497b990af22294d8e06d5"
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
@@ -389,7 +389,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2018-04-10 10:11:19"
+            "time": "2018-08-16 20:49:45"
         },
         {
             "name": "erusev/parsedown",
@@ -500,13 +500,13 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "0773d442aa96baf19d7195f14ba6e9c2da11f8ed"
+                "reference": "5c7a5c524e556113e7f8685e6880cbc4090c798d"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/guzzlehttp-guzzle-0773d442aa96baf19d7195f14ba6e9c2da11f8ed-zip-38e288.zip",
-                "reference": "0773d442aa96baf19d7195f14ba6e9c2da11f8ed",
-                "shasum": "165be3b6a9d78832b031789116295d4aab0152b8"
+                "url": "http://composer.upr.edu.cu/dist/guzzlehttp-guzzle-5c7a5c524e556113e7f8685e6880cbc4090c798d-zip-d870c7.zip",
+                "reference": "5c7a5c524e556113e7f8685e6880cbc4090c798d",
+                "shasum": "4d649dab7b0f28b57d9421396edf62a5ff934f96"
             },
             "require": {
                 "guzzlehttp/promises": "^1.0",
@@ -557,7 +557,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2018-04-23 13:18:18"
+            "time": "2018-08-08 04:37:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -677,17 +677,17 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v2.2.5",
+            "version": "v2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "3580b0b1406dc69a51359679acaa150d81a74ccb"
+                "reference": "33215e18d30819feeae2bfa39896327ffbd9da83"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/itsgoingd-clockwork-3580b0b1406dc69a51359679acaa150d81a74ccb-zip-b107cb.zip",
-                "reference": "3580b0b1406dc69a51359679acaa150d81a74ccb",
-                "shasum": "f384e880857f444b08365a86ddf9e2cbcc8501d5"
+                "url": "http://composer.upr.edu.cu/dist/itsgoingd-clockwork-33215e18d30819feeae2bfa39896327ffbd9da83-zip-4f0dd4.zip",
+                "reference": "33215e18d30819feeae2bfa39896327ffbd9da83",
+                "shasum": "348c12cd5e5140decb9f9734a952f8c9eb21ddc7"
             },
             "require": {
                 "php": ">=5.4",
@@ -731,7 +731,7 @@
                 "profiling",
                 "slim"
             ],
-            "time": "2018-04-24 20:00:28"
+            "time": "2018-07-30 22:46:04"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -822,17 +822,17 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.40",
+            "version": "v5.5.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6"
+                "reference": "6550ae917b0c49a5915a52cd7c7eafd16fc0b538"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/laravel-framework-d724ce0aa61bbd9adf658215eec484f5dd6711d6-zip-e0737e.zip",
-                "reference": "d724ce0aa61bbd9adf658215eec484f5dd6711d6",
-                "shasum": "1d35cf18f8640a77c4319c69a163ffafed37c6bc"
+                "url": "http://composer.upr.edu.cu/dist/laravel-framework-6550ae917b0c49a5915a52cd7c7eafd16fc0b538-zip-bdb304.zip",
+                "reference": "6550ae917b0c49a5915a52cd7c7eafd16fc0b538",
+                "shasum": "6076bab7abf5c14ba1df676c68c37cbc0d92bbab"
             },
             "require": {
                 "doctrine/inflector": "~1.1",
@@ -952,7 +952,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-03-30 13:29:30"
+            "time": "2018-08-08 18:22:44"
         },
         {
             "name": "laravel/tinker",
@@ -1293,17 +1293,17 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.29.2",
+            "version": "1.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "ed6aa898982f441ccc9b2acdec51490f2bc5d337"
+                "reference": "55667c1007a99e82030874b1bb14d24d07108413"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/nesbot-carbon-ed6aa898982f441ccc9b2acdec51490f2bc5d337-zip-fa96cc.zip",
-                "reference": "ed6aa898982f441ccc9b2acdec51490f2bc5d337",
-                "shasum": "6922930d8a33105720d6cc3338c3409d5205dba5"
+                "url": "http://composer.upr.edu.cu/dist/nesbot-carbon-55667c1007a99e82030874b1bb14d24d07108413-zip-d3a794.zip",
+                "reference": "55667c1007a99e82030874b1bb14d24d07108413",
+                "shasum": "7799c20f6e357ee03f2efea26123d1c631dc787c"
             },
             "require": {
                 "php": ">=5.3.9",
@@ -1314,6 +1314,13 @@
                 "phpunit/phpunit": "^4.8.35 || ^5.7"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Carbon\\Laravel\\ServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "": "src/"
@@ -1337,21 +1344,21 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-05-29 15:23:46"
+            "time": "2018-08-07 08:39:47"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.0.2",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12"
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/nikic-php-parser-35b8caf75e791ba1b2d24fec1552168d72692b12-zip-6a9fd0.zip",
-                "reference": "35b8caf75e791ba1b2d24fec1552168d72692b12",
-                "shasum": "f186f14766c99b96c3f88122211010f3af369cf2"
+                "url": "http://composer.upr.edu.cu/dist/nikic-php-parser-bd088dc940a418f09cda079a9b5c7c478890fb8d-zip-710450.zip",
+                "reference": "bd088dc940a418f09cda079a9b5c7c478890fb8d",
+                "shasum": "28ed630dbf273eaff115011ebeae0258f24930da"
             },
             "require": {
                 "ext-tokenizer": "*",
@@ -1388,37 +1395,33 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-06-03 11:33:10"
+            "time": "2018-07-15 17:25:16"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.15",
+            "version": "v9.99.99",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/paragonie-random_compat-10bcb46e8f3d365170f6de9d05245aa066b81f09-zip-35a4b4.zip",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "shasum": "f443c8286534a36f5414945e67fd2807fabe3eae"
+                "url": "http://composer.upr.edu.cu/dist/paragonie-random_compat-84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95-zip-afaf00.zip",
+                "reference": "84b4dfb120c6f9b4ff7b3685f9b8f1aa365a0c95",
+                "shasum": "3c5777c36e6f984b8a8772071ac47c6046f0e628"
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": "^7"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
+                "phpunit/phpunit": "4.*|5.*",
+                "vimeo/psalm": "^1"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
             "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/random.php"
-                ]
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -1437,7 +1440,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-06-08 15:26:40"
+            "time": "2018-07-02 15:55:56"
         },
         {
             "name": "psr/container",
@@ -1635,20 +1638,22 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.9.6",
+            "version": "v0.9.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "4a2ce86f199d51b6e2524214dc06835e872f4fce"
+                "reference": "4f5b6c090948773a8bfeea6a0f07ab7d0b24e932"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/psy-psysh-4a2ce86f199d51b6e2524214dc06835e872f4fce-zip-3c0076.zip",
-                "reference": "4a2ce86f199d51b6e2524214dc06835e872f4fce",
-                "shasum": "239297eb898f68bafb6a7391f0f8d832656b59ca"
+                "url": "http://composer.upr.edu.cu/dist/psy-psysh-4f5b6c090948773a8bfeea6a0f07ab7d0b24e932-zip-477b51.zip",
+                "reference": "4f5b6c090948773a8bfeea6a0f07ab7d0b24e932",
+                "shasum": "0daf45f164175b663a14e9139731c477af494eb3"
             },
             "require": {
                 "dnoegel/php-xdg-base-dir": "0.1",
+                "ext-json": "*",
+                "ext-tokenizer": "*",
                 "jakub-onderka/php-console-highlighter": "0.3.*",
                 "nikic/php-parser": "~1.3|~2.0|~3.0|~4.0",
                 "php": ">=5.4.0",
@@ -1703,25 +1708,26 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2018-06-10 17:57:20"
+            "time": "2018-08-11 15:54:43"
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.7.3",
+            "version": "3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76"
+                "reference": "d09ea80159c1929d75b3f9c60504d613aeb4a1e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/ramsey-uuid-44abcdad877d9a46685a3a4d221e3b2c4b87cb76-zip-f48e19.zip",
-                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76",
-                "shasum": "94dd57201d6f7eb527d3274ceaaf0071cfd79dda"
+                "url": "http://composer.upr.edu.cu/dist/ramsey-uuid-d09ea80159c1929d75b3f9c60504d613aeb4a1e3-zip-09f718.zip",
+                "reference": "d09ea80159c1929d75b3f9c60504d613aeb4a1e3",
+                "shasum": "25b1565d8ef6f7165677b86cacb1d4dfd332f378"
             },
             "require": {
-                "paragonie/random_compat": "^1.0|^2.0",
-                "php": "^5.4 || ^7.0"
+                "paragonie/random_compat": "^1.0|^2.0|9.99.99",
+                "php": "^5.4 || ^7.0",
+                "symfony/polyfill-ctype": "^1.8"
             },
             "replace": {
                 "rhumsaa/uuid": "self.version"
@@ -1729,16 +1735,17 @@
             "require-dev": {
                 "codeception/aspect-mock": "^1.0 | ~2.0.0",
                 "doctrine/annotations": "~1.2.0",
-                "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
+                "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ~2.1.0",
                 "ircmaxell/random-lib": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
                 "mockery/mockery": "^0.9.9",
                 "moontoast/math": "^1.1",
                 "php-mock/php-mock-phpunit": "^0.3|^1.1",
-                "phpunit/phpunit": "^4.7|^5.0",
+                "phpunit/phpunit": "^4.7|^5.0|^6.5",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "suggest": {
+                "ext-ctype": "Provides support for PHP Ctype functions",
                 "ext-libsodium": "Provides the PECL libsodium extension for use with the SodiumRandomGenerator",
                 "ext-uuid": "Provides the PECL UUID extension for use with the PeclUuidTimeGenerator and PeclUuidRandomGenerator",
                 "ircmaxell/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
@@ -1783,7 +1790,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2018-01-20 00:28:24"
+            "time": "2018-07-19 23:38:55"
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
@@ -1842,17 +1849,17 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v6.0.2",
+            "version": "v6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "412333372fb6c8ffb65496a2bbd7321af75733fc"
+                "reference": "7d760881d266d63c5e7a1155cbcf2ac656a31ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/swiftmailer-swiftmailer-412333372fb6c8ffb65496a2bbd7321af75733fc-zip-a9effa.zip",
-                "reference": "412333372fb6c8ffb65496a2bbd7321af75733fc",
-                "shasum": "6e2b6df629672b94ffb546b389a5bdf33bfd9976"
+                "url": "http://composer.upr.edu.cu/dist/swiftmailer-swiftmailer-7d760881d266d63c5e7a1155cbcf2ac656a31ca8-zip-ffbf9a.zip",
+                "reference": "7d760881d266d63c5e7a1155cbcf2ac656a31ca8",
+                "shasum": "bc27ccdf89caf8679a51137a929598b5ab8b8aec"
             },
             "require": {
                 "egulias/email-validator": "~2.0",
@@ -1862,10 +1869,14 @@
                 "mockery/mockery": "~0.9.1",
                 "symfony/phpunit-bridge": "~3.3@dev"
             },
+            "suggest": {
+                "ext-intl": "Needed to support internationalized email addresses",
+                "true/punycode": "Needed to support internationalized email addresses, if ext-intl is not installed"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.0-dev"
+                    "dev-master": "6.1-dev"
                 }
             },
             "autoload": {
@@ -1887,27 +1898,27 @@
                 }
             ],
             "description": "Swiftmailer, free feature-rich PHP mailer",
-            "homepage": "http://swiftmailer.symfony.com",
+            "homepage": "https://swiftmailer.symfony.com",
             "keywords": [
                 "email",
                 "mail",
                 "mailer"
             ],
-            "time": "2017-09-30 22:39:41"
+            "time": "2018-07-13 07:04:35"
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "36f83f642443c46f3cf751d4d2ee5d047d757a27"
+                "reference": "6b217594552b9323bcdcfc14f8a0ce126e84cd73"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-console-36f83f642443c46f3cf751d4d2ee5d047d757a27-zip-b821a4.zip",
-                "reference": "36f83f642443c46f3cf751d4d2ee5d047d757a27",
-                "shasum": "0ac72e365e1630aa8fc0ac4e9c52223ebb9ff141"
+                "url": "http://composer.upr.edu.cu/dist/symfony-console-6b217594552b9323bcdcfc14f8a0ce126e84cd73-zip-4e6ad0.zip",
+                "reference": "6b217594552b9323bcdcfc14f8a0ce126e84cd73",
+                "shasum": "2f96f74889c0015b2e645b60bffba9253aec0298"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
@@ -1962,29 +1973,29 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16 08:49:21"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.4.11",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "d2ce52290b648ae33b5301d09bc14ee378612914"
+                "reference": "2a4df7618f869b456f9096781e78c57b509d76c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-css-selector-d2ce52290b648ae33b5301d09bc14ee378612914-zip-5d07f8.zip",
-                "reference": "d2ce52290b648ae33b5301d09bc14ee378612914",
-                "shasum": "dc04d2c85a795659c41ffe8a1704ed89a82b1516"
+                "url": "http://composer.upr.edu.cu/dist/symfony-css-selector-2a4df7618f869b456f9096781e78c57b509d76c7-zip-e3e5c6.zip",
+                "reference": "2a4df7618f869b456f9096781e78c57b509d76c7",
+                "shasum": "11db229e1ba7ea4e62e371f0331b0af4943cced1"
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": "^7.1.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -2015,21 +2026,21 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16 12:49:49"
+            "time": "2018-07-26 09:10:45"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "b28fd73fefbac341f673f5efd707d539d6a19f68"
+                "reference": "d5a058ff6ecad26b30c1ba452241306ea34c65cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-debug-b28fd73fefbac341f673f5efd707d539d6a19f68-zip-2b17d1.zip",
-                "reference": "b28fd73fefbac341f673f5efd707d539d6a19f68",
-                "shasum": "9bd5473f45d6b04139c0798e1825de1a622cc50e"
+                "url": "http://composer.upr.edu.cu/dist/symfony-debug-d5a058ff6ecad26b30c1ba452241306ea34c65cc-zip-c1d04d.zip",
+                "reference": "d5a058ff6ecad26b30c1ba452241306ea34c65cc",
+                "shasum": "37ff5e6be116f169b0e0f3d155c75f259637e4e1"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
@@ -2071,34 +2082,34 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16 14:03:39"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.11",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "fdd5abcebd1061ec647089c6c41a07ed60af09f8"
+                "reference": "bfb30c2ad377615a463ebbc875eba64a99f6aa3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-event-dispatcher-fdd5abcebd1061ec647089c6c41a07ed60af09f8-zip-9d8650.zip",
-                "reference": "fdd5abcebd1061ec647089c6c41a07ed60af09f8",
-                "shasum": "db2e234cef9e43ab7687ef0fc48615bec7d0412e"
+                "url": "http://composer.upr.edu.cu/dist/symfony-event-dispatcher-bfb30c2ad377615a463ebbc875eba64a99f6aa3e-zip-6a885d.zip",
+                "reference": "bfb30c2ad377615a463ebbc875eba64a99f6aa3e",
+                "shasum": "4182611dac9352ec2ffbf578e6a822401053fc4c"
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8"
+                "php": "^7.1.3"
             },
             "conflict": {
-                "symfony/dependency-injection": "<3.3"
+                "symfony/dependency-injection": "<3.4"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "~2.8|~3.0|~4.0",
-                "symfony/dependency-injection": "~3.3|~4.0",
-                "symfony/expression-language": "~2.8|~3.0|~4.0",
-                "symfony/stopwatch": "~2.8|~3.0|~4.0"
+                "symfony/config": "~3.4|~4.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/expression-language": "~3.4|~4.0",
+                "symfony/stopwatch": "~3.4|~4.0"
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -2107,7 +2118,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -2134,21 +2145,21 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2018-04-06 07:35:25"
+            "time": "2018-07-26 09:10:45"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "472a92f3df8b247b49ae364275fb32943b9656c6"
+                "reference": "8a84fcb207451df0013b2c74cbbf1b62d47b999a"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-finder-472a92f3df8b247b49ae364275fb32943b9656c6-zip-5f5b28.zip",
-                "reference": "472a92f3df8b247b49ae364275fb32943b9656c6",
-                "shasum": "308b56cef870a9fb5f0ad140c3d83cce96335499"
+                "url": "http://composer.upr.edu.cu/dist/symfony-finder-8a84fcb207451df0013b2c74cbbf1b62d47b999a-zip-5b4bb4.zip",
+                "reference": "8a84fcb207451df0013b2c74cbbf1b62d47b999a",
+                "shasum": "97324097b3d83cf9be803848bfcbab4f5a30a619"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8"
@@ -2183,21 +2194,21 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16 08:49:21"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "a7b5fc605d1c215cea1122359044b1e682eb70c0"
+                "reference": "19a3267828046a2a4a05e3dc2954bbd2e0ad9fa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-http-foundation-a7b5fc605d1c215cea1122359044b1e682eb70c0-zip-100d8d.zip",
-                "reference": "a7b5fc605d1c215cea1122359044b1e682eb70c0",
-                "shasum": "c5350eceb206a8efbb989e091483c6e032a11f8d"
+                "url": "http://composer.upr.edu.cu/dist/symfony-http-foundation-19a3267828046a2a4a05e3dc2954bbd2e0ad9fa6-zip-89278b.zip",
+                "reference": "19a3267828046a2a4a05e3dc2954bbd2e0ad9fa6",
+                "shasum": "0b80ba81782521a0cc8833ef99bd1fe4f66c8401"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
@@ -2237,33 +2248,33 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-25 11:07:31"
+            "time": "2018-08-01 14:04:26"
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "3dac45df55ee0c5134c457a730cd68e2a2ce0445"
+                "reference": "8e84cc498f0ffecfbabdea78b87828fd66189544"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-http-kernel-3dac45df55ee0c5134c457a730cd68e2a2ce0445-zip-56043c.zip",
-                "reference": "3dac45df55ee0c5134c457a730cd68e2a2ce0445",
-                "shasum": "060afc21f6e5404277122df3b25a16c80c6366ed"
+                "url": "http://composer.upr.edu.cu/dist/symfony-http-kernel-8e84cc498f0ffecfbabdea78b87828fd66189544-zip-425bb4.zip",
+                "reference": "8e84cc498f0ffecfbabdea78b87828fd66189544",
+                "shasum": "b4b2b23527e643a51cd4c4844d0402131526955b"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
                 "psr/log": "~1.0",
                 "symfony/debug": "~2.8|~3.0|~4.0",
                 "symfony/event-dispatcher": "~2.8|~3.0|~4.0",
-                "symfony/http-foundation": "^3.4.4|^4.0.4",
+                "symfony/http-foundation": "~3.4.12|~4.0.12|^4.1.1",
                 "symfony/polyfill-ctype": "~1.8"
             },
             "conflict": {
                 "symfony/config": "<2.8",
-                "symfony/dependency-injection": "<3.4.5|<4.0.5,>=4",
+                "symfony/dependency-injection": "<3.4.10|<4.0.10,>=4",
                 "symfony/var-dumper": "<3.3",
                 "twig/twig": "<1.34|<2.4,>=2"
             },
@@ -2277,7 +2288,7 @@
                 "symfony/config": "~2.8|~3.0|~4.0",
                 "symfony/console": "~2.8|~3.0|~4.0",
                 "symfony/css-selector": "~2.8|~3.0|~4.0",
-                "symfony/dependency-injection": "^3.4.5|^4.0.5",
+                "symfony/dependency-injection": "^3.4.10|^4.0.10",
                 "symfony/dom-crawler": "~2.8|~3.0|~4.0",
                 "symfony/expression-language": "~2.8|~3.0|~4.0",
                 "symfony/finder": "~2.8|~3.0|~4.0",
@@ -2326,29 +2337,32 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-25 13:16:28"
+            "time": "2018-08-01 14:47:47"
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae"
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-ctype-7cc359f1b7b80fc25ed7796be7d96adc9b354bae-zip-03a31b.zip",
-                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
-                "shasum": "ce44cbf3c7cf223e809b5c314eb4170bc2cf549e"
+                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-ctype-e3d826245268269cd66f8326bd8bc066687b4a19-zip-b18935.zip",
+                "reference": "e3d826245268269cd66f8326bd8bc066687b4a19",
+                "shasum": "d835e8c497af5824567995278866c86949530905"
             },
             "require": {
                 "php": ">=5.3.3"
             },
+            "suggest": {
+                "ext-ctype": "For best performance"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -2381,21 +2395,21 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2018-04-30 19:57:29"
+            "time": "2018-08-06 14:22:27"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "3296adf6a6454a050679cde90f95350ad604b171"
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-mbstring-3296adf6a6454a050679cde90f95350ad604b171-zip-0fdbaa.zip",
-                "reference": "3296adf6a6454a050679cde90f95350ad604b171",
-                "shasum": "37338e74b94747043edf40ef55febb32ffd8ce91"
+                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-mbstring-d0cd638f4634c16d8df4508e847f14e9e43168b8-zip-940b7f.zip",
+                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "shasum": "7258db96d93de847336fc8504193e6c622e62463"
             },
             "require": {
                 "php": ">=5.3.3"
@@ -2406,7 +2420,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -2440,30 +2454,30 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-04-26 10:06:28"
+            "time": "2018-08-06 14:22:27"
         },
         {
             "name": "symfony/polyfill-php70",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php70.git",
-                "reference": "77454693d8f10dd23bb24955cffd2d82db1007a6"
+                "reference": "1e24b0c4a56d55aaf368763a06c6d1c7d3194934"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-php70-77454693d8f10dd23bb24955cffd2d82db1007a6-zip-97b4fe.zip",
-                "reference": "77454693d8f10dd23bb24955cffd2d82db1007a6",
-                "shasum": "d3dc0a4186b4ac309bdf4cf6d698cb1a96004415"
+                "url": "http://composer.upr.edu.cu/dist/symfony-polyfill-php70-1e24b0c4a56d55aaf368763a06c6d1c7d3194934-zip-2e9a3d.zip",
+                "reference": "1e24b0c4a56d55aaf368763a06c6d1c7d3194934",
+                "shasum": "0afb222380bcbc53c4f0c85e7e66abd2774f3730"
             },
             "require": {
-                "paragonie/random_compat": "~1.0|~2.0",
+                "paragonie/random_compat": "~1.0|~2.0|~9.99",
                 "php": ">=5.3.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.8-dev"
+                    "dev-master": "1.9-dev"
                 }
             },
             "autoload": {
@@ -2499,21 +2513,21 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-04-26 10:06:28"
+            "time": "2018-08-06 14:22:27"
         },
         {
             "name": "symfony/process",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "4cbf2db9abcb01486a21b7a059e03a62fae63187"
+                "reference": "0414db29bd770ec5a4152683e655f55efd4fa60f"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-process-4cbf2db9abcb01486a21b7a059e03a62fae63187-zip-7c7816.zip",
-                "reference": "4cbf2db9abcb01486a21b7a059e03a62fae63187",
-                "shasum": "ceebb87fa997fe73d1fbdb0032da9e664e005583"
+                "url": "http://composer.upr.edu.cu/dist/symfony-process-0414db29bd770ec5a4152683e655f55efd4fa60f-zip-8002dd.zip",
+                "reference": "0414db29bd770ec5a4152683e655f55efd4fa60f",
+                "shasum": "91a73fbfa5bda42a611b065ecab781e9546413c3"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8"
@@ -2548,21 +2562,21 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-16 08:49:21"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "symfony/routing",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "e382da877f5304aabc12ec3073eec430670c8296"
+                "reference": "e20f4bb79502c3c0db86d572f7683a30d4143911"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-routing-e382da877f5304aabc12ec3073eec430670c8296-zip-a83def.zip",
-                "reference": "e382da877f5304aabc12ec3073eec430670c8296",
-                "shasum": "cfd2b7e6d3951765dc0932f06dcfbaafb06dee33"
+                "url": "http://composer.upr.edu.cu/dist/symfony-routing-e20f4bb79502c3c0db86d572f7683a30d4143911-zip-c4da19.zip",
+                "reference": "e20f4bb79502c3c0db86d572f7683a30d4143911",
+                "shasum": "16ad6148c6479a4638689ef7b183430553b2d982"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8"
@@ -2574,7 +2588,6 @@
             },
             "require-dev": {
                 "doctrine/annotations": "~1.0",
-                "doctrine/common": "~2.2",
                 "psr/log": "~1.0",
                 "symfony/config": "^3.3.1|~4.0",
                 "symfony/dependency-injection": "~3.3|~4.0",
@@ -2626,37 +2639,38 @@
                 "uri",
                 "url"
             ],
-            "time": "2018-05-16 12:49:49"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "symfony/translation",
-            "version": "v3.4.11",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "7047f725e35eab768137c677f8c38e4a2a8e38fb"
+                "reference": "6fcd1bd44fd6d7181e6ea57a6f4e08a09b29ef65"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-translation-7047f725e35eab768137c677f8c38e4a2a8e38fb-zip-31e5a3.zip",
-                "reference": "7047f725e35eab768137c677f8c38e4a2a8e38fb",
-                "shasum": "c589c2a90d57f29cec11d08901162c35bd7b619d"
+                "url": "http://composer.upr.edu.cu/dist/symfony-translation-6fcd1bd44fd6d7181e6ea57a6f4e08a09b29ef65-zip-e126cb.zip",
+                "reference": "6fcd1bd44fd6d7181e6ea57a6f4e08a09b29ef65",
+                "shasum": "9be7da2f3fba4de3e5c26728e3846d576aa6691e"
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8",
+                "php": "^7.1.3",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "conflict": {
-                "symfony/config": "<2.8",
+                "symfony/config": "<3.4",
                 "symfony/dependency-injection": "<3.4",
                 "symfony/yaml": "<3.4"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "~2.8|~3.0|~4.0",
+                "symfony/config": "~3.4|~4.0",
+                "symfony/console": "~3.4|~4.0",
                 "symfony/dependency-injection": "~3.4|~4.0",
                 "symfony/finder": "~2.8|~3.0|~4.0",
-                "symfony/intl": "^2.8.18|^3.2.5|~4.0",
+                "symfony/intl": "~3.4|~4.0",
                 "symfony/yaml": "~3.4|~4.0"
             },
             "suggest": {
@@ -2667,7 +2681,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -2694,21 +2708,21 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-05-21 10:06:52"
+            "time": "2018-07-26 11:24:31"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v3.4.11",
+            "version": "v3.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "0e6545672d8c9ce70dd472adc2f8b03155a46f73"
+                "reference": "f62a394bd3de96f2f5e8f4c7d685035897fb3cb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/symfony-var-dumper-0e6545672d8c9ce70dd472adc2f8b03155a46f73-zip-6df011.zip",
-                "reference": "0e6545672d8c9ce70dd472adc2f8b03155a46f73",
-                "shasum": "4d4a4ad7e0bc10a9a59b958c2845ea5d6cd83f5d"
+                "url": "http://composer.upr.edu.cu/dist/symfony-var-dumper-f62a394bd3de96f2f5e8f4c7d685035897fb3cb3-zip-6c253c.zip",
+                "reference": "f62a394bd3de96f2f5e8f4c7d685035897fb3cb3",
+                "shasum": "092fc35a7b3ca0400499c1feba1451b6dfe24673"
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
@@ -2763,7 +2777,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2018-04-26 12:42:15"
+            "time": "2018-07-26 11:19:56"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -2814,28 +2828,28 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v2.4.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c"
+                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/vlucas-phpdotenv-3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c-zip-f95db2.zip",
-                "reference": "3cc116adbe4b11be5ec557bf1d24dc5e3a21d18c",
-                "shasum": "de0fd99d9d76b4c26fb047f7333302bf8117d5cd"
+                "url": "http://composer.upr.edu.cu/dist/vlucas-phpdotenv-8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e-zip-4b31a7.zip",
+                "reference": "8abb4f9aa89ddea9d52112c65bbe8d0125e2fa8e",
+                "shasum": "8a21ecb33445ccb565a0e6ad61141eed4054ff3d"
             },
             "require": {
                 "php": ">=5.3.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8 || ^5.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -2845,7 +2859,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause-Attribution"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -2860,7 +2874,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2016-09-01 10:05:43"
+            "time": "2018-07-29 20:33:41"
         },
         {
             "name": "zircote/swagger-php",
@@ -2928,32 +2942,32 @@
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/doctrine-instantiator-8e884e78f9f0eb1329e445619e04456e64d8051d-zip-681b88.zip",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
-                "shasum": "eadcd4c9fab6da49ac101fa4cac5dd6fed1be0ab"
+                "url": "http://composer.upr.edu.cu/dist/doctrine-instantiator-185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda-zip-b52616.zip",
+                "reference": "185b8868aa9bf7159f5f953ed5afb2d7fcdc3bda",
+                "shasum": "eb26c9f0a92da1131392f5320c26481c4c0922e4"
             },
             "require": {
-                "php": ">=5.3,<8.0-DEV"
+                "php": "^7.1"
             },
             "require-dev": {
                 "athletic/athletic": "~0.1.8",
                 "ext-pdo": "*",
                 "ext-phar": "*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0"
+                "phpunit/phpunit": "^6.2.3",
+                "squizlabs/php_codesniffer": "^3.0.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -2978,7 +2992,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2017-07-22 11:58:36"
         },
         {
             "name": "filp/whoops",
@@ -3043,24 +3057,24 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "v1.7.1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "d3ed4cc37051c1ca52d22d76b437d14809fc7e0d"
+                "reference": "f72816b43e74063c8b10357394b6bba8cb1c10de"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/fzaninotto-faker-d3ed4cc37051c1ca52d22d76b437d14809fc7e0d-zip-513225.zip",
-                "reference": "d3ed4cc37051c1ca52d22d76b437d14809fc7e0d",
-                "shasum": "0ed1f425ae9dbe1086fbd3eaf122795f4790d416"
+                "url": "http://composer.upr.edu.cu/dist/fzaninotto-faker-f72816b43e74063c8b10357394b6bba8cb1c10de-zip-2523fd.zip",
+                "reference": "f72816b43e74063c8b10357394b6bba8cb1c10de",
+                "shasum": "fc17e9d584cf35edd4cac3c6e2b7c5765d1b555d"
             },
             "require": {
                 "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
                 "ext-intl": "*",
-                "phpunit/phpunit": "^4.0 || ^5.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7",
                 "squizlabs/php_codesniffer": "^1.5"
             },
             "type": "library",
@@ -3089,7 +3103,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-08-15 16:48:10"
+            "time": "2018-07-12 10:23:15"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -3207,25 +3221,28 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.7.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/myclabs-deep-copy-3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e-zip-9eba9e.zip",
-                "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
-                "shasum": "0fb592525049f2e3e932c342c83656f2961f9e02"
+                "url": "http://composer.upr.edu.cu/dist/myclabs-deep-copy-3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8-zip-1d5827.zip",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "shasum": "6bfada6e7ee4170d06d5f91e237aab9ddaa272d7"
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1"
+            },
+            "replace": {
+                "myclabs/deep-copy": "self.version"
             },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
-                "phpunit/phpunit": "^4.1"
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "autoload": {
@@ -3248,7 +3265,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-19 19:58:43"
+            "time": "2018-06-11 23:09:50"
         },
         {
             "name": "phar-io/manifest",
@@ -3506,17 +3523,17 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.6",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712"
+                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/phpspec-prophecy-33a7e3c4fda54e912ff6338c48823bd5c0f0b712-zip-d750f0.zip",
-                "reference": "33a7e3c4fda54e912ff6338c48823bd5c0f0b712",
-                "shasum": "29e60b18518c939d6c232f326b208233e3712ae7"
+                "url": "http://composer.upr.edu.cu/dist/phpspec-prophecy-4ba436b55987b4bf311cb7c6ba82aa528aac0a06-zip-cb340e.zip",
+                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "shasum": "b89f7bc429f289157ccfa9b03318b01cbf5fec36"
             },
             "require": {
                 "doctrine/instantiator": "^1.0.2",
@@ -3527,12 +3544,12 @@
             },
             "require-dev": {
                 "phpspec/phpspec": "^2.5|^3.2",
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5 || ^7.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.8.x-dev"
                 }
             },
             "autoload": {
@@ -3565,7 +3582,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-04-18 13:57:24"
+            "time": "2018-08-05 17:53:17"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3818,17 +3835,17 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.5.8",
+            "version": "6.5.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b"
+                "reference": "7bab54cb366076023bbf457a2a0d513332cd40f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/phpunit-phpunit-4f21a3c6b97c42952fd5c2837bb354ec0199b97b-zip-f9fba9.zip",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b",
-                "shasum": "637e107e402164ee05f5e66f2aa119f9a383d4db"
+                "url": "http://composer.upr.edu.cu/dist/phpunit-phpunit-7bab54cb366076023bbf457a2a0d513332cd40f2-zip-3f47b2.zip",
+                "reference": "7bab54cb366076023bbf457a2a0d513332cd40f2",
+                "shasum": "fe2e13a40219d6e06b6818231e0653dbd949b674"
             },
             "require": {
                 "ext-dom": "*",
@@ -3845,7 +3862,7 @@
                 "phpunit/php-file-iterator": "^1.4.3",
                 "phpunit/php-text-template": "^1.2.1",
                 "phpunit/php-timer": "^1.0.9",
-                "phpunit/phpunit-mock-objects": "^5.0.5",
+                "phpunit/phpunit-mock-objects": "^5.0.9",
                 "sebastian/comparator": "^2.1",
                 "sebastian/diff": "^2.0",
                 "sebastian/environment": "^3.1",
@@ -3898,21 +3915,21 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-10 11:38:34"
+            "time": "2018-08-07 07:05:35"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.7",
+            "version": "5.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce"
+                "reference": "cd1cf05c553ecfec36b170070573e540b67d3f1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://composer.upr.edu.cu/dist/phpunit-phpunit-mock-objects-3eaf040f20154d27d6da59ca2c6e28ac8fd56dce-zip-0a37fe.zip",
-                "reference": "3eaf040f20154d27d6da59ca2c6e28ac8fd56dce",
-                "shasum": "614007b16c4b54ef5a8e1d37de36bd0eaa56451a"
+                "url": "http://composer.upr.edu.cu/dist/phpunit-phpunit-mock-objects-cd1cf05c553ecfec36b170070573e540b67d3f1f-zip-05205f.zip",
+                "reference": "cd1cf05c553ecfec36b170070573e540b67d3f1f",
+                "shasum": "bad1a1d0a84b49e87a786d823d3f357b4ee25d87"
             },
             "require": {
                 "doctrine/instantiator": "^1.0.5",
@@ -3924,7 +3941,7 @@
                 "phpunit/phpunit": "<6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.5"
+                "phpunit/phpunit": "^6.5.11"
             },
             "suggest": {
                 "ext-soap": "*"
@@ -3957,7 +3974,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-05-29 13:50:43"
+            "time": "2018-08-09 05:50:03"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

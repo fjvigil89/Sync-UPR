@@ -49,8 +49,13 @@ class Assets extends Model
 		try{
 			
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
-				$data = collect(json_decode($response->getBody()->getContents(),true));							
-				return $data["hydra:member"];
+				$data = collect(json_decode($response->getBody()->getContents(),true));				
+				
+				if ($data["hydra:totalItems"] > 0) {
+					return $data["hydra:member"];	
+				}
+				return "";
+				
 			
 		}
 		catch(\Exception $e)
@@ -65,8 +70,12 @@ class Assets extends Model
 	{
 		try{
 				$response = $this->client->get("empleados_gras?_format=json&noCi=".$ci);	
-				$data = collect(json_decode($response->getBody()->getContents(),true));					
-				return $data["hydra:member"];
+				$data = collect(json_decode($response->getBody()->getContents(),true));				
+				
+				if ($data["hydra:totalItems"] > 0) {
+					return $data["hydra:member"];	
+				}
+				return "";
 				
 			
 		}

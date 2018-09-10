@@ -22,6 +22,10 @@ Route::get('/', function () {
 Route::get('saber_ldap/{item}','SyncController@saberLdap');
 Route::get('saber_ldap_student','EstudiantesController@SaberLdapStudent');
 
+//Estudiantes
+Route::get('crear_student','EstudiantesController@Crear_Student_Upr');
+
+
 //Inertet
 Route::get('internet_profes','SyncController@InternetProfesore');
 Route::get('internet_est','SyncController@InternetEstudiantes');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Sync\ldap;
 use Sync\Assets;
+use Sync\Sigenu;
 use Log;
 use Carbon\Carbon;
 use Collection;
@@ -32,13 +33,14 @@ class SyncController extends Controller
   		 $array_NoUpdate= array();
   		 $array_Update= array();
   		 $ldap = new ldap();
-  		 $assets = new Assets;	    	 
+  		 $assets = new Assets;
+       $sigenu = new Sigenu;	    	 
   		 $lista_ldap = $ldap->saberLdap($item); 
   		 $group= array();
   	    	 
   	    	 	for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
   		    	 	try{		    	 		
-  		    	 	 		
+  		             	 		
                   $lugar = true;
                   $existe_asstes = true;
 
@@ -55,26 +57,23 @@ class SyncController extends Controller
                    if($lugar)
                    {  
                        $empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
+                         
+                         if (!is_array($empleado)) 
+                         {
+                            //pasa saber si es un graduado reintegrado como profesor
+                            $empleado = $assets->findEmpleadoCi(trim(ltrim($lista_ldap[$i]["employeeid"][0])));   
+                         }
+                         
+                        if(!is_array($empleado))
+                        {                        
+                            Log::critical($i." -- No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
+                            array_push($array_NoUpdate, $lista_ldap[$i]);  
+                            $existe_asstes= false;
+                            //$ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
+                             Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]);
+                         }                        
                         
-                        if ($empleado == "No Existe") {
-
-                           Log::critical($i." -- No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
-                          array_push($array_NoUpdate, $lista_ldap[$i]);
-                          $existe_asstes= false;
-                          $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu"); 
-                           Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:"); 
-                        }
-
-
-                        if ($empleado == "" || $empleado == "Alguna cosa esta mal") {
-
-                          //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
-                          Log::critical($i." -- No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no estar en assets:");
-                          array_push($array_NoUpdate, $lista_ldap[$i]);  
-                          $existe_asstes= false;
-                          $ldap->mover($lista_ldap[$i]['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");  
-                           Log::warning(" No se puede actualizar al empleado ".$lista_ldap[$i]["displayname"][0]." por no tener departamento en assets:");
-                        }
+                        
                         
                         if($existe_asstes)
                         {
@@ -1107,6 +1106,7 @@ class SyncController extends Controller
           }
     }
 
+
     function Actualizar_Usuarios_Upr($empleado, $lista_ldap)
     {
       
@@ -1129,7 +1129,7 @@ class SyncController extends Controller
         if(!$ldap->ActualizarCamposIdEmpleado($empleado, $departamento, $cargo, $lista_ldap['samaccountname'][0]))
         {
                     
-          $ldap->mover($lista_ldap['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+          //$ldap->mover($lista_ldap['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
           Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
 
         }
