@@ -268,7 +268,7 @@ class Sigenu extends Model
     	try{			
     		$date = Carbon::now();
 			//$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.".$date->toDateString());			
-			$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.2018-08-29");			
+			$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.2018-09-01");			
 			$data = collect(json_decode($response->getBody()->getContents(),true));		
 			
 			return $data;
