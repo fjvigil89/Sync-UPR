@@ -29,7 +29,7 @@ class Assets extends Model
 		try{			
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador);
 				$data = collect(json_decode($response->getBody()->getContents(),true));	
-
+				
 				if($data['hydra:totalItems'] > 0)
 				{
 					return true;			

@@ -102,5 +102,12 @@ Route::get('getusuariosPorUnidadesOrganizativas','GraficaController@GraficausUar
 
 //crear Trabajador por su numero de trabajador
 Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
-Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
+Route::post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
+Route::post('create_student','EstudiantesController@CrearEstudiante')->name('createstudent');
 
+//Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

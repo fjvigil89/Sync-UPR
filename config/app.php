@@ -166,7 +166,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
-        Adldap\Laravel\AdldapServiceProvider::class,
+        Adldap\Laravel\AdldapServiceProvider::class,        
+        Adldap\Laravel\AdldapAuthServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -230,6 +231,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Clockwork' => Clockwork\Support\Laravel\Facade::class,
         'Adldap' => Adldap\Laravel\Facades\Adldap::class
+        
 
     ],
 

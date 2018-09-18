@@ -228,4 +228,25 @@ class EstudiantesController extends Controller
 
         }//end for       
     }
+
+  function CrearEstudiante(Request $request)
+  {
+       $ldap = new ldap();
+       $sigenu = new Sigenu();
+
+
+      if ($sigenu->ExisteStudent($request->employeenumber)) 
+      {
+                  
+        if(!$ldap->ExisteEmpleado($request->employeenumber))
+        {
+          
+          $ldap->CrearStudentWeb($sigenu->findIdStudent($request->employeenumber));
+        }
+        return 'El Usuario existe en la Universidad';
+      }
+
+      return "El Estudiante no pertenece a la Universidad";
+      
+    }  
 }

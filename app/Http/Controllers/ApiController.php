@@ -45,7 +45,7 @@ class ApiController extends Controller
      *         description="arreglo separade por coma de parametros",     
      *         in="path",
      *         name="attrib",
-     *         required=true,
+     *         required=false,
      *         type="string"
      *     ),    
      *   @SWG\Response(

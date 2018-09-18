@@ -17,7 +17,6 @@ return [
 
     'connection' => env('ADLDAP_CONNECTION', 'default'),
 
-
     /*
     |--------------------------------------------------------------------------
     | Provider
@@ -121,9 +120,9 @@ return [
 
         'ldap' => [
 
-            'discover' => 'samaccountname', // Changed from `userprincipalname`
+            'discover' => 'samaccountname',
 
-            'authenticate' => 'distinguishedname',//'distinguishedname',
+            'authenticate' => 'distinguishedname',
 
         ],
 
@@ -141,7 +140,7 @@ return [
         |
         */
 
-        'eloquent' => 'username', // Changed from `email
+        'eloquent' => 'username',
 
         /*
         |--------------------------------------------------------------------------
@@ -256,10 +255,13 @@ return [
     |
     */
 
-    'sync_attributes' => [        
-        'username' => 'samaccountname', //'userprincipalname',
-        'name' => 'cn',
+    'sync_attributes' => [
+
+        'username' => 'samaccountname',
+
         'email' => 'mail',
+
+        'name' => 'cn',
 
     ],
 

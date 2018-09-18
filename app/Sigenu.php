@@ -55,6 +55,22 @@ class Sigenu extends Model
 	    }
 	}
 
+	function ExisteStudent($idEstudiante)
+	{
+		try{			
+			$response = $this->client->get("student?id_student=eq.".$idEstudiante);			
+			$data = collect(json_decode($response->getBody()->getContents(),true));			
+			return true;			
+
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return false;
+	    }
+	}
+
 	function SaberGrupoStudent($ciEstudiante)
     {
     	try{
@@ -268,7 +284,7 @@ class Sigenu extends Model
     	try{			
     		$date = Carbon::now();
 			$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.".$date->toDateString());			
-			//$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.2018-09-01");			
+			//$response = $this->client->get("http://apisigenu.upr.edu.cu/api/matriculated_student?inscription_date=eq.2018-09-17");			
 			$data = collect(json_decode($response->getBody()->getContents(),true));		
 			
 			return $data;

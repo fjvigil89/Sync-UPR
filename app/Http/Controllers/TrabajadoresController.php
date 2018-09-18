@@ -24,11 +24,13 @@ class TrabajadoresController extends Controller
     	 $ldap = new ldap();
    		$assets = new Assets();
 
-   		if ($assets->ExisteEmpleado($request->employeeid)) 
+
+   		if ($assets->ExisteEmpleado($request->employeenumber)) 
    		{
-   			if(!$ldap->ExisteEmpleado($request->employeeid))
+
+   			if(!$ldap->ExisteEmpleado($request->employeenumber))
    			{
-   				$ldap->CrearUsuario($assets->findEmpleado($request->employeeid));
+   				$ldap->CrearUsuario($assets->findEmpleado($request->employeenumber));
    			}
    			return 'El Usuario existe en la Universidad';
    		}

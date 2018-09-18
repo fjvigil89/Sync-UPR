@@ -46,7 +46,7 @@
                         "name": "attrib",
                         "in": "path",
                         "description": "arreglo separade por coma de parametros",
-                        "required": true,
+                        "required": false,
                         "type": "string"
                     }
                 ],
