@@ -252,7 +252,7 @@ class Assets extends Model
 					
 				}
 			//jubilado reincorporado
-			if(trim($data["hydra:member"][0]['idCausabaja']) == '13')
+			if(trim($data["hydra:member"][0]['idCausaalta']) == '13')
 				{ 
 					
 					array_push($array, 'UPR-Ras');
