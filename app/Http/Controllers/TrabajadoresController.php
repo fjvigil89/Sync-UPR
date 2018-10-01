@@ -56,12 +56,12 @@ class TrabajadoresController extends Controller
                    
                    if ($item=='ADD') {
                      $this->AddGrupoPassword($users[$i]['distinguishedname'][0]);
-
+                     Log::warning(" Adicionando ".$users[$i]["displayname"][0]." a grupos de P@ssword:");
                    }
                    if ($item=='REMOVE') {
                     
                      $this->RemoveGrupo($users[$i]['distinguishedname'][0]);
-                     
+                    Log::warning(" Eliminando ".$users[$i]["displayname"][0]." de grupos de P@ssword:"); 
                    }
               
                }//try
