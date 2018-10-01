@@ -46,7 +46,7 @@ class TrabajadoresController extends Controller
        $ldap = new ldap();
        $assets = new Assets;
               
-       $lista_ldap = ['elio.govea','irlenys.ibarra','luis.mendez','luis.junco','manuel.diaz','ysantalla']; 
+       $lista_ldap = ['elio.govea','irlenys.ibarra','luis.mendez','luis.junco','manuel.diaz','ysantalla','osmay']; 
        $group= array();
            
             for ($i=1; $i < count($lista_ldap) ; $i++) { 
@@ -82,7 +82,7 @@ class TrabajadoresController extends Controller
 
       //grupos que se les adicionar'an al usuario 
       $group= [        
-        //'UPR-Gestion-Usuarios'
+        'UPR-Gestion-Usuarios'
         'UPR-Gestion-Password'
 
       ];    
@@ -100,7 +100,7 @@ class TrabajadoresController extends Controller
 
       //grupos que se quiere que no se le sean eliminado al usuario      
       $group= [        
-        //'UPR-Gestion-Usuarios'
+        'UPR-Gestion-Usuarios'
         'UPR-Gestion-Password'
 
       ];    
