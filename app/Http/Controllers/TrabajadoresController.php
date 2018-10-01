@@ -61,7 +61,7 @@ class TrabajadoresController extends Controller
                    if ($item=='REMOVE') {
                     
                      $this->RemoveGrupo($users[$i]['distinguishedname'][0]);
-                     dd("sss");
+                     
                    }
               
                }//try
