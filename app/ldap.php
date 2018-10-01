@@ -116,6 +116,42 @@ class ldap extends Model
 
     }
 
+    function find_users($username){
+    	try{
+	        global $ldap_host,$ldap_dn,$ldap_usr_dom;
+	        
+	        $exist = true;  
+	        $ldap = ldap_connect($this->ldap_host);
+	        if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+	        
+	        $ldapBind= ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+	        
+	        $attrib = array('distinguishedname');           
+
+	        $filter='(&(!(useraccountcontrol=514))(samaccountname='.$username.'))';
+	            
+
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+
+	        $user_data = @ldap_get_entries($ldap, $results);
+	            
+	        //if($user_data[0]['distinguishedname'][0] == "")$exist = false;  
+	        //if(strstr($user_data[0]['distinguishedname'][0], '_Bajas')) $exist = false;
+	        //dd($user_data);
+	        return $user_data;
+    	}
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede Cambiar el Password:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
+    }
+
     function ExistCI($ci){
     	try{
 	        global $ldap_host,$ldap_dn,$ldap_usr_dom;
@@ -801,6 +837,40 @@ class ldap extends Model
 	  	}  	
 	
 	}
+	//Elimina los grupos por a loa usuarios, todos los grupos que se manden
+	function deltogroupEspecifico($distinguishedname, $groupname = null) { 
+		set_time_limit(0);
+		$ldap = ldap_connect($this->ldap_host);
+        if (!$ldap)
+            throw new Exception("Cant connect ldap server", 1);
+        
+      
+
+        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+          
+
+
+        $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+        
+        $attrib = array('cn','distinguishedName'); 
+        
+	  foreach ($groupname as $item) {
+	  	
+	  	$results = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($item).')',$attrib);
+        $user_data = @ldap_get_entries($ldap, $results);
+
+	  	$dn = $user_data[0]['dn'];
+
+	  	$addme["member"] = $distinguishedname;
+	  	$res = @ldap_mod_del($ldap, $dn, $addme);
+	  	$errstr = '';
+	  	if (!$res) {
+	    	$errstr .= ldap_error($ldap);		    
+	 	}
+	  }	  
+	
+	}//end deltogroupEspecifico
 
 	function Disable($samaccountname)
  	{

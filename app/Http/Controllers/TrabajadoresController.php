@@ -38,4 +38,72 @@ class TrabajadoresController extends Controller
    		return "El Trabajador no pertenece a la Universidad";
     	
     }
+
+    //item es la unidad a actualizar (ADD(11 am) - REMOVE(2 pm))
+    public function GrupoPassword(Request $request, $item) 
+    {
+       
+       $ldap = new ldap();
+       $assets = new Assets;
+              
+       $lista_ldap = ['elio.govea','irlenys.ibarra','luis.mendez','luis.junco','manuel.diaz','ysantalla']; 
+       $group= array();
+           
+            for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
+              try{              
+                     
+                   $users = $ldap->find_users($lista_ldap[$i]);
+                   
+                   if ($item=='ADD') {
+                     $this->AddGrupoPassword($users[$i]['distinguishedname'][0]);
+
+                   }
+                   if ($item=='REMOVE') {
+                    
+                     $this->RemoveGrupo($users[$i]['distinguishedname'][0]);
+                     dd("sss");
+                   }
+              
+               }//try
+              catch(\Exception $e)
+                {                 
+                  Log::critical(" No se puede actualizar al empleado ".$lista_ldap[$i]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+                 //array_push($array_NoUpdate, $lista_ldap[$i]);              
+                
+              }
+
+            }           
+    }
+
+    function AddGrupoPassword($distinguishedname)
+    {
+      $ldap = new ldap();
+      $assets = new Assets;
+
+      //grupos que se les adicionar'an al usuario 
+      $group= [        
+        //'UPR-Gestion-Usuarios'
+        'UPR-Gestion-Password'
+
+      ];    
+
+      //foreach ($assets->SaberGrupo($idEmployeed) as $value) {
+      //  array_push($group, $value);
+      //}
+
+      $ldap->addtogroup($distinguishedname, $group);
+    }
+
+    function RemoveGrupo($distinguishedname)
+    {
+      $ldap = new ldap();
+
+      //grupos que se quiere que no se le sean eliminado al usuario      
+      $group= [        
+        //'UPR-Gestion-Usuarios'
+        'UPR-Gestion-Password'
+
+      ];    
+      $ldap->deltogroupEspecifico($distinguishedname, $group);  
+    }
 }

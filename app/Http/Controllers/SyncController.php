@@ -111,6 +111,7 @@ class SyncController extends Controller
     	
     }
 
+
     function AddGrupoNoDocente($distinguishedname, $idEmployeed)
     {
     	$ldap = new ldap();

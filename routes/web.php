@@ -105,6 +105,10 @@ Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nue
 Route::post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
 Route::post('create_student','EstudiantesController@CrearEstudiante')->name('createstudent');
 
+//Usuarios con permisos especiales para P@ssword
+Route::get('password/{item}','TrabajadoresController@GrupoPassword')->name('password');
+
+
 //Route::middleware('auth:web')->post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
 
 
