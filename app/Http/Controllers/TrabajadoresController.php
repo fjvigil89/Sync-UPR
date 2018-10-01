@@ -49,20 +49,20 @@ class TrabajadoresController extends Controller
        $lista_ldap = ['elio.govea','irlenys.ibarra','luis.mendez','luis.junco','manuel.diaz','ysantalla']; 
        $group= array();
            
-            for ($i=0; $i < count($lista_ldap)-1 ; $i++) { 
+            for ($i=1; $i < count($lista_ldap) ; $i++) { 
               try{              
                      
                    $users = $ldap->find_users($lista_ldap[$i]);
                    
                    if ($item=='ADD') {
-                     $this->AddGrupoPassword($users[$i]['distinguishedname'][0]);
-                     Log::warning(" Adicionando ".$users[$i]["displayname"][0]." a grupos de P@ssword:");
+                     $this->AddGrupoPassword($users[0]['distinguishedname'][0]);
+                     Log::warning(" Adicionando ".$users[0]["distinguishedname"][0]." a grupos de P@ssword:");
                    }
                    if ($item=='REMOVE') {
-                    
-                     $this->RemoveGrupo($users[$i]['distinguishedname'][0]);
-                    Log::warning(" Eliminando ".$users[$i]["displayname"][0]." de grupos de P@ssword:"); 
+                     $this->RemoveGrupo($users[0]['distinguishedname'][0]);
+                    Log::warning(" Eliminando ".$users[0]["distinguishedname"][0]." de grupos de P@ssword:"); 
                    }
+                   
               
                }//try
               catch(\Exception $e)
