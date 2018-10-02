@@ -582,6 +582,7 @@ class ldap extends Model
 	}
 
 	function ActualizarCamposStudent($empleado, $departamento, $cargo, $username){
+
 		  try{
 			  global $message;
 			  global $message_css;
@@ -627,7 +628,7 @@ class ldap extends Model
 			    'description'=>html_entity_decode(ucwords($cargo)),			    
 			    );
 			    
-			    
+			    //dd($entry);
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);
 				    $errno = @ldap_errno($ldap);
@@ -639,7 +640,7 @@ class ldap extends Model
 				    $message[] = "The change for $user_id has been used $entry[givenname].";
 			  	}
 
-			  	//dd($message);
+			  	
 			  	return true;
 		  	}
 		  	catch(\Exception $e)
@@ -935,8 +936,9 @@ class ldap extends Model
 	  	$user_entry = @ldap_first_entry($ldap, $results);
 	  	$user_dn = @ldap_get_dn($ldap, $user_entry);
 
-         $entry = array('useraccountcontrol' =>"512",);
-			    
+        $entry = array('useraccountcontrol' =>"512",);
+		
+
 	    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 		    $error = @ldap_error($ldap);
 		    $errno = @ldap_errno($ldap);
@@ -1496,10 +1498,10 @@ class ldap extends Model
 			    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['direccion'])))),
 			    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['nombre'])))),
 			    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['apellido1']).' '.strtolower($empleado['apellido2'])))),
-			    'employeenumber'=> $empleado['idExpediente'],	
-			    'employeeid'=> $empleado['noCi'],			    
-		    	'physicaldeliveryofficename' => $physical,
-		    	'description'=>$descrip,					    	
+			    'employeenumber'=> trim($empleado['idExpediente']),	
+			    'employeeid'=> trim($empleado['noCi']),			    
+		    	'physicaldeliveryofficename' => trim($physical),
+		    	'description'=>trim($descrip),					    	
 			    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
 			    'mail'			 => $nek.'@upr.edu.cu',
 			    'telephoneNumber'=>$phone,
@@ -1509,7 +1511,7 @@ class ldap extends Model
 			    //'unicodePwd'=> $newPassw
 			    );
 
-			    //dd($entry);
+			    
 			    
 			    if (!@ldap_add($ldap,$user_dn, $entry)){
 				    $error = @ldap_error($ldap);
@@ -1639,33 +1641,38 @@ class ldap extends Model
 		  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
 		  
 		  	
-	  		$cn = $this->user_unic($empleado['name'], $empleado['first_name'], $empleado['second_name'], 0);
+	  		$cn = $this->user_unic($empleado['name'], $empleado['middle_name'], $empleado['last_name'], 0);
 	  		if ($this->Exist($cn)) {
-	  			$cn = $this->user_unic($empleado['name'], $empleado['first_name'], $empleado['second_name'], 1);
+	  			$cn = $this->user_unic($empleado['name'], $empleado['middle_name'], $empleado['last_name'], 1);
 	  		}
 	  		
 			$user_dn = 'CN='.$cn.',OU=newStudent,OU=_Usuarios,DC=upr,DC=edu,DC=cu';  
  			
 			$nek= $this->normaliza($cn);
 			//dd($empleado);
+
+
+			$officces="No Tiene";
+			$facultad="No Tiene";
+
             $entry = array(
 		    'streetAddress' =>html_entity_decode(trim(ucwords(strtolower(  $empleado['address'])))),
 		    'givenname' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))),
-		    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),
-		    'employeenumber'=> $empleado['id_matriculated_student'],	
+		    'sn' => html_entity_decode(trim(ucwords(strtolower($empleado['middle_name']).' '.strtolower($empleado['last_name'])))),
+		    'employeenumber'=> $empleado['id_student'],	
 		    'employeeid'=> $empleado['identification'],			    
 	    	'physicaldeliveryofficename' => $officces,
 	    	'description'=>$facultad,					    	
 		    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
 		    'mail'			 => $nek.'@estudiantes.upr.edu.cu',
 		    //'telephoneNumber'=>$empleado[''],
-		    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),
+		    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['middle_name']).' '.strtolower($empleado['last_name'])))),
 		    'sAMAccountName' =>$nek,
 		    'useraccountcontrol'=>'514',
-		    'name' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['first_name']).' '.strtolower($empleado['second_name'])))),		    
+		    'name' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['middle_name']).' '.strtolower($empleado['last_name'])))),		    
 		    );
 		    
-		    dd($entry);
+		    //dd($user_dn);
 
 		    if (!@ldap_add($ldap,$user_dn, $entry)){
 			    $error = @ldap_error($ldap);
@@ -1695,7 +1702,7 @@ class ldap extends Model
 		    	}*/
 
 		  	}
-		  	
+		  	//dd($message);
 		  	return true;
 	  	}
 	  	catch(\Exception $e)

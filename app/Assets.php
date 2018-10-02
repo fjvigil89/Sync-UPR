@@ -92,7 +92,8 @@ class Assets extends Model
 		try{
 			
 			$response = $this->client->get("centro_costos/".$idCosto."?_format=json");
-			$data = collect(json_decode($response->getBody()->getContents(),true));	
+			$data = collect(json_decode($response->getBody()->getContents(),true));
+			
 			return trim($data["descCcosto"]);			
 		}
 		catch(\Exception $e)

@@ -1112,9 +1112,11 @@ class SyncController extends Controller
     {
       
       try{
+
             $ldap = new ldap();
             $assets = new Assets();
          $departamento = $assets->findDepartaento(trim(ltrim($empleado["idCcosto"])));
+
         if ($departamento == "" || $departamento == "Alguna cosa esta mal") {
             //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
 
@@ -1131,7 +1133,7 @@ class SyncController extends Controller
         {
                     
           //$ldap->mover($lista_ldap['dn'], "OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
-          Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
+          //Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
 
         }
         else{ 

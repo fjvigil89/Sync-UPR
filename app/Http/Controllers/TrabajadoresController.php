@@ -23,19 +23,33 @@ class TrabajadoresController extends Controller
     {
     	 $ldap = new ldap();
    		$assets = new Assets();
-
+      $sync = new SyncController();
+      $user = Array();
 
    		if ($assets->ExisteEmpleado($request->employeenumber)) 
    		{
 
    			if(!$ldap->ExisteEmpleado($request->employeenumber))
    			{
-   				$ldap->CrearUsuario($assets->findEmpleado($request->employeenumber));
-   			}
-   			return 'El Usuario existe en la Universidad';
-   		}
+          
+   				$ldap->CrearUsuario($assets->findEmpleado($request->employeenumber)[0]);
+           Log::warning(" Usuario Creado ".$request->employeenumber); 
 
-   		return "El Trabajador no pertenece a la Universidad";
+          $empleado = $assets->findEmpleado($request->employeenumber);           
+          $user= $ldap->saberLdapTrabajador($request->employeenumber); 
+          $sync->Actualizar_Usuarios_Upr($empleado[0], $user[0]);
+   			}
+        else {
+   			  return 'El Usuario existe en la Universidad';
+        }
+   		}
+      else{
+   		 return "El Trabajador no pertenece a la Universidad";
+      }
+      //$user= $ldap->saberLdapTrabajador($request->employeenumber);
+      
+      $result = "<h1>El usuario ".$user[0]['cn'][0]." ya es parte de nuestros servicios</h1>";
+      return $result;
     	
     }
 

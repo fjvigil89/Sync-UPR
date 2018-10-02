@@ -13,6 +13,7 @@ class EstudiantesController extends Controller
 {
     //
     private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $Estudiantes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 
     public function SaberLdapStudent(Request $request)
     {
@@ -233,20 +234,83 @@ class EstudiantesController extends Controller
   {
        $ldap = new ldap();
        $sigenu = new Sigenu();
-
-
+       $user = Array();
+       
       if ($sigenu->ExisteStudent($request->employeenumber)) 
       {
-                  
+            
         if(!$ldap->ExisteEmpleado($request->employeenumber))
-        {
-          
+        {          
+
           $ldap->CrearStudentWeb($sigenu->findIdStudent($request->employeenumber));
+          Log::warning(" Usuario Creado ".$request->employeenumber); 
+          $student = $sigenu->findIdStudent($request->employeenumber);         
+          $user= $ldap->saberLdapTrabajador($request->employeenumber); 
+          
+          $this->ActualizarEstudiantes($student, $user[0]);
         }
-        return 'El Usuario existe en la Universidad';
+        else{
+          return 'El Usuario existe en la Universidad';
+        }
+      }
+      else{
+        return "El Estudiante no pertenece a la Universidad";
       }
 
-      return "El Estudiante no pertenece a la Universidad";
+      $result = "<h1>El usuario ".$user[0]['cn'][0]." ya es parte de nuestros servicios</h1>";
+      return $result;
       
-    }  
+  }
+
+  function ActualizarEstudiantes ($student, $user)
+  {
+    
+    try{  
+        $ldap = new ldap();                       
+        $sigenu = new Sigenu();
+
+        $facultad = $sigenu->findfacultad_fx(trim(ltrim($student["faculty_fk"])));  
+        
+        if ($facultad == "" || $facultad == "Alguna cosa esta mal") {           
+            //$this->SendEmail($lista_ldap[$i]['displayname'][0],$lista_ldap[$i]['samaccountname'][0]);
+          $facultad = null;
+          Log::warning(" No se puede actualizar la facultad al Estudiante ".$student["name"]." por no tener Facultad en el Sigenu:");
+        }
+
+
+        $carrera = $sigenu->findCarrera_fx(trim(ltrim($student["career_fk"])));
+
+         if ($carrera == "" || $carrera == "Alguna cosa esta mal") {
+          $carrera = null;  
+         Log::warning(" No se puede actualizar la carrera al Estudiante ".$student["name"]." por no tener Facultad en el Sigenu:");                                  
+        }
+
+        $anno = 1;                        
+
+        $curso_tipo = $sigenu->findCursoTipo_fx(trim(ltrim($student["course_type_fk"])));
+        if ($curso_tipo == "" || $curso_tipo == "Alguna cosa esta mal") {
+          $curso_tipo = null;
+         Log::warning(" No se puede actualizar tipo de curso al Estudiante ".$student["name"]." por no tener Facultad en el Sigenu:");                                  
+        }
+        if ($facultad != null && $carrera!= null && $curso_tipo != null) {
+             
+            if(!$ldap->ActualizarCamposStudent($student, $facultad, $curso_tipo.' - '.$anno.' - '.$carrera, $user['samaccountname'][0]))
+            { 
+              Log::warning(" El Estudiante ya existe ".$student["name"]); 
+            }
+          else{ 
+              Log::warning(" Estudiante " .$student["name"]. " creado correctamente"); 
+            }
+          $ldap->mover($user['dn'], $this->Estudiantes);
+          Log::warning(" Moviendo " .$student["name"]. " a Estudiantes"); 
+        }
+                  
+     }//try
+      catch(\Exception $e)
+      {                 
+          Log::critical(" No se puede crear al Estudiante ". $student["name"]." del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+         //array_push($array_NoUpdate, $lista_ldap[$i]);              
+        
+      }
+  } 
 }
