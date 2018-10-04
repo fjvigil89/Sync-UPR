@@ -33,7 +33,7 @@ class EstudiantesController extends Controller
 
                        Log::critical($i." -- No se puede actualizar al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
                       $existe_sigenu= false;
-                      //$ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+                      $ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
                     }
                                           
                     if($existe_sigenu)
@@ -53,7 +53,7 @@ class EstudiantesController extends Controller
                         //$ldap->mover($lista_ldap[$i]['dn'], $this->bajas);  
                         $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
-                        Log::warning(" Moviendo al Estudiante ".$lista_ldap[$i]["displayname"][0]." por ser baja del Sigenu:");
+                        Log::warning(" Deshabilitando al Estudiante ".$lista_ldap[$i]["displayname"][0]." por ser baja del Sigenu:");
                         
                       }                                            
                       else{
