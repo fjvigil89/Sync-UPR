@@ -232,7 +232,7 @@ class Assets extends Model
 			if(trim($data["hydra:member"][0]['idCcosto']) == '4008'){ array_push($array, 'ProfesoresCRAI');}
 
 			//para Grupos
-			if(trim($data["hydra:member"][0]['idCcosto']) == '4016')
+			/*if(trim($data["hydra:member"][0]['idCcosto']) == '4016')
 				{ 
 					//array_push($array, 'Domain Admins');
 					array_push($array, 'UPR-Admin-Internet-Kuota');
@@ -252,6 +252,7 @@ class Assets extends Model
 					array_push($array, 'wifi-admin');
 					
 				}
+			*/	
 			//jubilado reincorporado
 			if(trim($data["hydra:member"][0]['idCausaalta']) == '13')
 				{ 

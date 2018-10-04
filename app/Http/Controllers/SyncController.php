@@ -1177,7 +1177,7 @@ class SyncController extends Controller
        for ($i=0; $i < count($upredes)-1 ; $i++) {
           try{
 
-            //$this->AddGrupoUPredes($upredes[$i]['distinguishedname'][0],trim($upredes[$i]['employeenumber'][0]));  
+            $this->AddGrupoUPredes($upredes[$i]['distinguishedname'][0],trim($upredes[$i]['employeenumber'][0]));  
             $ldap->mover($upredes[$i]['dn'], $this->Upredes);            
             Log::warning(" Moviendo al empleado ".$upredes[$i]["displayname"][0]." a -- Upredes --:");      
             }
