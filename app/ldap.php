@@ -1667,6 +1667,7 @@ class ldap extends Model
 	    	'description'=>$facultad,					    	
 		    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
 		    'mail'			 => $nek.'@estudiantes.upr.edu.cu',
+		    'userPrincipalName' => $nek.'@estudiantes.upr.edu.cu',
 		    //'telephoneNumber'=>$empleado[''],
 		    'displayName' => html_entity_decode(trim(ucwords(strtolower($empleado['name'])))).' '. html_entity_decode(trim(ucwords(strtolower($empleado['middle_name']).' '.strtolower($empleado['last_name'])))),
 		    'sAMAccountName' =>$nek,
