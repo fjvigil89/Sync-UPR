@@ -87,21 +87,39 @@ class EstudiantesController extends Controller
     	$ldap = new ldap();
     	$sigenu = new Sigenu;
 
+      $curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));      
     	//grupos que se les adicionar'an al usuario 
-    	$group= [
-    		'Domain Users',
-    		'UPR-Wifi',
-    		'UPR-Jabber',
-    		'UPR-Correo-Internacional',
-        	'UPR-Estudiantes',
-        	'UPR-Internet-Est'
-    	];   	
+      //si el estudiante es CPE cambiarle los grupos
+      if ($curso_tipo == "CRD") {
+        # code...        
+      	$group= [
+          'Domain Users',
+          'UPR-Wifi',
+          'UPR-Jabber',
+          'UPR-Correo-Internacional',
+          'UPR-Estudiantes',
+          'UPR-Internet-Est'
+        ];    
+      }
+      else
+      {
+        $group= [
+          'Domain Users',
+          'UPR-Wifi',
+          'UPR-Jabber',
+          'UPR-Correo-Nacional',
+          'UPR-Estudiantes',
+          
+        ];    
+      }
+      
+
 
     	foreach ($sigenu->SaberGrupoStudent($idEmployeed) as $value) {
     		array_push($group, $value);
     	}
     	$this->DeleteGrupoBajaStudent($distinguishedname);
-		$ldap->addtogroup($distinguishedname, $group);
+		  $ldap->addtogroup($distinguishedname, $group);
     }
 
     function Actualizar_Student_Upr($empleado, $lista_ldap)
