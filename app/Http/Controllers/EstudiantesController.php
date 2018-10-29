@@ -112,6 +112,7 @@ class EstudiantesController extends Controller
           
         ];    
       }
+
       
 
 
@@ -167,6 +168,15 @@ class EstudiantesController extends Controller
 
         	$this->AddGrupoStudent($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]));  
             $ldap->Enable($lista_ldap['samaccountname'][0]);
+
+            if ($lista_ldap['samaccountname'][0] == "oberlandy.padilla" || $lista_ldap['samaccountname'][0] == "manuel.gomez" || $lista_ldap['samaccountname'][0] == "mario.arias" ) {             
+            
+               //Agregar ACM el grupos UPR-Internet-AlumnoAyudante
+               $group= [        
+                  'UPR-Internet-AlumnoAyudante'
+                ];    
+                $ldap->addtogroup($distinguishedname, $group); 
+              }
           }
           return true;
       }
