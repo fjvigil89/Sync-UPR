@@ -160,8 +160,8 @@ class EstudiantesController extends Controller
 	        if(!$ldap->ActualizarCamposStudent($empleado, $facultad, $curso_tipo.' - '.$anno.' - '.$carrera, $lista_ldap['samaccountname'][0]))
 	        {	                    
 
-	          $ldap->mover($lista_ldap['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
-	          Log::warning(" Moviendo al Estudiante ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
+	          //$ldap->mover($lista_ldap['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+	          //Log::warning(" Moviendo al Estudiante ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
 
 	        }
         else{ 
@@ -176,6 +176,7 @@ class EstudiantesController extends Controller
                   'UPR-Internet-AlumnoAyudante'
                 ];    
                 $ldap->addtogroup($distinguishedname, $group); 
+                Log::warning(" Adicionar grupo AlumnoAyudante a  ".$lista_ldap["displayname"][0]); 
               }
           }
           return true;
