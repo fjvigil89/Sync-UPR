@@ -628,7 +628,7 @@ class ldap extends Model
 			    'description'=>html_entity_decode(ucwords($cargo)),			    
 			    );
 			    
-			    //dd($entry);
+			    
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);
 				    $errno = @ldap_errno($ldap);

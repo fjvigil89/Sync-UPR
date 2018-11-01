@@ -240,8 +240,7 @@ class Assets extends Model
 					array_push($array, 'UPR-Ids');
 					array_push($array, 'UPR-TASK-ADMINISTRATOR');
 					array_push($array, 'UPR-TASK-MANAGER');
-					array_push($array, 'UPR-Comunidad');
-					array_push($array, 'UPR-Upredes');
+					array_push($array, 'UPR-Comunidad');					
 					array_push($array, 'UPR-OwnCloud');
 					array_push($array, 'UPR-Noc');
 					array_push($array, 'UPR-Admins-Telefonos');
