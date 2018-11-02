@@ -13,7 +13,7 @@ class EstudiantesController extends Controller
 {
     //
     private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-    private $Estudiantes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $estudiantes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 
     public function SaberLdapStudent(Request $request)
     {
@@ -33,7 +33,7 @@ class EstudiantesController extends Controller
 
                        Log::critical($i." -- No se puede actualizar al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
                       $existe_sigenu= false;
-                      $ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+                      //$ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
                     }
                                           
                     if($existe_sigenu)
@@ -329,7 +329,7 @@ class EstudiantesController extends Controller
           else{ 
               Log::warning(" Estudiante " .$student["name"]. " creado correctamente"); 
             }
-          $ldap->mover($user['dn'], $this->Estudiantes);
+          $ldap->mover($user['dn'], $this->estudiantes);
           Log::warning(" Moviendo " .$student["name"]. " a Estudiantes"); 
         }
                   
