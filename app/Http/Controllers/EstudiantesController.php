@@ -32,8 +32,7 @@ class EstudiantesController extends Controller
                     if ($estudent == "" || $estudent == "Alguna cosa esta mal") {
 
                        Log::critical($i." -- No se puede actualizar al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
-                      $existe_sigenu= false;
-                      //$ldap->mover($lista_ldap[$i]['dn'], "OU=ActualizarEstudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu");
+                      $existe_sigenu= false;                      
                     }
                                           
                     if($existe_sigenu)
@@ -159,8 +158,8 @@ class EstudiantesController extends Controller
 
 	        if(!$ldap->ActualizarCamposStudent($empleado, $facultad, $curso_tipo.' - '.$anno.' - '.$carrera, $lista_ldap['samaccountname'][0]))
 	        {	                    
-            
-	          Log::warning(" Moviendo al Estudiante ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
+            $ldap->Disable($lista_ldap['samaccountname'][0]);
+	          Log::warning(" Deshabilitando al Estudiante ".$lista_ldap["displayname"][0]." por no Poder Actualizarce:"); 
 
 	        }
         else{ 
