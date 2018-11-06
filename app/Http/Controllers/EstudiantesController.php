@@ -17,6 +17,7 @@ class EstudiantesController extends Controller
 
     public function SaberLdapStudent(Request $request)
     {
+      ini_set('max_execution_time', 18000); //18000 segundos = 5 horas
     	$array_Update= array();
   		 $ldap = new ldap();
   		 $sigenu = new Sigenu;	    	 
