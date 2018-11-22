@@ -119,7 +119,8 @@ class SyncController extends Controller
       $sigenu = new Sigenu;
 
       //si es NoDocente y ademas es estudiante de la UPR
-      $estudiante = $sigenu->ExisteStudent_CI(trim(ltrim($idEmployeeID)));      
+      $estudiante = $sigenu->ExisteStudent_CI(trim(ltrim($idEmployeeID)));  
+      
       if ($estudiante) {
         # code...
         $group= [

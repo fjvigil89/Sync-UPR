@@ -76,15 +76,19 @@ class Sigenu extends Model
 	{
 		try{			
 			$response = $this->client->get("student?identification=eq.".$CIEstudiante);			
-			$data = collect(json_decode($response->getBody()->getContents(),true));		
-			if (is_array($data) ) {
+			$data = collect(json_decode($response->getBody()->getContents(),true));	
+			$status=false;			
+			if (count($data) > 0 ) {
+				foreach ($data as $value) {					
+					if ($value['student_status_fk'] !=01 || $value['student_status_fk']!=05) {
 				
-				if ($data[0]['student_status_fk']==01 || $data[0]['student_status_fk']==05) {
-				
-					return true;
+						$status = true;
+					}
 				}
+				
 			}
-			return false;			
+				
+			return $status;			
 
 		}
 		catch(\Exception $e)
