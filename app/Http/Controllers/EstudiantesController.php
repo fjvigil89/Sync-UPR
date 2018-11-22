@@ -87,7 +87,7 @@ class EstudiantesController extends Controller
     	$ldap = new ldap();
     	$sigenu = new Sigenu;
 
-      $curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));      
+      $curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));         
     	//grupos que se les adicionar'an al usuario 
       //si el estudiante es CPE cambiarle los grupos
       if ($curso_tipo == "CRD") {
@@ -103,14 +103,29 @@ class EstudiantesController extends Controller
       }
       else
       {
-        $group= [
-          'Domain Users',
-          'UPR-Wifi',
-          'UPR-Jabber',
-          'UPR-Correo-Nacional',
-          'UPR-Estudiantes',
+        $estudiante = $sigenu->findIdStudent(trim(ltrim($idEmployeed)));
+        $user = $ldap->find_users_CI(trim(ltrim($estudiante['identification'])));        
+        if($user['count']>1)//si existe como trabajador y estudiante,
+        {           
+          $group= [
+            'Domain Users',
+            'UPR-Wifi',
+            'UPR-Jabber',
+            'UPR-Correo-Internacional',
+            'UPR-Estudiantes',
+            'UPR-Internet-Est',          
+          ];
+        }
+        else{
+          $group= [
+            'Domain Users',
+            'UPR-Wifi',
+            'UPR-Jabber',
+            'UPR-Correo-Internacional',
+            'UPR-Estudiantes',
           
-        ];    
+          ];
+        }        
       }
 
       

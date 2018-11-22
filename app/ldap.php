@@ -152,6 +152,44 @@ class ldap extends Model
 
     }
 
+    function find_users_CI($userCi){
+    	try{
+	        global $ldap_host,$ldap_dn,$ldap_usr_dom;
+	        
+	        $exist = true;  
+	        $ldap = ldap_connect($this->ldap_host);
+	        if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	        ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	        ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);     
+	        
+	        $ldapBind= ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
+	        
+	        $attrib = array('thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname');           
+
+	        $filter='(&(!(useraccountcontrol=514))(employeeid='.$userCi.'))';
+	            
+
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+
+	        $user_data = @ldap_get_entries($ldap, $results);
+	            
+	        //if($user_data[0]['distinguishedname'][0] == "")$exist = false;  
+	        //if(strstr($user_data[0]['distinguishedname'][0], '_Bajas')) $exist = false;
+	        //dd($user_data);
+	        return $user_data;
+    	}
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede Cambiar el Password:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            return response("Alguna cosa esta mal", 500);
+        }
+
+    }
+
+
+
     function ExistCI($ci){
     	try{
 	        global $ldap_host,$ldap_dn,$ldap_usr_dom;
@@ -545,7 +583,7 @@ class ldap extends Model
 			    //'employeenumber'=> $empleado['idExpediente'],
 			    'telephoneNumber'=>$phone,
 			    'mail' => $nek.'@upr.edu.cu',
-			    'employeeid'=> $empleado['noCi'],	
+			    'employeeid'=> trim($empleado['noCi']),	
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
 			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
 			    );
@@ -854,22 +892,17 @@ class ldap extends Model
 
         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass);
         
-        $attrib = array('cn','distinguishedName'); 
-        
-	  foreach ($groupname as $item) {
-	  	
-	  	$results = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($item).')',$attrib);
-        $user_data = @ldap_get_entries($ldap, $results);
-
+        $attrib = array('cn','distinguishedName');         	  
+	  	$results = @ldap_search($ldap,$this->ldap_dn,'(cn='.trim($groupname).')',$attrib);
+        $user_data = @ldap_get_entries($ldap, $results);        
 	  	$dn = $user_data[0]['dn'];
-
 	  	$addme["member"] = $distinguishedname;
 	  	$res = @ldap_mod_del($ldap, $dn, $addme);
 	  	$errstr = '';
 	  	if (!$res) {
 	    	$errstr .= ldap_error($ldap);		    
 	 	}
-	  }	  
+	 	  
 	
 	}//end deltogroupEspecifico
 

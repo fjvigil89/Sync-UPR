@@ -71,6 +71,30 @@ class Sigenu extends Model
 	    }
 	}
 
+	//saber si existe un estudiante pero que este activo en la UPR
+	function ExisteStudent_CI($CIEstudiante)
+	{
+		try{			
+			$response = $this->client->get("student?identification=eq.".$CIEstudiante);			
+			$data = collect(json_decode($response->getBody()->getContents(),true));		
+			if (is_array($data) ) {
+				
+				if ($data[0]['student_status_fk']==01 || $data[0]['student_status_fk']==05) {
+				
+					return true;
+				}
+			}
+			return false;			
+
+		}
+		catch(\Exception $e)
+	    {
+	        Log::critical("No se puede acceder al estudiante del Sigenu:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	        //return response("Alguna cosa esta mal", 500);
+	        return false;
+	    }
+	}
+
 	function SaberGrupoStudent($ciEstudiante)
     {
     	try{

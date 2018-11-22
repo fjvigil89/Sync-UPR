@@ -112,20 +112,38 @@ class SyncController extends Controller
     }
 
 
-    function AddGrupoNoDocente($distinguishedname, $idEmployeed)
+    function AddGrupoNoDocente($distinguishedname, $idEmployeed, $idEmployeeID)
     {
     	$ldap = new ldap();
     	$assets = new Assets;
+      $sigenu = new Sigenu;
 
-    	//grupos que se les adicionar'an al usuario 
-    	$group= [
-    		'Domain Users',
-    		'UPR-Wifi',
-    		'UPR-Jabber',
-    		'UPR-Correo-Internacional',
-        'UPR-NoDocentes'
-    	];   	
-
+      //si es NoDocente y ademas es estudiante de la UPR
+      $estudiante = $sigenu->ExisteStudent_CI(trim(ltrim($idEmployeeID)));      
+      if ($estudiante) {
+        # code...
+        $group= [
+          'Domain Users',
+          'UPR-Wifi',
+          'UPR-Jabber',
+          'UPR-Correo-Internacional',
+          'UPR-NoDocentes',
+          'UPR-Internet-Est',
+        ];
+      }
+      else
+      {
+        $ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");        
+        //grupos que se les adicionar'an al usuario 
+        $group= [
+          'Domain Users',
+          'UPR-Wifi',
+          'UPR-Jabber',
+          'UPR-Correo-Internacional',
+          'UPR-NoDocentes'
+        ];    
+      }
+      
     	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
     		array_push($group, $value);
     	}
@@ -1142,7 +1160,7 @@ class SyncController extends Controller
               if (!$profes) {
                 
                 //$this->DeleteGrupo($lista_ldap['distinguishedname'][0]); 
-                $this->AddGrupoNoDocente($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]));  
+                $this->AddGrupoNoDocente($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]), trim($lista_ldap['employeeid'][0])); 
                 $ldap->mover($lista_ldap['dn'], $this->NoDocente);
                 Log::warning(" Moviendo al empleado ".$lista_ldap["displayname"][0]." a -- No Docentes --:");                                     
               }
