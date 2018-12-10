@@ -59,7 +59,7 @@ class TrabajadoresController extends Controller
        
        $ldap = new ldap();
        $assets = new Assets;              
-       $lista_ldap = ['karinarafaela','osmay','luis.junco']; 
+       $lista_ldap = ['karinarafaela','osmay']; 
        $group= array();
            
             for ($i=1; $i < count($lista_ldap) ; $i++) { 

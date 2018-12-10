@@ -14,8 +14,7 @@ use Mail;
 class SyncController extends Controller
 {
 
-    private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
-    private $NoSync = "OU=No Sync,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+    private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";    
     private $Docente = "OU=Trabajador Docente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     private $NoDocente= "OU=Trabajador NoDocente,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     private $Upredes = "OU=_GrupoRedes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
@@ -46,18 +45,17 @@ class SyncController extends Controller
 
                   //para descartar grupos de distintas Unidades Organizativas
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Builtin')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Users')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], '2ble')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Users')) $lugar = false;                  
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Facultades')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $lugar = false;
-                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'No Sync')) $lugar = false;
+                  if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Gestion')) $lugar = false;                  
                   if(strstr($lista_ldap[$i]['distinguishedname'][0], 'Soroa')) $lugar = false;
                   
                      
                    if($lugar)
                    {  
                        $empleado = $assets->findEmpleado(trim(ltrim($lista_ldap[$i]["employeenumber"][0]))); 
-                         
+                        
+
                          if (!is_array($empleado)) 
                          {
                             //pasa saber si es un graduado reintegrado como profesor
@@ -81,6 +79,8 @@ class SyncController extends Controller
 
                           
                           $TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
+
+
                           if ($TrabBaja) {
 
                             $this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);

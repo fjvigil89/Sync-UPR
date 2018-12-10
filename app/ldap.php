@@ -476,9 +476,9 @@ class ldap extends Model
 			 	# code...
 			 	$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 }
-			 if ($item == 'Estudiantes') {
+			 if ($item == 'test') {
 			 	# code...
-			 	$ldap_dn_GrupoRedes="OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
+			 	$ldap_dn_GrupoRedes="OU=test,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 	//$ldap_dn_GrupoRedes="OU=Actualizar,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 			 }
 			 
@@ -587,6 +587,7 @@ class ldap extends Model
 			    'physicaldeliveryofficename' => html_entity_decode(trim(ucwords(strtolower($departamento)))),
 			    'description'=>html_entity_decode(ucwords(strtolower($cargo))),			    
 			    );
+			    //dd($entry);
 			    
 			    if (!@ldap_mod_replace($ldap,$user_dn,$entry)){
 				    $error = @ldap_error($ldap);

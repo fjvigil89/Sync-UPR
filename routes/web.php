@@ -20,7 +20,10 @@ Route::get('/', function () {
 
 //Sync UPR
 Route::get('saber_ldap/{item}','SyncController@saberLdap');
-Route::get('saber_ldap_student','EstudiantesController@SaberLdapStudent');
+
+//Estas son para distintas rutas de actualizar estudiantes
+Route::get('saber_ldap_student/','EstudiantesController@SaberLdapStudent');
+Route::get('saber_ldap_student/{item}','EstudiantesController@SaberLdapStudent');
 
 //Estudiantes
 Route::get('crear_student','EstudiantesController@Crear_Student_Upr');

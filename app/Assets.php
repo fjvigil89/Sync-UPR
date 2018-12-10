@@ -150,10 +150,11 @@ class Assets extends Model
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=1");
 				$data = collect(json_decode($response->getBody()->getContents(),true));					
 				
-				if(trim($data["hydra:member"][0]['idExpediente']) == "")
+				if($data["hydra:member"] == [])
 				{	
 					return false;
-				}			
+				}
+				//dd($data["hydra:member"]);			
 				return true;			
 		}
 		catch(\Exception $e)

@@ -15,13 +15,13 @@ class EstudiantesController extends Controller
     private $bajas = "OU=Bajas,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
     private $estudiantes= "OU=Estudiantes,OU=_Usuarios,DC=upr,DC=edu,DC=cu";
 
-    public function SaberLdapStudent(Request $request)
+    public function SaberLdapStudent(Request $request, $item="Estudiantes")
     {
       ini_set('max_execution_time', 18000); //18000 segundos = 5 horas
     	$array_Update= array();
   		 $ldap = new ldap();
   		 $sigenu = new Sigenu;	    	 
-  		 $lista_ldap = $ldap->saberLdap("Estudiantes"); 
+  		 $lista_ldap = $ldap->saberLdap($item); 
   		 $group= array();
   		 
   		 for ($i=0; $i < count($lista_ldap)-1 ; $i++) { //count($lista_ldap)-1
@@ -32,7 +32,10 @@ class EstudiantesController extends Controller
                     
                     if ($estudent == "" || $estudent == "Alguna cosa esta mal") {
 
-                       Log::critical($i." -- No se puede actualizar al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
+                      $this->DeleteGrupoBajaStudent($lista_ldap[$i]['distinguishedname'][0]);
+                      $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
+
+                       Log::critical($i." -- DesHabilitando al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
                       $existe_sigenu= false;                      
                     }
                                           
