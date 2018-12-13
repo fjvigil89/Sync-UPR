@@ -53,7 +53,7 @@ class TrabajadoresController extends Controller
     	
     }
 
-    ///item es la unidad a actualizar (ADD(11 am) - REMOVE(2 pm))
+    //item es la unidad a actualizar (ADD(11 am) - REMOVE(2 pm))
     public function GrupoPassword(Request $request, $item) 
     {
        
