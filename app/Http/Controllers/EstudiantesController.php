@@ -32,7 +32,7 @@ class EstudiantesController extends Controller
                     
                     if ($estudent == "" || $estudent == "Alguna cosa esta mal") {
 
-                      $this->DeleteGrupoBajaStudent($lista_ldap[$i]['distinguishedname'][0]);
+                      
                       $ldap->Disable($lista_ldap[$i]['samaccountname'][0]);
 
                        Log::critical($i." -- DesHabilitando al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
