@@ -568,12 +568,13 @@ class ldap extends Model
 			  	$user_entry = @ldap_first_entry($ldap, $results);
 			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
 	 			$user_id = $user_data[0]["samaccountname"][0];
-	       		$nek = $this->normaliza($user_id);
+	       		$nek = $this->normaliza($user_id);	       		
 	       		if ($empleado['telefonoParticular'] == "") {
 					$phone= "No tiene";
 				}
 				else{
-			    	 $phone=$empleado['telefonoParticular'];		
+
+			    	 $phone=explode(",", $empleado['telefonoParticular'])[0];		
 			    	} 
 
 	            $entry = array(
