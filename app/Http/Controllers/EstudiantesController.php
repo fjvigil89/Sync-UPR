@@ -38,6 +38,7 @@ class EstudiantesController extends Controller
                       Log::critical($i." -- DesHabilitando al Estudiante ".$lista_ldap[$i]["displayname"][0]." por no estar en Sigenu:");                      
                       $existe_sigenu= false;                      
                     }
+
                     if ($estudent == "500") {
                       # code...
                       Log::critical($i." --Hay problemas con el Servidor Api-Sigenu ");                      
@@ -142,7 +143,7 @@ class EstudiantesController extends Controller
     	foreach ($sigenu->SaberGrupoStudent($idEmployeed) as $value) {
     		array_push($group, $value);
     	}
-    	$this->DeleteGrupoBajaStudent($distinguishedname);
+    	//$this->DeleteGrupoBajaStudent($distinguishedname);
 		  $ldap->addtogroup($distinguishedname, $group);
     }
 
