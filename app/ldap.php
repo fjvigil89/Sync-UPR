@@ -1733,14 +1733,112 @@ class ldap extends Model
 		    	];   	
 		    	$this->addtogroup($user_dn, $group);
 
-		    	/*$info['unicodepwd'] = "{MD5}".base64_encode(pack("H*",md5("P@ssword")));
-		    	
-		    	if (!ldap_mod_replace($ldap, $user_dn, $info)){
-		    		dd(@ldap_error($ldap));
-		    	}*/
 
 		  	}
 		  	//dd($message);
+		  	return true;
+	  	}
+	  	catch(\Exception $e)
+    	{
+        	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+	  		return false;
+	  	}
+		  	
+	}
+
+	///Curso es la carpeta dentro de Postgrado del ldap
+	///usuarios es un usuario nuevo ara el $curso de Postgrado
+	function CrearStudentPostgrado($curso, $usuarios){		
+	  try{
+		  global $message;
+		  global $message_css;
+		    
+		  error_reporting(0);
+			$ldap = ldap_connect($this->ldap_host,389);
+		  if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+		  
+		  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		  
+		  $empleado = explode(" ",$usuarios);
+		  
+		  //dd($empleado);
+		  if (count($empleado)>3) {
+		  	# code...
+		  	$fullname = $empleado['0'].' '.$empleado['1'].' '. $empleado['2'].' '.$empleado['3'];
+		  	$givename = $empleado['0'].' '.$empleado['1'];
+		  	$apellidos= $empleado['2'].' '.$empleado['3'];
+
+		  	$cn = $this->user_unic($empleado['0'] .' '. $empleado['1'] , $empleado['2'], $empleado['3'], 0);
+	  		if ($this->Exist($cn)) {
+	  			$cn = $this->user_unic($empleado['0'] .' '. $empleado['1'] , $empleado['2'], $empleado['3'], 1);
+	  		}
+		  }
+		  else
+		  {
+		  	$fullname = $empleado['0'].' '.$empleado['1'].' '. $empleado['2'];
+		  	$givename = $empleado['0'];
+		  	$apellidos= $empleado['1'].' '.$empleado['2'];
+
+		  	$cn = $this->user_unic($empleado['0'], $empleado['1'], $empleado['2'], 0);
+	  		if ($this->Exist($cn)) {
+	  			$cn = $this->user_unic($empleado['0'], $empleado['1'], $empleado['2'], 1);
+	  		}
+
+		  }
+
+		  //dd($cn);	  		
+	  		
+			$user_dn = 'CN='.$cn.',OU='.$curso.',OU=_Postgrado,DC=upr,DC=edu,DC=cu';  
+			
+			$nek= $this->normaliza($cn);
+			//dd($empleado);
+			
+
+			$officces= $curso;
+			$facultad= $curso;
+
+            $entry = array(		    
+		    'givenname' => html_entity_decode(trim(ucwords(strtolower($givename)))),
+		    'sn' => html_entity_decode(trim(ucwords(strtolower($apellidos)))),    
+	    	'physicaldeliveryofficename' => $officces,
+	    	'description'=>$facultad,					    	
+		    'objectclass' => [0=>"top",1=>"person",2=>"organizationalPerson",3=>"user"],
+		    'mail'			 => $nek.'@upr.edu.cu',
+		    'userPrincipalName' => $nek.'@upr.edu.cu',
+		    //'telephoneNumber'=>$empleado[''],
+		    'displayName' => html_entity_decode(trim(ucwords(strtolower($fullname)))),
+		    'sAMAccountName' =>$nek,
+		    'useraccountcontrol'=>'514',
+		    'name' => html_entity_decode(trim(ucwords(strtolower($fullname)))),	   
+		    );
+		    
+		    //dd($entry);
+
+		    if (!@ldap_add($ldap,$user_dn, $entry)){
+			    $error = @ldap_error($ldap);
+			    $errno = @ldap_errno($ldap);
+			    $message[] = "E201 - Your user cannot be change, please contact the administrator.";
+			    $message[] = "$errno - $error";
+			    
+		  	}
+		  	else {
+			    $message_css = "yes";	    
+			    $message[] = "The change for $user_id has been used $entry[givenname].";
+
+			    $group= [
+		    		'Domain Users',
+		    		'UPR-Internet-Postgrado',
+		    		'UPR-Postgrados',
+		    		
+		    	];   	
+		    	$this->addtogroup($user_dn, $group);
+		  	}
+		  	//dd($message);
+		  	Log::notice(" Usuario Creado ".$user_dn); 
 		  	return true;
 	  	}
 	  	catch(\Exception $e)

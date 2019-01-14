@@ -131,8 +131,7 @@ class EstudiantesController extends Controller
             'UPR-Wifi',
             'UPR-Jabber',
             'UPR-Correo-Internacional',
-            'UPR-Estudiantes',
-          
+            'UPR-Estudiantes',          
           ];
         }        
       }
@@ -310,6 +309,28 @@ class EstudiantesController extends Controller
       }
 
       $result = "<h1>El usuario ".$user[0]['cn'][0]." ya es parte de nuestros servicios</h1>";
+      return $result;
+      
+  }
+
+  function CrearEstudiantePostgrado(Request $request)
+  {
+       $ldap = new ldap();
+       $sigenu = new Sigenu();
+       $user = Array();
+       
+
+      $usuarios= explode(",", $request->Nombre);  
+      $curso = $request->NombrePostgrado;
+
+      
+
+      foreach ($usuarios as $key => $item) {
+        # code...      
+        $ldap->CrearStudentPostgrado($curso, $item);
+      }
+
+      $result = "<h1>Los Usuarios de Postgrado ya es parte de nuestros servicios</h1>";
       return $result;
       
   }

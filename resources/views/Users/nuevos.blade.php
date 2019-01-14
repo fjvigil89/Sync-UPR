@@ -38,5 +38,30 @@
 </form> 
 
 </div>
+
+<div class="row">
+
+<form class=" nav navbar-form navbar-left" action="{{route ('createuserpostgrado')}}" method="post">
+                      {{ csrf_field() }}
+  <div class="col-md-6">
+    <label>OU dentro Postgrado</label>                   
+      <div class="input-group">        
+        <input name="NombrePostgrado" type="text" class="form-control" placeholder="course name">
+      </div>
+   <label>Crear un Estudiante Postgrado (separado por coma)</label>                   
+      <div class="input-group">
+        <textarea rows="10" cols="100" name="Nombre" class="form-control" placeholder="full name">
+          </textarea>
+        <div class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </div>
+      </div>
+  </div>
+</form> 
+
+</div>
+
   @stop   
             
