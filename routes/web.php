@@ -104,11 +104,11 @@ Route::get('getusuariosPorUnidadesOrganizativas','GraficaController@GraficausUar
 
 
 //crear Trabajador por su numero de trabajador
-//Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
-//Route::post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
-//Route::post('create_student','EstudiantesController@CrearEstudiante')->name('createstudent');
+Route::get('nuevos_users','TrabajadoresController@NuevoTrabajadores')->name('nuevosusers');
+Route::post('create_trabajadores','TrabajadoresController@CrearTrabajador')->name('createtrabajadores');
+Route::post('create_student','EstudiantesController@CrearEstudiante')->name('createstudent');
 
-//Route::post('create_postgrado','EstudiantesController@CrearEstudiantePostgrado')->name('createuserpostgrado');
+Route::post('create_postgrado','EstudiantesController@CrearEstudiantePostgrado')->name('createuserpostgrado');
 //Usuarios con permisos especiales para P@ssword
 Route::get('password/{item}','TrabajadoresController@GrupoPassword')->name('password');
 

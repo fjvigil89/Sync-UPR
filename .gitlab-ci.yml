@@ -1,11 +1,21 @@
 ---
 
-stages: 
+stages:
   - deploy
   - composer
-  - check
+
+
+    #syntax:  
+    #tags:
+    #- deploy
+    #stage: deploy
+    #tags: 
+    #- apiassets
+
 deploy_environment:
   stage: deploy
+  tags:
+   - sync
   script:
    - echo "${CI_COMMIT_REF_NAME}"
    - tools/deploy-git.sh $CI_COMMIT_REF_NAME
@@ -18,24 +28,6 @@ composer_environment:
   script:
    - echo "${CI_COMMIT_REF_NAME}"
    - tools/composer.sh $CI_COMMIT_REF_NAME
-  when: always
-  environment:
-    name: ${CI_COMMIT_REF_NAME}
-
-check_environment:
-  stage: check
-  script:
-   - echo "${CI_COMMIT_REF_NAME}"
-   - tools/check.sh $CI_COMMIT_REF_NAME
-  when: always
-  environment:
-    name: ${CI_COMMIT_REF_NAME} 
-
-swagger_environment:
-  stage: check
-  script:
-   - echo "${CI_COMMIT_REF_NAME}"
-   - tools/swagger.sh $CI_COMMIT_REF_NAME
   when: always
   environment:
     name: ${CI_COMMIT_REF_NAME}
