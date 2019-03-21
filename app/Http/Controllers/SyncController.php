@@ -522,7 +522,12 @@ class SyncController extends Controller
                 if ($exist)
                 {                
                   
-                  $list_aux= ['cn'=>$estud[$i]['cn'][0],'samaccountname'=>$estud[$i]['samaccountname'][0] , 'description' => $estud[$i]['description'][0]='estudiante', 'physicaldeliveryofficename' => $estud[$i]['physicaldeliveryofficename'][0]='facultad'];
+                  $list_aux= [
+                    'cn'=>$estud[$i]['cn'][0],
+                    'samaccountname'=>$estud[$i]['samaccountname'][0] , 
+                    'description' => $estud[$i]['description'][0], 
+                    'physicaldeliveryofficename' => $estud[$i]['physicaldeliveryofficename'][0]
+                  ];
                   array_push($lista_estud, $list_aux );  
                 }                
                 
@@ -940,7 +945,12 @@ class SyncController extends Controller
                 if ($exist2)
                 {                
                   
-                  $list_aux2= ['cn'=>$estudiantes[$i]['cn'][0],'samaccountname'=>$estudiantes[$i]['samaccountname'][0] , 'description' => $estudiantes[$i]['description'][0]='estudiante', 'physicaldeliveryofficename' => $estudiantes[$i]['physicaldeliveryofficename'][0]='facultad'];
+                  $list_aux2= [
+                    'cn'=>$estudiantes[$i]['cn'][0],
+                    'samaccountname'=>$estudiantes[$i]['samaccountname'][0] , 
+                    'description' => $estudiantes[$i]['description'][0], 
+                    'physicaldeliveryofficename' => $estudiantes[$i]['physicaldeliveryofficename'][0]
+                  ];
                   array_push($lista_usuarios, $list_aux2 );  
                 }                
                 
