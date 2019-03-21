@@ -351,7 +351,12 @@ class SyncController extends Controller
                 if ($exist)
                 {                
                   
-                  $list_aux= ['cn'=>$estudiantes[$i]['cn'][0],'samaccountname'=>$estudiantes[$i]['samaccountname'][0] , 'description' => $estudiantes[$i]['description'][0]='estudiante', 'physicaldeliveryofficename' => $estudiantes[$i]['physicaldeliveryofficename'][0]='facultad'];
+                  $list_aux= [
+                    'cn'=>$estudiantes[$i]['cn'][0],
+                    'samaccountname'=>$estudiantes[$i]['samaccountname'][0],
+                    'description' => $estudiantes[$i]['description'][0],
+                    'physicaldeliveryofficename' => $estudiantes[$i]['physicaldeliveryofficename'][0]
+                  ];
                   array_push($lista_estud, $list_aux );  
                 }                
                 
