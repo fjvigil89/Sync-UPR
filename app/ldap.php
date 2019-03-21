@@ -16,7 +16,7 @@ class ldap extends Model
     private $use_ldap=true;
     private $ldap_dn="DC=upr,DC=edu,DC=cu";
     private $ldap_usr_dom="@upr.edu.cu";
-    private $ldap_host="ldap://10.2.24.35";
+    private $ldap_host="ldap://10.2.4.35";
     private $message = array(); 
 
     
