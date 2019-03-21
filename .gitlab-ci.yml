@@ -3,8 +3,6 @@
 stages:
   - deploy
   - composer
-
-
     #syntax:  
     #tags:
     #- deploy
@@ -25,6 +23,8 @@ deploy_environment:
 
 composer_environment:
   stage: composer
+  tags:
+   - sync
   script:
    - echo "${CI_COMMIT_REF_NAME}"
    - tools/composer.sh $CI_COMMIT_REF_NAME
