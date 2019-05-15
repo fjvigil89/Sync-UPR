@@ -119,3 +119,5 @@ Route::get('password/{item}','TrabajadoresController@GrupoPassword')->name('pass
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+

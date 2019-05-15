@@ -11,7 +11,6 @@
     "host": "",
     "basePath": "",
     "schemes": [
-        "https",
         "http"
     ],
     "paths": {
@@ -74,6 +73,36 @@
                 "parameters": [
                     {
                         "name": "samaccountname",
+                        "in": "path",
+                        "description": "Target customer.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard overview."
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    }
+                }
+            }
+        },
+        "/api/trabajadores/{idCcosto}": {
+            "get": {
+                "tags": [
+                    "idCcosto"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Retorna los Trabajadores de un Centro de Costo de la UPR",
+                "operationId": "api.idCcosto",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "idCcosto",
                         "in": "path",
                         "description": "Target customer.",
                         "required": true,

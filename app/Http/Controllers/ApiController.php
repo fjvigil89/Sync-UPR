@@ -10,7 +10,7 @@ use Log;
 use Carbon\Carbon;
 use Collection;
 use Mail;
-
+use Intervention\Image\Facades\Image;
 
 /**
  * Class ApiController
@@ -106,6 +106,46 @@ class ApiController extends Controller
 
     	 $ldap = new ldap();
     	 return $ldap->thumbnailphoto($samaccountname);     	 
+         
+    }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @SWG\Get(
+     *     path="/api/trabajadores/{idCcosto}",
+     *     description="Retorna los Trabajadores de un Centro de Costo de la UPR",
+     *     operationId="api.idCcosto",
+     *     produces={"application/json"},
+     *     tags={"idCcosto"},
+     *     @SWG\Parameter(
+     *     name="idCcosto",
+     *     in="path",
+     *     description="Target customer.",
+     *     required=true,
+     *     type="string"
+     *   ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Dashboard overview."
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized action.",
+     *     )
+     * )
+     */
+    function SearchbyCcosto($idCcosto)
+    {
+      $assets = new Assets();      
+      $data = $assets->searchbyCcosto($idCcosto);
+      if ($data == "No Existe") {
+          # code...
+      }
+            
+      //return JsonResponse::create($data, 200, array('Content-Type'=>'application/json; charset=utf-8' ));
+      return $data;
     }
 }

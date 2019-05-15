@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Sync;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,6 +8,8 @@ use Log;
 use Collection;
 use Carbon\Carbon;
 use Sync\Assets;
+
+
 class ldap extends Model
 {
     //
@@ -26,7 +29,8 @@ class ldap extends Model
     	return $this->message;
     }
 
-     function isLdapUser($username,$password,$ldap){
+    function isLdapUser($username,$password,$ldap)
+     {
         try{    
             //$ldap = ldap_connect($this->ldap_host,389);    
 
@@ -526,7 +530,7 @@ class ldap extends Model
 		 
 	         $attrib = array('thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname');
 
-	        $filter="employeenumber=".$employeenumber;
+	        $filter="employeenumber=".trim($employeenumber);
 	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);
 
@@ -700,7 +704,7 @@ class ldap extends Model
 			  $exist = true;
 			  $thumbnailphoto="";
 			  error_reporting(0);
-				$ldap = ldap_connect($this->ldap_host,389);
+			  $ldap = ldap_connect($this->ldap_host,389);
 			  if (!$ldap)
 		            throw new Exception("Cant connect ldap server", 1);
 		            
@@ -714,6 +718,68 @@ class ldap extends Model
 	       
 
 		        $results = @ldap_search($ldap,$this->ldap_dn,'(samaccountname='.trim($samaccountname).')',$attrib); 
+
+			    $user_data = @ldap_get_entries($ldap, $results);
+			  	$user_entry = @ldap_first_entry($ldap, $results);
+			  	$user_dn = @ldap_get_dn($ldap, $user_entry);
+
+			  	if($user_data[0]['distinguishedname'][0] == "")$exist = false;  
+	        	if(strstr($user_data[0]['distinguishedname'][0], '_Bajas')) $exist = false;
+
+
+	 			if (!$exist) {
+
+	 				// Nombre de la imagen					
+					$path = public_path() . "\images\intranetclassic.png";
+					 
+					// Extensión de la imagen
+					$type = pathinfo($path, PATHINFO_EXTENSION);
+					 
+					// Cargando la imagen
+					$data = file_get_contents($path);
+					 
+					// Decodificando la imagen en base64
+					//$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+	 				return $data;
+	 			}
+	 			
+
+	 			$thumbnailphoto = $user_data[0]["thumbnailphoto"][0];
+	 			
+			  	return $thumbnailphoto;
+		  	}
+		  	catch(\Exception $e)
+        	{
+            	Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+		  		return false;
+		  	}
+		  	//dd($message);
+	}
+ 
+	function thumbnailphotoidExpediente($idExpediente)
+	{
+		 try{
+			  global $message;
+			  global $message_css;
+			  
+			  $exist = true;
+			  $thumbnailphoto="";
+			  error_reporting(0);
+			  $ldap = ldap_connect($this->ldap_host,389);
+			  if (!$ldap)
+		            throw new Exception("Cant connect ldap server", 1);
+		            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+			  
+			  $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+			  
+			  // bind anon and find user by uid
+			    $attrib = array('unicodepwd','cn','thumbnailphoto','telephonenumber','streetaddress','sn','physicaldeliveryofficename','name','mail','jpegphoto','employeenumber','employeeid','distinguishedname','displayname','description','department','cn','samaccountname', 'givenname'); 
+	       
+
+		        $results = @ldap_search($ldap,$this->ldap_dn,'(idExpediente='.trim($idExpediente).')',$attrib); 
 
 			    $user_data = @ldap_get_entries($ldap, $results);
 			  	$user_entry = @ldap_first_entry($ldap, $results);
@@ -750,7 +816,6 @@ class ldap extends Model
 		  	}
 		  	//dd($message);
 	}
- 
  	function mover($distinguishedName, $newDistinguishedName)
  	{
 
@@ -1064,6 +1129,36 @@ class ldap extends Model
 	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','displayname','employeenumber','employeeid');
 
 	         $filter="(&(objectClass=user)(memberOf=CN=UPRedes,OU=Listas,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
+	        
+	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
+		    $user_data = @ldap_get_entries($ldap, $results);
+
+		    return $user_data;
+
+	    }
+       catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder a los usuarios:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+             return response("Alguna cosa esta mal", 500);
+        }
+ 	}
+
+ 	function findUPRsoft()
+ 	{
+ 		try{			 
+			 $ldap = ldap_connect($this->ldap_host,389);
+		  	 
+		  	 if (!$ldap)
+	            throw new Exception("Cant connect ldap server", 1);
+	            
+	          ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION,3);
+	          ldap_set_option($ldap, LDAP_OPT_REFERRALS,0);  
+
+	         $ldapBind= @ldap_bind($ldap, $this->ldapuser. $this->ldap_usr_dom, $this->ldappass)or die("<br>Error: Couldn't bind to server using supplied credentials!"); 
+		 
+	         $attrib = array('thumbnailphoto','telephonenumber','physicaldeliveryofficename','description','cn', 'distinguishedname','samaccountname','displayname','employeenumber','employeeid');
+
+	         $filter="(&(objectClass=user)(memberOf=CN=UPRsoft,OU=Listas,OU=_Gestion,DC=upr,DC=edu,DC=cu))";
 	        
 	        $results = @ldap_search($ldap,$this->ldap_dn,$filter,$attrib);  
 		    $user_data = @ldap_get_entries($ldap, $results);

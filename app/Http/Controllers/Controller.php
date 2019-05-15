@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  * @SWG\Swagger(
  *     basePath="",
  *     host="",
- *     schemes={"https","http"},
+ *     schemes={"http"},
  *     @SWG\Info(
  *         version="1.0",
  *         title="Sample API",

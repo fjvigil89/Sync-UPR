@@ -17,6 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//saber Ccosto
+Route::get('/trabajadores/{idCcosto}', 'ApiController@SearchbyCcosto');
+
 //saber fotos
 Route::get('/user/{samaccountname}', 'ApiController@thumbnailphoto');
 

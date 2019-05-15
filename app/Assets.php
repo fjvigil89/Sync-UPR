@@ -272,6 +272,59 @@ class Assets extends Model
         }
     }//end Saber Grupos
 
-  
+  function searchbyCcosto($idCcosto)
+    {
+    	try{
+			$array = Array();
+			$ldap = new ldap();
+
+			$response = $this->client->get("/empleados_gras?_format=json&idCcosto=". $idCcosto."&baja=0");
+			$data = collect(json_decode($response->getBody()->getContents(),true));
+			
+			if(trim($data["hydra:totalItems"]) == 0)
+				{	
+					return "No Existe";
+				}			
+			for ($i=1; $i < $data["hydra:totalItems"]+1 ; $i++) { 
+							# code...
+				$response = $this->client->get("/empleados_gras?_format=json&idCcosto=". $idCcosto."&baja=0&page=".$i);
+				$data = collect(json_decode($response->getBody()->getContents(),true));
+
+
+				//dd(($data['hydra:member'][0]['nombre']));
+				$username = $ldap->saberLdapTrabajador(trim($data['hydra:member'][0]['idExpediente']));
+				
+				$foto= false;
+				if (isset($username[0]['thumbnailphoto'][0])) {
+					$foto = true;
+				}			
+				
+				$aux = [
+					'idExpediente' => $data['hydra:member'][0]['idExpediente'],
+					'noCi' => $data['hydra:member'][0]['noCi'],
+					'nombre' => $data['hydra:member'][0]['nombre'],
+					'apellido1' => $data['hydra:member'][0]['apellido1'],
+					'apellido2' => $data['hydra:member'][0]['apellido2'],
+					'username'=>  $username[0]['samaccountname'][0],
+					'foto' => $foto,
+					'mail' =>  $username[0]['mail'][0],
+
+				];
+				//dd($aux);
+				array_push($array, $aux);
+			
+
+			}			
+			return $array;
+		
+			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
+        }
+    }//end Saber Grupos
 
 }
