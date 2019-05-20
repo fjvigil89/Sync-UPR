@@ -119,7 +119,7 @@ class ApiController extends Controller
      *     description="Retorna los Trabajadores de un Centro de Costo de la UPR",
      *     operationId="api.idCcosto",
      *     produces={"application/json"},
-     *     tags={"idCcosto"},
+     *     tags={"Saber usuarios por Centro de Costo"},
      *     @SWG\Parameter(
      *     name="idCcosto",
      *     in="path",

@@ -291,8 +291,11 @@ class Assets extends Model
 				$data = collect(json_decode($response->getBody()->getContents(),true));
 
 
-				//dd(($data['hydra:member'][0]['nombre']));
+				//dd(($data['hydra:member'][0]));
 				$username = $ldap->saberLdapTrabajador(trim($data['hydra:member'][0]['idExpediente']));
+
+				$cargo = $this->findCargo(trim($data['hydra:member'][0]['idCargo']));
+				
 				
 				$foto= false;
 				if (isset($username[0]['thumbnailphoto'][0])) {
@@ -308,6 +311,7 @@ class Assets extends Model
 					'username'=>  $username[0]['samaccountname'][0],
 					'foto' => $foto,
 					'mail' =>  $username[0]['mail'][0],
+					'cargo' => $cargo,
 
 				];
 				//dd($aux);

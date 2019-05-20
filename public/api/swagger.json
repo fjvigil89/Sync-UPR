@@ -92,7 +92,7 @@
         "/api/trabajadores/{idCcosto}": {
             "get": {
                 "tags": [
-                    "idCcosto"
+                    "Saber usuarios por Centro de Costo"
                 ],
                 "summary": "Display a listing of the resource.",
                 "description": "Retorna los Trabajadores de un Centro de Costo de la UPR",
