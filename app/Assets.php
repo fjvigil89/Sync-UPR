@@ -284,15 +284,18 @@ class Assets extends Model
 			if(trim($data["hydra:totalItems"]) == 0)
 				{	
 					return "No Existe";
-				}			
-			for ($i=1; $i < $data["hydra:totalItems"]+1 ; $i++) { 
+				}				
+			for ($i=1; $i < $data["hydra:totalItems"] ; $i++) { 
 							# code...
+
+				
 				$response = $this->client->get("/empleados_gras?_format=json&idCcosto=". $idCcosto."&baja=0&page=".$i);
 				$data = collect(json_decode($response->getBody()->getContents(),true));
 
 
-				//dd(($data['hydra:member'][0]));
+				
 				$username = $ldap->saberLdapTrabajador(trim($data['hydra:member'][0]['idExpediente']));
+
 
 				$cargo = $this->findCargo(trim($data['hydra:member'][0]['idCargo']));
 				
@@ -302,6 +305,7 @@ class Assets extends Model
 					$foto = true;
 				}			
 				
+				//dd($username[0]['samaccountname'][0]);
 				$aux = [
 					'idExpediente' => $data['hydra:member'][0]['idExpediente'],
 					'noCi' => $data['hydra:member'][0]['noCi'],
@@ -327,7 +331,7 @@ class Assets extends Model
         {
             Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             //return response("Alguna cosa esta mal", 500);
-            return "Alguna cosa esta mal";
+            return "Alguna cosa esta mal en la iteracion $i";
         }
     }//end Saber Grupos
 
