@@ -281,6 +281,7 @@ class Assets extends Model
 			$response = $this->client->get("/empleados_gras?_format=json&idCcosto=". $idCcosto."&baja=0");
 			$data = collect(json_decode($response->getBody()->getContents(),true));
 			
+
 			if(trim($data["hydra:totalItems"]) == 0)
 				{	
 					return "No Existe";
@@ -318,6 +319,7 @@ class Assets extends Model
 					'cargo' => $cargo,
 
 				];
+				
 				//dd($aux);
 				array_push($array, $aux);
 			
