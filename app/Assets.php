@@ -358,11 +358,11 @@ class Assets extends Model
 				$gradoCientifico = FALSE;
 				if ($this->isMaster(trim($data['hydra:member'][0]['idExpediente']))) {
 					# code...
-					$gradoCientifico= ['MsC.'=> 'Master en Ciencia'];
+					$gradoCientifico= ['MsC.','Master en Ciencia'];
 				}
 				if ($this->isDoctor(trim($data['hydra:member'][0]['idExpediente']))) {
 					# code...
-					$gradoCientifico= ['DrC.'=> 'Doctor en Ciencia'];
+					$gradoCientifico= ['DrC.','Doctor en Ciencia'];
 				}
 				 		
 				
