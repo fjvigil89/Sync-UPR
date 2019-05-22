@@ -381,7 +381,7 @@ class Assets extends Model
 
 				];
 				
-				dd($aux);
+				
 				array_push($array, $aux);
 			
 
