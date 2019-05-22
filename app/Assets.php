@@ -272,6 +272,55 @@ class Assets extends Model
         }
     }//end Saber Grupos
 
+	function isMaster($idTrabajador)
+    {
+    	try{
+
+			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=0");
+			$data = collect(json_decode($response->getBody()->getContents(),true));
+
+			
+			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '09'){ 
+				return true;
+			}
+
+			
+			return false;
+		
+			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
+        }
+    }//end isMaster
+
+    function isDoctor($idTrabajador)
+    {
+    	try{
+
+			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=0");
+			$data = collect(json_decode($response->getBody()->getContents(),true));
+
+			
+			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '08'){ 
+				return true;
+			}
+
+			
+			return false;
+		
+			
+		}
+		catch(\Exception $e)
+        {
+            Log::critical("No se puede acceder al empleado del Assets:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+            //return response("Alguna cosa esta mal", 500);
+            return "Alguna cosa esta mal";
+        }
+    }//end isDoctor
   function searchbyCcosto($idCcosto)
     {
     	try{
@@ -304,7 +353,18 @@ class Assets extends Model
 				$foto= false;
 				if (isset($username[0]['thumbnailphoto'][0])) {
 					$foto = true;
-				}			
+				}	
+
+				$gradoCientifico = FALSE;
+				if ($this->isMaster(trim($data['hydra:member'][0]['idExpediente']))) {
+					# code...
+					$gradoCientifico= ['MsC.'=> 'Master en Ciencia'];
+				}
+				if ($this->isDoctor(trim($data['hydra:member'][0]['idExpediente']))) {
+					# code...
+					$gradoCientifico= ['DrC.'=> 'Doctor en Ciencia'];
+				}
+				 		
 				
 				//dd($username[0]['samaccountname'][0]);
 				$aux = [
@@ -317,10 +377,11 @@ class Assets extends Model
 					'foto' => $foto,
 					'mail' =>  $username[0]['mail'][0],
 					'cargo' => $cargo,
+					'gradoCientifico' => $gradoCientifico,
 
 				];
 				
-				//dd($aux);
+				dd($aux);
 				array_push($array, $aux);
 			
 

@@ -970,8 +970,9 @@ class SyncController extends Controller
           }
           catch(\Exception $e)
             {
+
              
-              Log::critical(" No se puede Ver Los usuarios del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
+              Log::critical("No se puede Ver Los usuarios del AD:{$e->getCode()}, {$e->getLine()}, {$e->getMessage()} ");
             
           }
     }
