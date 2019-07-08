@@ -1927,8 +1927,8 @@ class ldap extends Model
 			    $group= [
 		    		'Domain Users',
 		    		'UPR-Internet-Postgrado',
-		    		'UPR-Postgrados',
-		    		
+						'UPR-Postgrados',
+						'UPR-Internet'		    		
 		    	];   	
 		    	$this->addtogroup($user_dn, $group);
 		  	}

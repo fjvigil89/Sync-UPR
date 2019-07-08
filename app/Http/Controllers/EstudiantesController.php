@@ -96,12 +96,20 @@ class EstudiantesController extends Controller
     	$ldap = new ldap();
     	$sigenu = new Sigenu;
       
+       	$group= [
+          'Domain Users',
+          'UPR-Wifi',
+          'UPR-Jabber',
+          'UPR-Correo-Internacional',
+          'UPR-Estudiantes',
+          'UPR-Internet'
+        ];
       //quitar un grupo en espesifico
       /*$ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");*/
-      $curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));         
+      //$curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));         
     	//grupos que se les adicionar'an al usuario 
       //si el estudiante es CPE cambiarle los grupos
-      if ($curso_tipo == "CRD") {
+      /*if ($curso_tipo == "CRD") {
         # code...        
       	$group= [
           'Domain Users',
@@ -142,8 +150,8 @@ class EstudiantesController extends Controller
             'UPR-Correo-Internacional',
             'UPR-Estudiantes',          
           ];
-        }  */      
-      }
+        }        
+      }*/
 
       
 
