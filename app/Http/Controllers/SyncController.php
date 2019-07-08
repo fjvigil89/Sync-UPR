@@ -143,6 +143,7 @@ class SyncController extends Controller
           'UPR-Correo-Internacional',
           'UPR-NoDocentes',
           'UPR-Internet',
+          'UPR-Internet-Profes',
         ];    
       //}
       
@@ -166,7 +167,8 @@ class SyncController extends Controller
     		'Domain Users',
     		'UPR-Wifi',
     		'UPR-Jabber',
-    		'UPR-Internet',
+        'UPR-Internet',
+        'UPR-Internet-Profes',
     		'UPR-Correo-Internacional',
         'UPR-Docentes'
     	];

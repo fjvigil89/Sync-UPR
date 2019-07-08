@@ -214,7 +214,7 @@ class Assets extends Model
 
 			$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=0");
 			$data = collect(json_decode($response->getBody()->getContents(),true));
-
+/*
 			//Kuotas
 			if(trim($data["hydra:member"][0]['idCargo']) == '9387'){ array_push($array, 'UPR-Internet-Rector');}
 			if(trim($data["hydra:member"][0]['idCargo']) == '1046'){ array_push($array, 'UPR-Internet-Rector');}
@@ -227,7 +227,7 @@ class Assets extends Model
 			if(trim($data["hydra:member"][0]['idCategoria']) == '7'){ array_push($array, 'UPR-Internet-Cuadros');}
 			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '09'){ array_push($array, 'UPR-Internet-Master');}
 			if(trim($data["hydra:member"][0]['idGradoCientifico']) == '08'){ array_push($array, 'UPR-Internet-Doctores');}
-
+*/
 
 			//para listas
 			if(trim($data["hydra:member"][0]['idCcosto']) == '4008'){ array_push($array, 'ProfesoresCRAI');}
