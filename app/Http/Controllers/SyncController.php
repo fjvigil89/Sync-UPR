@@ -119,9 +119,9 @@ class SyncController extends Controller
       $sigenu = new Sigenu;
 
       //si es NoDocente y ademas es estudiante de la UPR
-      $estudiante = $sigenu->ExisteStudent_CI(trim(ltrim($idEmployeeID)));  
+      //$estudiante = $sigenu->ExisteStudent_CI(trim(ltrim($idEmployeeID)));  
       
-      if ($estudiante) {
+      /*if ($estudiante) {
         # code...
         $group= [
           'Domain Users',
@@ -133,17 +133,18 @@ class SyncController extends Controller
         ];
       }
       else
-      {
-        $ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");        
+      {*/
+        //$ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");        
         //grupos que se les adicionar'an al usuario 
         $group= [
           'Domain Users',
           'UPR-Wifi',
           'UPR-Jabber',
           'UPR-Correo-Internacional',
-          'UPR-NoDocentes'
+          'UPR-NoDocentes',
+          'UPR-Internet',
         ];    
-      }
+      //}
       
     	foreach ($assets->SaberGrupo($idEmployeed) as $value) {
     		array_push($group, $value);
@@ -154,14 +155,18 @@ class SyncController extends Controller
 
     function AddGrupoDocente($distinguishedname, $idEmployeed)
     {
+      
     	$ldap = new ldap();    
-    	$assets = new Assets;
+      $assets = new Assets;
+      
+      //quitar un grupo en espesifico
+      /*$ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Profes");*/
     	//grupos que se les adicionar'an al usuario     	
     	$group = [
     		'Domain Users',
     		'UPR-Wifi',
     		'UPR-Jabber',
-    		'UPR-Internet-Profes',
+    		'UPR-Internet',
     		'UPR-Correo-Internacional',
         'UPR-Docentes'
     	];

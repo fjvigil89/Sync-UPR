@@ -95,7 +95,9 @@ class EstudiantesController extends Controller
     {
     	$ldap = new ldap();
     	$sigenu = new Sigenu;
-
+      
+      //quitar un grupo en espesifico
+      /*$ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");*/
       $curso_tipo = $sigenu->findCursoTipo(trim(ltrim($idEmployeed)));         
     	//grupos que se les adicionar'an al usuario 
       //si el estudiante es CPE cambiarle los grupos
@@ -107,12 +109,19 @@ class EstudiantesController extends Controller
           'UPR-Jabber',
           'UPR-Correo-Internacional',
           'UPR-Estudiantes',
-          'UPR-Internet-Est'
+          'UPR-Internet'
         ];    
       }
       else
       {
-        $estudiante = $sigenu->findIdStudent(trim(ltrim($idEmployeed)));
+        $group= [
+            'Domain Users',
+            'UPR-Wifi',
+            'UPR-Jabber',
+            'UPR-Correo-Internacional',
+            'UPR-Estudiantes',          
+          ];
+        /*$estudiante = $sigenu->findIdStudent(trim(ltrim($idEmployeed)));
         $user = $ldap->find_users_CI(trim(ltrim($estudiante['identification'])));        
         if($user['count']>1)//si existe como trabajador y estudiante,
         {           
@@ -122,7 +131,7 @@ class EstudiantesController extends Controller
             'UPR-Jabber',
             'UPR-Correo-Internacional',
             'UPR-Estudiantes',
-            'UPR-Internet-Est',          
+            'UPR-Internet',          
           ];
         }
         else{
@@ -133,7 +142,7 @@ class EstudiantesController extends Controller
             'UPR-Correo-Internacional',
             'UPR-Estudiantes',          
           ];
-        }        
+        }  */      
       }
 
       
@@ -191,7 +200,7 @@ class EstudiantesController extends Controller
         	$this->AddGrupoStudent($lista_ldap['distinguishedname'][0],trim($lista_ldap['employeenumber'][0]));  
             $ldap->Enable($lista_ldap['samaccountname'][0]);
 
-            if ($lista_ldap['samaccountname'][0] == "oberlandy.padilla" || $lista_ldap['samaccountname'][0] == "manuel.gomez" || $lista_ldap['samaccountname'][0] == "mario.arias" || $lista_ldap['samaccountname'][0] == "carlosa.reyes" || $lista_ldap['samaccountname'][0] == "luiso.rodriguez" ||$lista_ldap['samaccountname'][0] == "isabel.manresa" ||$lista_ldap['samaccountname'][0] == "maria.suarezg" ||$lista_ldap['samaccountname'][0] == "rarodriguez" ||$lista_ldap['samaccountname'][0] == "adonys.valdes" ||$lista_ldap['samaccountname'][0] == "jdiaz" ||$lista_ldap['samaccountname'][0] == "afernandez" ||$lista_ldap['samaccountname'][0] == "yessica.alvarezh" ||$lista_ldap['samaccountname'][0] == "arturo.gomez" ||$lista_ldap['samaccountname'][0] == "yoan.dominguezd" || $lista_ldap['samaccountname'][0] == "yohan.rivera" || $lista_ldap['samaccountname'][0] == "jose.munoz" || $lista_ldap['samaccountname'][0] == "dario.munoz" ) {             
+            /*if ($lista_ldap['samaccountname'][0] == "oberlandy.padilla" || $lista_ldap['samaccountname'][0] == "manuel.gomez" || $lista_ldap['samaccountname'][0] == "mario.arias" || $lista_ldap['samaccountname'][0] == "carlosa.reyes" || $lista_ldap['samaccountname'][0] == "luiso.rodriguez" ||$lista_ldap['samaccountname'][0] == "isabel.manresa" ||$lista_ldap['samaccountname'][0] == "maria.suarezg" ||$lista_ldap['samaccountname'][0] == "rarodriguez" ||$lista_ldap['samaccountname'][0] == "adonys.valdes" ||$lista_ldap['samaccountname'][0] == "jdiaz" ||$lista_ldap['samaccountname'][0] == "afernandez" ||$lista_ldap['samaccountname'][0] == "yessica.alvarezh" ||$lista_ldap['samaccountname'][0] == "arturo.gomez" ||$lista_ldap['samaccountname'][0] == "yoan.dominguezd" || $lista_ldap['samaccountname'][0] == "yohan.rivera" || $lista_ldap['samaccountname'][0] == "jose.munoz" || $lista_ldap['samaccountname'][0] == "dario.munoz" ) {             
             
                //Agregar ACM el grupos UPR-Internet-AlumnoAyudante
                $group= [        
@@ -200,6 +209,7 @@ class EstudiantesController extends Controller
                 $ldap->addtogroup($distinguishedname, $group); 
                 Log::warning(" Adicionar grupo AlumnoAyudante a  ".$lista_ldap["displayname"][0]); 
               }
+              */
           }
           return true;
       }
