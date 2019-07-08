@@ -102,7 +102,8 @@ class EstudiantesController extends Controller
           'UPR-Jabber',
           'UPR-Correo-Internacional',
           'UPR-Estudiantes',
-          'UPR-Internet'
+          'UPR-Internet',
+          'UPR-Internet-Profes',
         ];
       //quitar un grupo en espesifico
       /*$ldap->deltogroupEspecifico($distinguishedname, "UPR-Internet-Est");*/
