@@ -1928,8 +1928,7 @@ class ldap extends Model
 		    		'Domain Users',
 		    		'UPR-Internet-Postgrado',
 						'UPR-Postgrados',
-						'UPR-Internet-Profes',
-						'UPR-Internet'		    		
+						'UPR-Internet-todos',						   		
 		    	];   	
 		    	$this->addtogroup($user_dn, $group);
 		  	}

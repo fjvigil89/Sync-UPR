@@ -141,9 +141,8 @@ class SyncController extends Controller
           'UPR-Wifi',
           'UPR-Jabber',
           'UPR-Correo-Internacional',
-          'UPR-NoDocentes',
-          'UPR-Internet',
-          'UPR-Internet-Profes',
+          'UPR-NoDocentes',          
+          'UPR-Internet-todos',
         ];    
       //}
       
@@ -166,9 +165,8 @@ class SyncController extends Controller
     	$group = [
     		'Domain Users',
     		'UPR-Wifi',
-    		'UPR-Jabber',
-        'UPR-Internet',
-        'UPR-Internet-Profes',
+    		'UPR-Jabber',        
+        'UPR-Internet-todos',
     		'UPR-Correo-Internacional',
         'UPR-Docentes'
     	];
