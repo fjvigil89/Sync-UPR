@@ -80,7 +80,7 @@ class SyncController extends Controller
                           
                           $TrabBaja = $assets->findBaja($lista_ldap[$i]["employeenumber"][0]);
 
-
+                          //dd($TrabBaja);
                           if ($TrabBaja) {
 
                             $this->DeleteGrupoBaja($lista_ldap[$i]['distinguishedname'][0]);
@@ -94,7 +94,7 @@ class SyncController extends Controller
                           else{
                              $this->Actualizar_Usuarios_Upr($empleado[0], $lista_ldap[$i]);
                               
-                            }//else del if de Trabbaja 
+                            }//else del if de rabbaja                             
                         }//if existe_assets
                    }//if lugar     						 	
   						

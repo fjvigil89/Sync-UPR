@@ -148,9 +148,12 @@ class Assets extends Model
 		try{	
 				
 				$response = $this->client->get("empleados_gras?_format=json&idExpediente=".$idTrabajador."&baja=1");
+				$jubilados = $this->client->get("empleados_gras?_format=json&idExpediente=".trim($idTrabajador)."&baja=1&idCausaalta=13");
 				$data = collect(json_decode($response->getBody()->getContents(),true));					
+				$data1 = collect(json_decode($jubilados->getBody()->getContents(),true));
+				                                                                                                     	 			
 				
-				if($data["hydra:member"] == [])
+				if($data["hydra:member"] == [] || (trim($data1["hydra:member"][0]['idExpediente']) == trim($data["hydra:member"][0]['idExpediente']))  )
 				{	
 					return false;
 				}
